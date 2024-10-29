@@ -262,32 +262,15 @@ class TableCellMapper extends ClassMapperBase<TableCell> {
   static List<BoardTile> _$tiles(TableCell v) => v.tiles;
   static const Field<TableCell, List<BoardTile>> _f$tiles =
       Field('tiles', _$tiles, opt: true, def: const []);
-  static String? _$team(TableCell v) => v.team;
-  static const Field<TableCell, String> _f$team =
-      Field('team', _$team, opt: true);
-  static int _$reveal(TableCell v) => v.reveal;
-  static const Field<TableCell, int> _f$reveal =
-      Field('reveal', _$reveal, opt: true, def: -1);
-  static int? _$teamReveal(TableCell v) => v.teamReveal;
-  static const Field<TableCell, int> _f$teamReveal =
-      Field('teamReveal', _$teamReveal, opt: true);
 
   @override
   final MappableFields<TableCell> fields = const {
     #objects: _f$objects,
     #tiles: _f$tiles,
-    #team: _f$team,
-    #reveal: _f$reveal,
-    #teamReveal: _f$teamReveal,
   };
 
   static TableCell _instantiate(DecodingData data) {
-    return TableCell(
-        objects: data.dec(_f$objects),
-        tiles: data.dec(_f$tiles),
-        team: data.dec(_f$team),
-        reveal: data.dec(_f$reveal),
-        teamReveal: data.dec(_f$teamReveal));
+    return TableCell(objects: data.dec(_f$objects), tiles: data.dec(_f$tiles));
   }
 
   @override
@@ -344,12 +327,7 @@ abstract class TableCellCopyWith<$R, $In extends TableCell, $Out>
       get objects;
   ListCopyWith<$R, BoardTile, BoardTileCopyWith<$R, BoardTile, BoardTile>>
       get tiles;
-  $R call(
-      {List<GameObject>? objects,
-      List<BoardTile>? tiles,
-      String? team,
-      int? reveal,
-      int? teamReveal});
+  $R call({List<GameObject>? objects, List<BoardTile>? tiles});
   TableCellCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -370,26 +348,15 @@ class _TableCellCopyWithImpl<$R, $Out>
       get tiles => ListCopyWith(
           $value.tiles, (v, t) => v.copyWith.$chain(t), (v) => call(tiles: v));
   @override
-  $R call(
-          {List<GameObject>? objects,
-          List<BoardTile>? tiles,
-          Object? team = $none,
-          int? reveal,
-          Object? teamReveal = $none}) =>
+  $R call({List<GameObject>? objects, List<BoardTile>? tiles}) =>
       $apply(FieldCopyWithData({
         if (objects != null) #objects: objects,
-        if (tiles != null) #tiles: tiles,
-        if (team != $none) #team: team,
-        if (reveal != null) #reveal: reveal,
-        if (teamReveal != $none) #teamReveal: teamReveal
+        if (tiles != null) #tiles: tiles
       }));
   @override
   TableCell $make(CopyWithData data) => TableCell(
       objects: data.get(#objects, or: $value.objects),
-      tiles: data.get(#tiles, or: $value.tiles),
-      team: data.get(#team, or: $value.team),
-      reveal: data.get(#reveal, or: $value.reveal),
-      teamReveal: data.get(#teamReveal, or: $value.teamReveal));
+      tiles: data.get(#tiles, or: $value.tiles));
 
   @override
   TableCellCopyWith<$R2, TableCell, $Out2> $chain<$R2, $Out2>(

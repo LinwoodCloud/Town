@@ -1,1 +1,4 @@
+* Add protection to cells if they are hidden
 * Make build reproducable
+
+Read more here: https://linwood.dev/setonix/0.1.2

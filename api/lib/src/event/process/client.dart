@@ -72,39 +72,84 @@ bool isValidClientEvent(
       _ => true,
     };
 
-(ServerWorldEvent, Channel)? processClientEvent(
-    WorldEvent? event, Channel channel, WorldState state,
-    {required AssetManager assetManager, bool allowServerEvents = false}) {
-  (ServerWorldEvent, Channel) sendInit(Channel? channel, WorldState state) {
-    return (
-      WorldInitialized(
-        table: state.table,
-        info: state.info,
-        id: channel,
-        packsSignature: assetManager.createSignature(state.info.packs.toSet()),
-        teamMembers: state.teamMembers,
-      ),
-      channel ?? kAnyChannel,
-    );
+class ServerResponse {
+  final NetworkerPacket<ServerWorldEvent> main;
+  final Set<Channel> needsUpdate;
+
+  ServerResponse(this.main, [this.needsUpdate = const {}]);
+  ServerResponse.builder(ServerWorldEvent event,
+      [Channel channel = kAnyChannel, this.needsUpdate = const {}])
+      : main = NetworkerPacket(event, channel);
+
+  List<NetworkerPacket<ServerWorldEvent>> buildPackets(
+      WorldState state, Iterable<Channel> connected) {
+    return [main, ...buildUpdatePackets(state, connected)];
   }
 
+  List<NetworkerPacket<WorldInitialized>> buildUpdatePackets(
+          WorldState state, Iterable<Channel> connected) =>
+      buildUpdatePacketsFor(state, connected, needsUpdate);
+
+  List<NetworkerPacket<WorldInitialized>> buildUpdatePacketsFor(
+      WorldState state,
+      Iterable<Channel> connected,
+      Set<Channel>? needsUpdate) {
+    needsUpdate ??= this.needsUpdate;
+    if (needsUpdate.isEmpty) return [];
+    final packets = <NetworkerPacket<WorldInitialized>>[];
+    for (final channel in connected) {
+      if (needsUpdate.contains(channel) || channel == kAnyChannel) {
+        packets.add(NetworkerPacket(
+            WorldInitialized(
+              table: state.protectTable(channel),
+            ),
+            channel));
+      }
+    }
+    return packets;
+  }
+}
+
+Set<Channel> _hybridNeedsUpdate(HybridWorldEvent event, WorldState state) =>
+    switch (event) {
+      TeamRemoved() => {kAnyChannel},
+      _ => {},
+    };
+
+ServerResponse? processClientEvent(
+    WorldEvent? event, Channel channel, WorldState state,
+    {required AssetManager assetManager, bool allowServerEvents = false}) {
   if (event == null) {
-    return sendInit(channel, state);
+    return ServerResponse.builder(
+        WorldInitialized(
+          table: state.protectTable(channel),
+          info: state.info,
+          id: channel,
+          packsSignature:
+              assetManager.createSignature(state.info.packs.toSet()),
+          teamMembers: state.teamMembers,
+        ),
+        channel);
   }
   if (!isValidClientEvent(event, channel, state, assetManager: assetManager)) {
     return null;
   }
   switch (event) {
     case HybridWorldEvent():
-      return (event, kAnyChannel);
+      return ServerResponse.builder(
+          event, kAnyChannel, _hybridNeedsUpdate(event, state));
     case LocalWorldEvent():
       return null;
     case ServerWorldEvent():
-      return allowServerEvents ? (event, kAnyChannel) : null;
+      return allowServerEvents
+          ? ServerResponse.builder(event, kAnyChannel)
+          : null;
     case TeamJoinRequest(team: final team):
-      return (TeamJoined(channel, team), kAnyChannel);
+      return ServerResponse.builder(
+          TeamJoined(channel, team), kAnyChannel, {channel});
     case TeamLeaveRequest(team: final team):
-      return (TeamLeft(channel, team), kAnyChannel);
+      return ServerResponse.builder(
+          TeamLeft(channel, team), kAnyChannel, {channel});
     case CellRollRequest():
       final table = state.getTableOrDefault(event.cell.table);
       var cell = table.getCell(event.cell.position);
@@ -126,22 +171,24 @@ bool isValidClientEvent(
       } else {
         objects = cell.objects.map(roll).toList();
       }
-      return (ObjectsChanged(event.cell, objects), kAnyChannel);
+      return ServerResponse.builder(
+          ObjectsChanged(event.cell, objects), kAnyChannel);
     case ShuffleCellRequest():
       final table = state.getTableOrDefault(event.cell.table);
       final cell = table.cells[event.cell.position];
       if (cell == null) return null;
       final positions = List<int>.generate(cell.objects.length, (i) => i)
         ..shuffle();
-      return (CellShuffled(event.cell, positions), kAnyChannel);
+      return ServerResponse.builder(
+          CellShuffled(event.cell, positions), kAnyChannel);
     case PacksChangeRequest():
-      return sendInit(
-          null,
-          state.copyWith.info(
-            packs: event.packs.where((e) => assetManager.hasPack(e)).toList(),
-          ));
+      return ServerResponse.builder(WorldInitialized(
+          info: state.info.copyWith(
+        packs: event.packs.where((e) => assetManager.hasPack(e)).toList(),
+      )));
     case MessageRequest():
-      return (MessageSent(channel, event.message), kAnyChannel);
+      return ServerResponse.builder(
+          MessageSent(channel, event.message), kAnyChannel);
     case BoardsSpawnRequest():
       final tiles = <VectorDefinition, List<BoardTile>>{};
       for (final (cell, asset) in event.assets.entries
@@ -157,7 +204,8 @@ bool isValidClientEvent(
           }
         }
       }
-      return (BoardTilesSpawned(event.table, tiles), kAnyChannel);
+      return ServerResponse.builder(
+          BoardTilesSpawned(event.table, tiles), kAnyChannel);
     case BoardRemoveRequest():
       final table = state.getTableOrDefault(event.position.table);
       final cell = table.getCell(event.position.position);
@@ -180,7 +228,8 @@ bool isValidClientEvent(
           }
         }
       }
-      return (BoardTilesChanged(event.position.table, newTiles), kAnyChannel);
+      return ServerResponse.builder(
+          BoardTilesChanged(event.position.table, newTiles), kAnyChannel);
     case BoardMoveRequest():
       final table = state.getTableOrDefault(event.table);
       final from = table.getCell(event.from);
@@ -208,8 +257,9 @@ bool isValidClientEvent(
           }
         }
       }
-      return (BoardTilesChanged(event.table, newTiles), kAnyChannel);
+      return ServerResponse.builder(
+          BoardTilesChanged(event.table, newTiles), kAnyChannel);
     case DialogCloseRequest():
-      return (DialogsClosed.single(event.id), channel);
+      return ServerResponse.builder(DialogsClosed.single(event.id), channel);
   }
 }

@@ -67,10 +67,10 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
 
   Stream<PlayableWorldEvent> get events => _eventController.stream;
 
-  final StreamController<(ClientWorldEvent, Channel)> _serverEventController =
-      StreamController.broadcast();
+  final StreamController<NetworkerPacket<ClientWorldEvent>>
+      _serverEventController = StreamController.broadcast();
 
-  Stream<(ClientWorldEvent, Channel)> get serverEvents =>
+  Stream<NetworkerPacket<ClientWorldEvent>> get serverEvents =>
       _serverEventController.stream;
 
   final StreamController<(Channel, ConnectionInfo)> _initController =
@@ -85,6 +85,14 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   bool get isConnected => state.isConnected;
   bool get isClient => state.isClient;
   bool get isServer => state.isServer;
+
+  Set<Channel> get clients {
+    final state = this.state;
+    if (state is! MultiplayerConnectedState) return {};
+    final networker = state.networker;
+    if (networker is! NetworkerServer) return {};
+    return networker.clientConnections;
+  }
 
   Future<MultiplayerConnectedState> _addNetworker(NetworkerBase base) async {
     final transformer = NetworkerPipeTransformer<String, WorldEvent>(
@@ -114,8 +122,8 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
         _eventController.add(data);
       }
     } else if (data is ClientWorldEvent) {
-      _serverEventController
-          .add((data, local ? kAuthorityChannel : event.channel));
+      _serverEventController.add(
+          NetworkerPacket(data, local ? kAuthorityChannel : event.channel));
     }
   }
 
@@ -195,10 +203,18 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     state.pipe.sendMessage(event);
   }
 
-  void sendServer(ServerWorldEvent event, [Channel channel = kAnyChannel]) {
+  void sendServer(ServerWorldEvent event, [Channel channel = kAnyChannel]) =>
+      sendServerPacket(NetworkerPacket(event, channel));
+
+  void sendServerPacket(NetworkerPacket<ServerWorldEvent> packet) =>
+      sendServerPackets([packet]);
+
+  void sendServerPackets(List<NetworkerPacket<ServerWorldEvent>> packets) {
     final state = this.state;
     if (state is! MultiplayerConnectedState) return;
-    state.pipe.sendMessage(event, channel);
+    for (final packet in packets) {
+      state.pipe.sendMessage(packet.data, packet.channel);
+    }
   }
 
   Future<void> reconnect() async {

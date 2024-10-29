@@ -47,7 +47,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       })
       ..inits.listen((e) {
         if (e.$1 == kAnyChannel) return;
-        _processEvent((null, e.$1));
+        _processEvent(NetworkerPacket(null, e.$1));
       })
       ..serverEvents.listen(_processEvent);
 
@@ -119,11 +119,12 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     return state.fileSystem.worldSystem.updateFile(name, data);
   }
 
-  void _processEvent((WorldEvent?, Channel) data) {
-    final value = processClientEvent(data.$1, data.$2, state.world,
+  void _processEvent(NetworkerPacket<WorldEvent?> data) {
+    final value = processClientEvent(data.data, data.channel, state.world,
         assetManager: state.assetManager);
     if (value == null) return;
-    state.multiplayer.sendServer(value.$1, value.$2);
+    state.multiplayer.sendServerPackets(
+        value.buildPackets(state.world, state.multiplayer.clients));
   }
 
   @override
@@ -145,7 +146,14 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         } else {
           final event = processClientEvent(e, kAuthorityChannel, state.world,
               assetManager: state.assetManager, allowServerEvents: true);
-          if (event != null) add(event.$1);
+          if (event != null) {
+            add(event.main.data);
+            final updatePacket = event.buildUpdatePackets(
+                state.world, {kAuthorityChannel}).firstOrNull;
+            if (updatePacket != null) {
+              add(updatePacket.data);
+            }
+          }
         }
       case ServerWorldEvent e:
         add(e);

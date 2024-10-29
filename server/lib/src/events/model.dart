@@ -28,9 +28,10 @@ base class Event<T> with ServerReference {
   ServerWorldEvent serverEvent;
   Channel target;
   bool cancelled = false;
+  Set<Channel>? needsUpdate;
 
   Event(this.server, this.serverEvent, this.target, this.clientEvent,
-      this.source);
+      this.source, this.needsUpdate);
 
   Event<C> castEvent<C extends WorldEvent>() {
     return _LinkedEvent<C>(this);
@@ -38,6 +39,7 @@ base class Event<T> with ServerReference {
 
   void cancel() {
     cancelled = true;
+    needsUpdate = null;
   }
 }
 
@@ -78,6 +80,12 @@ final class _LinkedEvent<T extends WorldEvent?>
 
   @override
   Channel get source => parent.source;
+
+  @override
+  Set<Channel>? get needsUpdate => parent.needsUpdate;
+
+  @override
+  set needsUpdate(Set<Channel>? value) => parent.needsUpdate = value;
 }
 
 final class ServerPing {

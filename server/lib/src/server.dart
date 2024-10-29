@@ -179,7 +179,7 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
   void _onClientEvent(NetworkerPacket<WorldEvent?> packet,
       [bool force = false]) async {
     final data = packet.data;
-    (ServerWorldEvent, Channel)? process;
+    ServerResponse? process;
     try {
       process = processClientEvent(
         data is UserJoined ? null : data,
@@ -191,8 +191,15 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
       log('Error processing event: $e', level: LogLevel.error);
     }
     if (process == null) return;
-    final event = Event(this, process.$1, process.$2, data, packet.channel);
-    if (force) {
+    final event = Event(
+      this,
+      process.main.data,
+      process.main.channel,
+      data,
+      packet.channel,
+      process.needsUpdate,
+    );
+    if (!force) {
       eventSystem.fire(event);
       if (event.cancelled) return;
       log('Processing event by ${event.source}: ${event.serverEvent}',
@@ -205,6 +212,11 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
       default:
     }
     sendEvent(event.serverEvent, event.target);
+    final updatePackets = process.buildUpdatePacketsFor(
+        state, _server?.clientConnections ?? {}, event.needsUpdate);
+    for (final packet in updatePackets) {
+      sendEvent(packet.data, packet.channel);
+    }
   }
 
   void sendEvent(PlayableWorldEvent event, [Channel target = kAnyChannel]) {

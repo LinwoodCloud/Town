@@ -5,8 +5,10 @@ import 'package:setonix_api/setonix_api.dart';
 bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
     switch (event) {
       WorldInitialized() =>
-        event.info.packs.length == event.packsSignature.length &&
-            event.info.packs.every((e) => event.packsSignature.containsKey(e)),
+        event.info?.packs.length == event.packsSignature?.length &&
+            (event.info?.packs.every(
+                    (e) => event.packsSignature?.containsKey(e) ?? false) ??
+                true),
       TeamJoined() => state.info.teams.containsKey(event.team),
       TeamLeft() => state.info.teams.containsKey(event.team),
       CellShuffled() => event.positions.every((e) => e.inRange(
@@ -78,15 +80,17 @@ WorldState? processServerEvent(
   if (!isValidServerEvent(event, state)) return null;
   switch (event) {
     case WorldInitialized():
-      final supported = isServerSupported(signature, event.packsSignature);
+      final signature = event.packsSignature;
+      final supported =
+          signature == null ? true : isServerSupported(signature, signature);
       if (!supported) {
-        throw InvalidPacksError(signature: event.packsSignature);
+        throw InvalidPacksError(signature: signature);
       }
       return state.copyWith(
-        table: event.table,
+        table: event.table ?? state.table,
         id: event.id ?? state.id,
-        teamMembers: event.teamMembers,
-        info: event.info,
+        teamMembers: event.teamMembers ?? state.teamMembers,
+        info: event.info ?? state.info,
       );
     case TeamJoined():
       return state.copyWith(

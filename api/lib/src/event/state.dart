@@ -62,23 +62,27 @@ final class WorldState with WorldStateMappable {
     return !isClaimed || isMyTeam;
   }
 
-  TableCell? restrictCell(VectorDefinition cell, Channel user) {
-    final cellObject = table.cells[cell];
-    if (cellObject == null) {
-      return null;
-    }
-    final cellVisible = isCellVisible(toGlobal(cell), user);
+  Set<String> getTeams([Channel? id]) => teamMembers.entries
+      .where((entry) => entry.value.contains(id ?? this.id))
+      .map((entry) => entry.key)
+      .toSet();
+
+  TableCell protectCell(VectorDefinition cell, [Channel? id]) {
+    final cellObject = table.getCell(cell);
+    if (cellObject.isEmpty) return cellObject;
+    final cellVisible = isCellVisible(toGlobal(cell), id);
     final objects = cellObject.objects
         .map((e) => e.copyWith(
-            variation: cellVisible && !e.hidden ? e.variation : null))
+              variation: cellVisible && !e.hidden ? e.variation : null,
+            ))
         .toList();
     return cellObject.copyWith(objects: objects);
   }
 
-  GameTable restrict(Channel user) {
-    final cells =
-        table.cells.keys.map((e) => MapEntry(e, restrictCell(e, user)!));
-    return table.copyWith.cellsBox(content: Map.fromEntries(cells));
+  GameTable protectTable([Channel? id]) {
+    final protectedCells =
+        table.cells.map((key, value) => MapEntry(key, protectCell(key, id)));
+    return table.copyWith.cellsBox(content: protectedCells);
   }
 
   SetonixData save() =>

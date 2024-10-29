@@ -202,24 +202,23 @@ class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
   @override
   final String id = 'WorldInitialized';
 
-  static GameTable _$table(WorldInitialized v) => v.table;
+  static GameTable? _$table(WorldInitialized v) => v.table;
   static const Field<WorldInitialized, GameTable> _f$table =
-      Field('table', _$table);
-  static GameInfo _$info(WorldInitialized v) => v.info;
+      Field('table', _$table, opt: true);
+  static GameInfo? _$info(WorldInitialized v) => v.info;
   static const Field<WorldInitialized, GameInfo> _f$info =
-      Field('info', _$info);
-  static Map<String, Set<int>> _$teamMembers(WorldInitialized v) =>
+      Field('info', _$info, opt: true);
+  static Map<String, Set<int>>? _$teamMembers(WorldInitialized v) =>
       v.teamMembers;
   static const Field<WorldInitialized, Map<String, Set<int>>> _f$teamMembers =
-      Field('teamMembers', _$teamMembers, opt: true, def: const {});
+      Field('teamMembers', _$teamMembers, opt: true);
   static int? _$id(WorldInitialized v) => v.id;
   static const Field<WorldInitialized, int> _f$id =
       Field('id', _$id, opt: true);
-  static Map<String, FileMetadata> _$packsSignature(WorldInitialized v) =>
+  static Map<String, FileMetadata>? _$packsSignature(WorldInitialized v) =>
       v.packsSignature;
   static const Field<WorldInitialized, Map<String, FileMetadata>>
-      _f$packsSignature =
-      Field('packsSignature', _$packsSignature, opt: true, def: const {});
+      _f$packsSignature = Field('packsSignature', _$packsSignature, opt: true);
 
   @override
   final MappableFields<WorldInitialized> fields = const {
@@ -301,12 +300,12 @@ extension WorldInitializedValueCopy<$R, $Out>
 
 abstract class WorldInitializedCopyWith<$R, $In extends WorldInitialized, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
-  GameTableCopyWith<$R, GameTable, GameTable> get table;
-  GameInfoCopyWith<$R, GameInfo, GameInfo> get info;
-  MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
+  GameTableCopyWith<$R, GameTable, GameTable>? get table;
+  GameInfoCopyWith<$R, GameInfo, GameInfo>? get info;
+  MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>?
       get teamMembers;
   MapCopyWith<$R, String, FileMetadata,
-      FileMetadataCopyWith<$R, FileMetadata, FileMetadata>> get packsSignature;
+      FileMetadataCopyWith<$R, FileMetadata, FileMetadata>>? get packsSignature;
   @override
   $R call(
       {GameTable? table,
@@ -327,35 +326,39 @@ class _WorldInitializedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<WorldInitialized> $mapper =
       WorldInitializedMapper.ensureInitialized();
   @override
-  GameTableCopyWith<$R, GameTable, GameTable> get table =>
-      $value.table.copyWith.$chain((v) => call(table: v));
+  GameTableCopyWith<$R, GameTable, GameTable>? get table =>
+      $value.table?.copyWith.$chain((v) => call(table: v));
   @override
-  GameInfoCopyWith<$R, GameInfo, GameInfo> get info =>
-      $value.info.copyWith.$chain((v) => call(info: v));
+  GameInfoCopyWith<$R, GameInfo, GameInfo>? get info =>
+      $value.info?.copyWith.$chain((v) => call(info: v));
   @override
-  MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
-      get teamMembers => MapCopyWith(
-          $value.teamMembers,
-          (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(teamMembers: v));
+  MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>?
+      get teamMembers => $value.teamMembers != null
+          ? MapCopyWith(
+              $value.teamMembers!,
+              (v, t) => ObjectCopyWith(v, $identity, t),
+              (v) => call(teamMembers: v))
+          : null;
   @override
   MapCopyWith<$R, String, FileMetadata,
-          FileMetadataCopyWith<$R, FileMetadata, FileMetadata>>
-      get packsSignature => MapCopyWith($value.packsSignature,
-          (v, t) => v.copyWith.$chain(t), (v) => call(packsSignature: v));
+          FileMetadataCopyWith<$R, FileMetadata, FileMetadata>>?
+      get packsSignature => $value.packsSignature != null
+          ? MapCopyWith($value.packsSignature!, (v, t) => v.copyWith.$chain(t),
+              (v) => call(packsSignature: v))
+          : null;
   @override
   $R call(
-          {GameTable? table,
-          GameInfo? info,
-          Map<String, Set<int>>? teamMembers,
+          {Object? table = $none,
+          Object? info = $none,
+          Object? teamMembers = $none,
           Object? id = $none,
-          Map<String, FileMetadata>? packsSignature}) =>
+          Object? packsSignature = $none}) =>
       $apply(FieldCopyWithData({
-        if (table != null) #table: table,
-        if (info != null) #info: info,
-        if (teamMembers != null) #teamMembers: teamMembers,
+        if (table != $none) #table: table,
+        if (info != $none) #info: info,
+        if (teamMembers != $none) #teamMembers: teamMembers,
         if (id != $none) #id: id,
-        if (packsSignature != null) #packsSignature: packsSignature
+        if (packsSignature != $none) #packsSignature: packsSignature
       }));
   @override
   WorldInitialized $make(CopyWithData data) => WorldInitialized(

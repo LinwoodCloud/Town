@@ -5,7 +5,7 @@ publish_to: none
 # repository: https://github.com/my_org/my_repo
 
 environment:
-  sdk: ^3.5.1
+  sdk: ">=3.5.1 <4.0.0"
 
 # Add regular dependencies here.
 dependencies:
