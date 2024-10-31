@@ -8,13 +8,17 @@ final class GameDialog with GameDialogMappable {
   final String id;
   final List<GameDialogComponent> components;
   final List<GameDialogButton>? actions;
+  final String? image;
 
   GameDialog({
     required this.id,
     required this.title,
+    this.image,
     this.components = const [],
     this.actions,
   });
+
+  GameDialog withImage(String image) => copyWith(image: image);
 
   GameDialog markdown(String content) => copyWith.components.add(
         GameDialogMarkdownComponent(content),

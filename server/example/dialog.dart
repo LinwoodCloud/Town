@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:setonix_server/setonix_server.dart';
 
 Future<void> main(List<String> arguments) {
@@ -40,11 +42,13 @@ In conclusion, programming has become an indispensable skill in the modern world
 
 Future<void> onLoad(SetonixServer server) async {
   print("on load was called");
+  final image = await File("../app/images/logo.png").readAsBytes();
+  server.process(ImagesUpdated.single('logo', image));
   server.eventSystem
     ..on<ObjectsMoved>((e) {
       print("Listener was called, opening dialog");
       e.sendEvent(DialogOpened(
-        GameDialog(id: "testDialog", title: "TestDialog")
+        GameDialog(id: "testDialog", title: "TestDialog", image: "logo")
             .markdown(testContent)
             .textField(
               "TestTextField",

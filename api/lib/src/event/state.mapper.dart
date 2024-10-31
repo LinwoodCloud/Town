@@ -98,6 +98,9 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   static List<GameDialog> _$dialogs(WorldState v) => v.dialogs;
   static const Field<WorldState, List<GameDialog>> _f$dialogs =
       Field('dialogs', _$dialogs, opt: true, def: const []);
+  static Map<String, Uint8List> _$images(WorldState v) => v.images;
+  static const Field<WorldState, Map<String, Uint8List>> _f$images =
+      Field('images', _$images, opt: true, def: const {});
   static SetonixData _$data(WorldState v) => v.data;
   static const Field<WorldState, SetonixData> _f$data = Field('data', _$data);
 
@@ -112,6 +115,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
     #messages: _f$messages,
     #id: _f$id,
     #dialogs: _f$dialogs,
+    #images: _f$images,
     #data: _f$data,
   };
 
@@ -126,6 +130,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
         messages: data.dec(_f$messages),
         id: data.dec(_f$id),
         dialogs: data.dec(_f$dialogs),
+        images: data.dec(_f$images),
         data: data.dec(_f$data));
   }
 
@@ -189,6 +194,8 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
       ChatMessageCopyWith<$R, ChatMessage, ChatMessage>> get messages;
   ListCopyWith<$R, GameDialog, GameDialogCopyWith<$R, GameDialog, GameDialog>>
       get dialogs;
+  MapCopyWith<$R, String, Uint8List, ObjectCopyWith<$R, Uint8List, Uint8List>>
+      get images;
   $R call(
       {String? name,
       GameTable? table,
@@ -199,6 +206,7 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
       List<ChatMessage>? messages,
       int? id,
       List<GameDialog>? dialogs,
+      Map<String, Uint8List>? images,
       SetonixData? data});
   WorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -236,6 +244,10 @@ class _WorldStateCopyWithImpl<$R, $Out>
       get dialogs => ListCopyWith($value.dialogs,
           (v, t) => v.copyWith.$chain(t), (v) => call(dialogs: v));
   @override
+  MapCopyWith<$R, String, Uint8List, ObjectCopyWith<$R, Uint8List, Uint8List>>
+      get images => MapCopyWith($value.images,
+          (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(images: v));
+  @override
   $R call(
           {Object? name = $none,
           GameTable? table,
@@ -246,6 +258,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
           List<ChatMessage>? messages,
           int? id,
           List<GameDialog>? dialogs,
+          Map<String, Uint8List>? images,
           SetonixData? data}) =>
       $apply(FieldCopyWithData({
         if (name != $none) #name: name,
@@ -257,6 +270,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
         if (messages != null) #messages: messages,
         if (id != null) #id: id,
         if (dialogs != null) #dialogs: dialogs,
+        if (images != null) #images: images,
         if (data != null) #data: data
       }));
   @override
@@ -270,6 +284,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
       messages: data.get(#messages, or: $value.messages),
       id: data.get(#id, or: $value.id),
       dialogs: data.get(#dialogs, or: $value.dialogs),
+      images: data.get(#images, or: $value.images),
       data: data.get(#data, or: $value.data));
 
   @override

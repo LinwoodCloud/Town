@@ -173,3 +173,33 @@ final class DialogsClosed extends ServerWorldEvent with DialogsClosedMappable {
   DialogsClosed.single(String id) : ids = [id];
   DialogsClosed.all() : ids = null;
 }
+
+class Base64IdMapHook extends SimpleMapper<Map<String, Uint8List>> {
+  const Base64IdMapHook();
+
+  @override
+  Map<String, Uint8List> decode(Object value) {
+    if (value is Map<String, dynamic>) {
+      return value.map((key, value) {
+        if (value is String) {
+          return MapEntry(key, base64Decode(value));
+        }
+        return MapEntry(key, value as Uint8List);
+      });
+    }
+    return {};
+  }
+
+  @override
+  Object? encode(Map<String, Uint8List> self) {
+    return self.map((key, value) => MapEntry(key, base64Encode(value)));
+  }
+}
+
+@MappableClass(includeCustomMappers: [Base64IdMapHook()])
+final class ImagesUpdated extends ServerWorldEvent with ImagesUpdatedMappable {
+  final Map<String, Uint8List> images;
+
+  ImagesUpdated(this.images);
+  ImagesUpdated.single(String id, Uint8List image) : images = {id: image};
+}

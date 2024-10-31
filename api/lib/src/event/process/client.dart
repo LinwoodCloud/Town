@@ -261,5 +261,13 @@ ServerResponse? processClientEvent(
           BoardTilesChanged(event.table, newTiles), kAnyChannel);
     case DialogCloseRequest():
       return ServerResponse.builder(DialogsClosed.single(event.id), channel);
+    case ImagesRequest():
+      return ServerResponse.builder(
+          ImagesUpdated(Map.fromEntries(event.ids.map((e) {
+            final image = state.images[e];
+            if (image == null) return null;
+            return MapEntry(e, image);
+          }).nonNulls)),
+          channel);
   }
 }

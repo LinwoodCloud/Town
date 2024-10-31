@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
 import 'package:setonix_api/event.dart';
+
+import 'dart:typed_data';
 
 part 'event.mapper.dart';
 

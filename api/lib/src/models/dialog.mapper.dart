@@ -26,6 +26,9 @@ class GameDialogMapper extends ClassMapperBase<GameDialog> {
   static const Field<GameDialog, String> _f$id = Field('id', _$id);
   static String _$title(GameDialog v) => v.title;
   static const Field<GameDialog, String> _f$title = Field('title', _$title);
+  static String? _$image(GameDialog v) => v.image;
+  static const Field<GameDialog, String> _f$image =
+      Field('image', _$image, opt: true);
   static List<GameDialogComponent> _$components(GameDialog v) => v.components;
   static const Field<GameDialog, List<GameDialogComponent>> _f$components =
       Field('components', _$components, opt: true, def: const []);
@@ -37,6 +40,7 @@ class GameDialogMapper extends ClassMapperBase<GameDialog> {
   final MappableFields<GameDialog> fields = const {
     #id: _f$id,
     #title: _f$title,
+    #image: _f$image,
     #components: _f$components,
     #actions: _f$actions,
   };
@@ -45,6 +49,7 @@ class GameDialogMapper extends ClassMapperBase<GameDialog> {
     return GameDialog(
         id: data.dec(_f$id),
         title: data.dec(_f$title),
+        image: data.dec(_f$image),
         components: data.dec(_f$components),
         actions: data.dec(_f$actions));
   }
@@ -111,6 +116,7 @@ abstract class GameDialogCopyWith<$R, $In extends GameDialog, $Out>
   $R call(
       {String? id,
       String? title,
+      String? image,
       List<GameDialogComponent>? components,
       List<GameDialogButton>? actions});
   GameDialogCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -144,11 +150,13 @@ class _GameDialogCopyWithImpl<$R, $Out>
   $R call(
           {String? id,
           String? title,
+          Object? image = $none,
           List<GameDialogComponent>? components,
           Object? actions = $none}) =>
       $apply(FieldCopyWithData({
         if (id != null) #id: id,
         if (title != null) #title: title,
+        if (image != $none) #image: image,
         if (components != null) #components: components,
         if (actions != $none) #actions: actions
       }));
@@ -156,6 +164,7 @@ class _GameDialogCopyWithImpl<$R, $Out>
   GameDialog $make(CopyWithData data) => GameDialog(
       id: data.get(#id, or: $value.id),
       title: data.get(#title, or: $value.title),
+      image: data.get(#image, or: $value.image),
       components: data.get(#components, or: $value.components),
       actions: data.get(#actions, or: $value.actions));
 

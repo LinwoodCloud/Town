@@ -20,7 +20,8 @@ class GameDialogOverlay extends StatelessWidget {
     return BlocBuilder<WorldBloc, ClientWorldState>(
       buildWhen: (previous, current) =>
           previous.world.dialogs.firstOrNull !=
-          current.world.dialogs.firstOrNull,
+              current.world.dialogs.firstOrNull ||
+          previous.world.images != current.world.images,
       builder: (context, state) {
         final dialog = state.world.dialogs.firstOrNull;
         if (dialog == null) {
@@ -65,23 +66,31 @@ class GameDialogOverlay extends StatelessWidget {
                       const SizedBox(height: 12),
                   itemBuilder: (context, cIndex) {
                     if (cIndex == 0) {
-                      return Card.filled(
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Row(
-                            children: [
-                              Icon(PhosphorIconsLight.warning),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Text(
-                                  AppLocalizations.of(context)
-                                      .thirdPartyContent,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
+                      final image = state.world.images[dialog.image];
+                      return Column(
+                        children: [
+                          if (image != null) Image.memory(image, height: 200),
+                          Card.filled(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Row(
+                                children: [
+                                  Icon(PhosphorIconsLight.warning),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      AppLocalizations.of(context)
+                                          .thirdPartyContent,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                        ],
                       );
                     }
                     cIndex--;

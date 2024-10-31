@@ -72,12 +72,19 @@ bool isServerSupported(Map<String, FileMetadata> mySignature,
   return true;
 }
 
-WorldState? processServerEvent(
+class ServerProcessed {
+  final WorldState? state;
+  final List<ClientWorldEvent> responses;
+
+  ServerProcessed(this.state, [this.responses = const []]);
+}
+
+ServerProcessed processServerEvent(
   ServerWorldEvent event,
   WorldState state, {
   required Map<String, FileMetadata> signature,
 }) {
-  if (!isValidServerEvent(event, state)) return null;
+  if (!isValidServerEvent(event, state)) return ServerProcessed(null);
   switch (event) {
     case WorldInitialized():
       final signature = event.packsSignature;
@@ -86,14 +93,14 @@ WorldState? processServerEvent(
       if (!supported) {
         throw InvalidPacksError(signature: signature);
       }
-      return state.copyWith(
+      return ServerProcessed(state.copyWith(
         table: event.table ?? state.table,
         id: event.id ?? state.id,
         teamMembers: event.teamMembers ?? state.teamMembers,
         info: event.info ?? state.info,
-      );
+      ));
     case TeamJoined():
-      return state.copyWith(
+      return ServerProcessed(state.copyWith(
         teamMembers: {
           ...state.teamMembers,
           event.team: {
@@ -101,7 +108,7 @@ WorldState? processServerEvent(
             event.user,
           },
         },
-      );
+      ));
     case TeamLeft():
       final members = Set<Channel>.from(state.teamMembers[event.team] ?? {});
       members.remove(event.user);
@@ -111,9 +118,9 @@ WorldState? processServerEvent(
       } else {
         allMembers[event.team] = members;
       }
-      return state.copyWith(teamMembers: allMembers);
+      return ServerProcessed(state.copyWith(teamMembers: allMembers));
     case ObjectsChanged():
-      return state.mapTableOrDefault(event.cell.table, (table) {
+      return ServerProcessed(state.mapTableOrDefault(event.cell.table, (table) {
         final cell = table.cells[event.cell.position] ?? TableCell();
         final newCell = cell.copyWith(objects: event.objects);
         if (newCell.isEmpty) {
@@ -124,9 +131,9 @@ WorldState? processServerEvent(
         return table.copyWith.cellsBox(
             content: Map<VectorDefinition, TableCell>.from(table.cells)
               ..[event.cell.position] = newCell);
-      });
+      }));
     case CellShuffled(positions: final positions):
-      return state.mapTableOrDefault(event.cell.table, (table) {
+      return ServerProcessed(state.mapTableOrDefault(event.cell.table, (table) {
         final cell = table.cells[event.cell.position] ?? TableCell();
         final objects = cell.objects;
         final newObjects = List<GameObject>.from(objects);
@@ -136,11 +143,12 @@ WorldState? processServerEvent(
         return table.copyWith.cellsBox(
             content: Map<VectorDefinition, TableCell>.from(table.cells)
               ..[event.cell.position] = cell.copyWith(objects: newObjects));
-      });
+      }));
     case BackgroundChanged():
-      return state.copyWith.table(background: event.background);
+      return ServerProcessed(
+          state.copyWith.table(background: event.background));
     case ObjectsSpawned():
-      return state.mapTableOrDefault(event.table, (table) {
+      return ServerProcessed(state.mapTableOrDefault(event.table, (table) {
         var newTable = table;
         for (final entry in event.objects.entries) {
           final cell = newTable.cells[entry.key] ?? TableCell();
@@ -149,9 +157,9 @@ WorldState? processServerEvent(
                 ..[entry.key] = cell.copyWith(objects: entry.value));
         }
         return newTable;
-      });
+      }));
     case ObjectsMoved():
-      return state.mapTableOrDefault(event.table, (table) {
+      return ServerProcessed(state.mapTableOrDefault(event.table, (table) {
         var from = table.cells[event.from] ?? TableCell();
         var to = table.cells[event.to] ?? TableCell();
         final toRemove = List<int>.from(event.objects)
@@ -175,9 +183,9 @@ WorldState? processServerEvent(
         }
 
         return table.copyWith.cellsBox(content: cells);
-      });
+      }));
     case CellHideChanged():
-      return state.mapTableOrDefault(event.cell.table, (table) {
+      return ServerProcessed(state.mapTableOrDefault(event.cell.table, (table) {
         final cell = table.cells[event.cell.position] ?? TableCell();
         final objectIndex = event.object;
         if (objectIndex != null) {
@@ -196,9 +204,9 @@ WorldState? processServerEvent(
                   objects: cell.objects
                       .map((e) => e.copyWith(hidden: hidden))
                       .toList()));
-      });
+      }));
     case ObjectsRemoved():
-      return state.mapTableOrDefault(event.cell.table, (table) {
+      return ServerProcessed(state.mapTableOrDefault(event.cell.table, (table) {
         final cell = table.cells[event.cell.position] ?? TableCell();
         final objectIndex = event.objects;
         var newCell = cell;
@@ -220,9 +228,9 @@ WorldState? processServerEvent(
         return table.copyWith.cellsBox(
             content: Map<VectorDefinition, TableCell>.from(table.cells)
               ..[event.cell.position] = newCell);
-      });
+      }));
     case ObjectIndexChanged():
-      return state.mapTableOrDefault(event.cell.table, (table) {
+      return ServerProcessed(state.mapTableOrDefault(event.cell.table, (table) {
         final cell = table.cells[event.cell.position] ?? TableCell();
         final object = cell.objects[event.object];
         final newObjects = List<GameObject>.from(cell.objects);
@@ -231,52 +239,54 @@ WorldState? processServerEvent(
         return table.copyWith.cellsBox(
             content: Map<VectorDefinition, TableCell>.from(table.cells)
               ..[event.cell.position] = cell.copyWith(objects: newObjects));
-      });
+      }));
     case TeamChanged():
-      return state.copyWith.info.teams.put(event.name, event.team);
+      return ServerProcessed(
+          state.copyWith.info.teams.put(event.name, event.team));
     case TeamRemoved():
-      return state.copyWith(
+      return ServerProcessed(state.copyWith(
         info: state.info.copyWith.teams.remove(event.team),
         teamMembers: Map.from(state.teamMembers)..remove(event.team),
-      );
+      ));
     case MetadataChanged():
-      return state.copyWith(metadata: event.metadata);
+      return ServerProcessed(state.copyWith(metadata: event.metadata));
     case MessageSent():
-      return state.copyWith.messages.add(ChatMessage(
+      return ServerProcessed(state.copyWith.messages.add(ChatMessage(
         author: event.user,
         content: event.message,
         timestamp: DateTime.now(),
-      ));
+      )));
     case TableRenamed():
       final data = state.data.getTable(event.name);
-      return state.copyWith(
+      return ServerProcessed(state.copyWith(
           tableName:
               event.name == state.tableName ? event.newName : state.tableName,
           data: data == null
               ? state.data
               : state.data
                   .removeTable(event.name)
-                  .setTable(data, event.newName));
+                  .setTable(data, event.newName)));
     case TableRemoved():
-      return state.copyWith(
+      return ServerProcessed(state.copyWith(
           tableName: state.tableName == event.name ? '' : state.tableName,
-          data: state.data.removeTable(event.name));
+          data: state.data.removeTable(event.name)));
     case NoteChanged():
-      return state.copyWith(
-          data: state.data.setNote(event.name, event.content));
+      return ServerProcessed(
+          state.copyWith(data: state.data.setNote(event.name, event.content)));
     case NoteRemoved():
-      return state.copyWith(data: state.data.removeNote(event.name));
+      return ServerProcessed(
+          state.copyWith(data: state.data.removeNote(event.name)));
     case BoardTilesSpawned():
-      return state.mapTableOrDefault(event.table, (table) {
+      return ServerProcessed(state.mapTableOrDefault(event.table, (table) {
         final cells = Map<VectorDefinition, TableCell>.from(table.cells);
         for (final entry in event.tiles.entries) {
           cells[entry.key] =
               table.getCell(entry.key).copyWith.tiles.addAll(entry.value);
         }
         return table.copyWith.cellsBox(content: cells);
-      });
+      }));
     case BoardTilesChanged():
-      return state.mapTableOrDefault(event.table, (table) {
+      return ServerProcessed(state.mapTableOrDefault(event.table, (table) {
         final cells = Map<VectorDefinition, TableCell>.from(table.cells);
         for (final entry in event.tiles.entries) {
           final newCell = table.getCell(entry.key).copyWith(tiles: entry.value);
@@ -287,15 +297,29 @@ WorldState? processServerEvent(
           }
         }
         return table.copyWith.cellsBox(content: cells);
-      });
+      }));
     case DialogOpened():
       final index = state.dialogs.indexWhere((e) => e.id == event.dialog.id);
-      if (index != -1) {
-        return state.copyWith.dialogs.replace(index, event.dialog);
+      final image = event.dialog.image;
+      final responses = <ClientWorldEvent>[];
+      if (image != null && !state.images.containsKey(image)) {
+        responses.add(ImagesRequest([image]));
       }
-      return state.copyWith.dialogs.add(event.dialog);
+      if (index != -1) {
+        return ServerProcessed(
+            state.copyWith.dialogs.replace(index, event.dialog), responses);
+      }
+      return ServerProcessed(
+          state.copyWith.dialogs.add(event.dialog), responses);
     case DialogsClosed():
-      return state.copyWith.dialogs
-          .where((e) => !(event.ids?.contains(e.id) ?? true));
+      return ServerProcessed(state.copyWith.dialogs
+          .where((e) => !(event.ids?.contains(e.id) ?? true)));
+    case ImagesUpdated():
+      return ServerProcessed(state.copyWith(
+        images: {
+          ...state.images,
+          ...event.images,
+        },
+      ));
   }
 }

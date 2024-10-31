@@ -141,3 +141,10 @@ final class DialogCloseRequest extends ClientWorldEvent
 
   DialogCloseRequest(this.id, this.value);
 }
+
+@MappableClass()
+final class ImagesRequest extends ClientWorldEvent with ImagesRequestMappable {
+  final List<String> ids;
+
+  ImagesRequest(this.ids);
+}

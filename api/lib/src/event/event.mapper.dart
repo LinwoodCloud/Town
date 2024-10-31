@@ -133,6 +133,7 @@ class ServerWorldEventMapper extends SubClassMapperBase<ServerWorldEvent> {
       BoardTilesChangedMapper.ensureInitialized();
       DialogOpenedMapper.ensureInitialized();
       DialogsClosedMapper.ensureInitialized();
+      ImagesUpdatedMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -1507,6 +1508,128 @@ class _DialogsClosedCopyWithImpl<$R, $Out>
       _DialogsClosedCopyWithImpl($value, $cast, t);
 }
 
+class ImagesUpdatedMapper extends SubClassMapperBase<ImagesUpdated> {
+  ImagesUpdatedMapper._();
+
+  static ImagesUpdatedMapper? _instance;
+  static ImagesUpdatedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ImagesUpdatedMapper._());
+      ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      MapperContainer.globals.useAll([Base64IdMapHook()]);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ImagesUpdated';
+
+  static Map<String, Uint8List> _$images(ImagesUpdated v) => v.images;
+  static const Field<ImagesUpdated, Map<String, Uint8List>> _f$images =
+      Field('images', _$images);
+
+  @override
+  final MappableFields<ImagesUpdated> fields = const {
+    #images: _f$images,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'ImagesUpdated';
+  @override
+  late final ClassMapperBase superMapper =
+      ServerWorldEventMapper.ensureInitialized();
+
+  static ImagesUpdated _instantiate(DecodingData data) {
+    return ImagesUpdated(data.dec(_f$images));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ImagesUpdated fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ImagesUpdated>(map);
+  }
+
+  static ImagesUpdated fromJson(String json) {
+    return ensureInitialized().decodeJson<ImagesUpdated>(json);
+  }
+}
+
+mixin ImagesUpdatedMappable {
+  String toJson() {
+    return ImagesUpdatedMapper.ensureInitialized()
+        .encodeJson<ImagesUpdated>(this as ImagesUpdated);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ImagesUpdatedMapper.ensureInitialized()
+        .encodeMap<ImagesUpdated>(this as ImagesUpdated);
+  }
+
+  ImagesUpdatedCopyWith<ImagesUpdated, ImagesUpdated, ImagesUpdated>
+      get copyWith => _ImagesUpdatedCopyWithImpl(
+          this as ImagesUpdated, $identity, $identity);
+  @override
+  String toString() {
+    return ImagesUpdatedMapper.ensureInitialized()
+        .stringifyValue(this as ImagesUpdated);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ImagesUpdatedMapper.ensureInitialized()
+        .equalsValue(this as ImagesUpdated, other);
+  }
+
+  @override
+  int get hashCode {
+    return ImagesUpdatedMapper.ensureInitialized()
+        .hashValue(this as ImagesUpdated);
+  }
+}
+
+extension ImagesUpdatedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ImagesUpdated, $Out> {
+  ImagesUpdatedCopyWith<$R, ImagesUpdated, $Out> get $asImagesUpdated =>
+      $base.as((v, t, t2) => _ImagesUpdatedCopyWithImpl(v, t, t2));
+}
+
+abstract class ImagesUpdatedCopyWith<$R, $In extends ImagesUpdated, $Out>
+    implements ServerWorldEventCopyWith<$R, $In, $Out> {
+  MapCopyWith<$R, String, Uint8List, ObjectCopyWith<$R, Uint8List, Uint8List>>
+      get images;
+  @override
+  $R call({Map<String, Uint8List>? images});
+  ImagesUpdatedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _ImagesUpdatedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ImagesUpdated, $Out>
+    implements ImagesUpdatedCopyWith<$R, ImagesUpdated, $Out> {
+  _ImagesUpdatedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ImagesUpdated> $mapper =
+      ImagesUpdatedMapper.ensureInitialized();
+  @override
+  MapCopyWith<$R, String, Uint8List, ObjectCopyWith<$R, Uint8List, Uint8List>>
+      get images => MapCopyWith($value.images,
+          (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(images: v));
+  @override
+  $R call({Map<String, Uint8List>? images}) =>
+      $apply(FieldCopyWithData({if (images != null) #images: images}));
+  @override
+  ImagesUpdated $make(CopyWithData data) =>
+      ImagesUpdated(data.get(#images, or: $value.images));
+
+  @override
+  ImagesUpdatedCopyWith<$R2, ImagesUpdated, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _ImagesUpdatedCopyWithImpl($value, $cast, t);
+}
+
 class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
   ClientWorldEventMapper._();
 
@@ -1525,6 +1648,7 @@ class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
       BoardRemoveRequestMapper.ensureInitialized();
       BoardMoveRequestMapper.ensureInitialized();
       DialogCloseRequestMapper.ensureInitialized();
+      ImagesRequestMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -2849,6 +2973,125 @@ class _DialogCloseRequestCopyWithImpl<$R, $Out>
   DialogCloseRequestCopyWith<$R2, DialogCloseRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _DialogCloseRequestCopyWithImpl($value, $cast, t);
+}
+
+class ImagesRequestMapper extends SubClassMapperBase<ImagesRequest> {
+  ImagesRequestMapper._();
+
+  static ImagesRequestMapper? _instance;
+  static ImagesRequestMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ImagesRequestMapper._());
+      ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ImagesRequest';
+
+  static List<String> _$ids(ImagesRequest v) => v.ids;
+  static const Field<ImagesRequest, List<String>> _f$ids = Field('ids', _$ids);
+
+  @override
+  final MappableFields<ImagesRequest> fields = const {
+    #ids: _f$ids,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'ImagesRequest';
+  @override
+  late final ClassMapperBase superMapper =
+      ClientWorldEventMapper.ensureInitialized();
+
+  static ImagesRequest _instantiate(DecodingData data) {
+    return ImagesRequest(data.dec(_f$ids));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ImagesRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ImagesRequest>(map);
+  }
+
+  static ImagesRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<ImagesRequest>(json);
+  }
+}
+
+mixin ImagesRequestMappable {
+  String toJson() {
+    return ImagesRequestMapper.ensureInitialized()
+        .encodeJson<ImagesRequest>(this as ImagesRequest);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ImagesRequestMapper.ensureInitialized()
+        .encodeMap<ImagesRequest>(this as ImagesRequest);
+  }
+
+  ImagesRequestCopyWith<ImagesRequest, ImagesRequest, ImagesRequest>
+      get copyWith => _ImagesRequestCopyWithImpl(
+          this as ImagesRequest, $identity, $identity);
+  @override
+  String toString() {
+    return ImagesRequestMapper.ensureInitialized()
+        .stringifyValue(this as ImagesRequest);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ImagesRequestMapper.ensureInitialized()
+        .equalsValue(this as ImagesRequest, other);
+  }
+
+  @override
+  int get hashCode {
+    return ImagesRequestMapper.ensureInitialized()
+        .hashValue(this as ImagesRequest);
+  }
+}
+
+extension ImagesRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ImagesRequest, $Out> {
+  ImagesRequestCopyWith<$R, ImagesRequest, $Out> get $asImagesRequest =>
+      $base.as((v, t, t2) => _ImagesRequestCopyWithImpl(v, t, t2));
+}
+
+abstract class ImagesRequestCopyWith<$R, $In extends ImagesRequest, $Out>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get ids;
+  @override
+  $R call({List<String>? ids});
+  ImagesRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _ImagesRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ImagesRequest, $Out>
+    implements ImagesRequestCopyWith<$R, ImagesRequest, $Out> {
+  _ImagesRequestCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ImagesRequest> $mapper =
+      ImagesRequestMapper.ensureInitialized();
+  @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get ids =>
+      ListCopyWith($value.ids, (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(ids: v));
+  @override
+  $R call({List<String>? ids}) =>
+      $apply(FieldCopyWithData({if (ids != null) #ids: ids}));
+  @override
+  ImagesRequest $make(CopyWithData data) =>
+      ImagesRequest(data.get(#ids, or: $value.ids));
+
+  @override
+  ImagesRequestCopyWith<$R2, ImagesRequest, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _ImagesRequestCopyWithImpl($value, $cast, t);
 }
 
 class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {

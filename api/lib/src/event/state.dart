@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
 
@@ -29,6 +31,7 @@ final class WorldState with WorldStateMappable {
   final SetonixData data;
   final List<ChatMessage> messages;
   final List<GameDialog> dialogs;
+  final Map<String, Uint8List> images;
 
   const WorldState({
     this.name,
@@ -40,6 +43,7 @@ final class WorldState with WorldStateMappable {
     this.messages = const [],
     this.id = kAuthorityChannel,
     this.dialogs = const [],
+    this.images = const {},
     required this.data,
   });
 

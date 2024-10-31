@@ -18,10 +18,18 @@ import 'package:setonix_server/src/programs/stop.dart';
 
 import 'events/model.dart';
 
-Future<WorldState?> _computeEvent(ServerWorldEvent event, WorldState state,
+Future<ServerProcessed> _computeEvent(ServerWorldEvent event, WorldState state,
     Map<String, FileMetadata> signature) {
   return Isolate.run(
       () => processServerEvent(event, state, signature: signature));
+}
+
+String _limitOutput(Object? value, [int limit = 500]) {
+  final string = value.toString();
+  if (string.length > limit) {
+    return '${string.substring(0, limit)}...';
+  }
+  return string;
 }
 
 final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
@@ -44,7 +52,9 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
         )) {
     on<ServerWorldEvent>((event, emit) async {
       final signature = assetManager.createSignature();
-      final newState = await _computeEvent(event, state, signature);
+      final processed = await _computeEvent(event, state, signature);
+      final newState = processed.state;
+      processed.responses.forEach(process);
       if (newState == null) return;
       emit(newState);
       return save();
@@ -69,6 +79,9 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
           packsSignature: assetManager.createSignature(),
         ),
       );
+    });
+    on<ImagesUpdated>((event, emit) {
+      emit(state.copyWith(images: event.images));
     });
   }
 
@@ -186,6 +199,7 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
         packet.channel,
         state,
         assetManager: assetManager,
+        allowServerEvents: packet.isServer,
       );
     } catch (e) {
       log('Error processing event: $e', level: LogLevel.error);
@@ -202,7 +216,7 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
     if (!force) {
       eventSystem.fire(event);
       if (event.cancelled) return;
-      log('Processing event by ${event.source}: ${event.serverEvent}',
+      log('Processing event by ${event.source}: ${_limitOutput(event.clientEvent)}, answered with ${_limitOutput(event.serverEvent)}',
           level: LogLevel.verbose);
     }
     switch (packet.data) {
