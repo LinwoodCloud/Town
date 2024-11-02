@@ -46,11 +46,6 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
                       icon: const PhosphorIcon(PhosphorIconsLight.bookOpen),
                       label: Text(AppLocalizations.of(context).documentation),
                     ),
-                    IconButton(
-                      onPressed: () => openSettings(context),
-                      icon: const PhosphorIcon(PhosphorIconsLight.gear),
-                      tooltip: AppLocalizations.of(context).settings,
-                    ),
                   ],
                 );
                 final style = FilledButton.styleFrom(
