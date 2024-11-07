@@ -4,7 +4,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/api/open.dart';
-import 'package:setonix/api/settings.dart';
 import 'package:setonix/bloc/settings.dart';
 
 class HeaderHomeView extends StatefulWidget {
