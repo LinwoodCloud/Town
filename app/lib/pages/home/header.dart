@@ -4,7 +4,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/api/open.dart';
-import 'package:setonix/api/settings.dart';
 import 'package:setonix/bloc/settings.dart';
 
 class HeaderHomeView extends StatefulWidget {
@@ -45,11 +44,6 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
                       onPressed: () => openHelp(['intro']),
                       icon: const PhosphorIcon(PhosphorIconsLight.bookOpen),
                       label: Text(AppLocalizations.of(context).documentation),
-                    ),
-                    IconButton(
-                      onPressed: () => openSettings(context),
-                      icon: const PhosphorIcon(PhosphorIconsLight.gear),
-                      tooltip: AppLocalizations.of(context).settings,
                     ),
                   ],
                 );

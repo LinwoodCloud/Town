@@ -38,6 +38,13 @@ class GameDialogOverlay extends StatelessWidget {
               );
         }
 
+        final image = state.world.images[dialog.image];
+
+        final header = image == null ? null : Image.memory(image, height: 200);
+
+        final isMobile =
+            MediaQuery.of(context).size.width < LeapBreakpoints.medium;
+
         return Stack(
           children: [
             GestureDetector(
@@ -57,89 +64,99 @@ class GameDialogOverlay extends StatelessWidget {
                 icon: const Icon(PhosphorIconsLight.x),
                 onPressed: () => submitValue(),
               ),
-              constraints:
-                  const BoxConstraints(maxWidth: LeapBreakpoints.medium),
-              content: ListView.separated(
-                  shrinkWrap: true,
-                  itemCount: dialog.components.length + 1,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 12),
-                  itemBuilder: (context, cIndex) {
-                    if (cIndex == 0) {
-                      final image = state.world.images[dialog.image];
-                      return Column(
-                        children: [
-                          if (image != null) Image.memory(image, height: 200),
-                          Card.filled(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12),
-                              child: Row(
-                                children: [
-                                  Icon(PhosphorIconsLight.warning),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Text(
-                                      AppLocalizations.of(context)
-                                          .thirdPartyContent,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
+              constraints: BoxConstraints(
+                  maxWidth: header == null
+                      ? LeapBreakpoints.medium
+                      : LeapBreakpoints.expanded),
+              content: Row(
+                children: [
+                  if (!isMobile && header != null) Expanded(child: header),
+                  Expanded(
+                    child: ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: dialog.components.length + 1,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 12),
+                        itemBuilder: (context, cIndex) {
+                          if (cIndex == 0) {
+                            return Column(
+                              children: [
+                                if (isMobile && header != null) header,
+                                Card.filled(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Row(
+                                      children: [
+                                        Icon(PhosphorIconsLight.warning),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: Text(
+                                            AppLocalizations.of(context)
+                                                .thirdPartyContent,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                    cIndex--;
-                    final component = dialog.components[cIndex];
-                    switch (component) {
-                      case GameDialogMarkdownComponent():
-                        return MarkdownBody(
-                          extensionSet: md.ExtensionSet(
-                            md.ExtensionSet.gitHubWeb.blockSyntaxes,
-                            <md.InlineSyntax>[
-                              md.EmojiSyntax(),
-                              ...md.ExtensionSet.gitHubWeb.inlineSyntaxes
-                            ],
-                          ),
-                          data: component.content,
-                        );
-                      case GameDialogTextFieldComponent():
-                        final multiline =
-                            component.multiline && !component.password;
-                        final initialValue =
-                            value.getValue(component.idOrLabel).getAsString();
-                        void updateComponent(
-                          String text,
-                        ) =>
-                            updateValue(
-                              value.copyWith.values.put(
-                                component.idOrLabel,
-                                GameDialogTextFieldValue(
-                                  value: text,
-                                  component: cIndex,
                                 ),
-                              ),
+                              ],
                             );
-                        updateComponent(initialValue);
-                        return TextFormField(
-                          decoration: InputDecoration(
-                            labelText: component.label,
-                            hintText: component.placeholder,
-                            filled: !multiline,
-                            border:
-                                multiline ? const OutlineInputBorder() : null,
-                          ),
-                          maxLines: multiline ? null : 1,
-                          obscureText: component.password,
-                          initialValue: initialValue,
-                          onChanged: updateComponent,
-                        );
-                    }
-                  }),
+                          }
+                          cIndex--;
+                          final component = dialog.components[cIndex];
+                          switch (component) {
+                            case GameDialogMarkdownComponent():
+                              return MarkdownBody(
+                                extensionSet: md.ExtensionSet(
+                                  md.ExtensionSet.gitHubWeb.blockSyntaxes,
+                                  <md.InlineSyntax>[
+                                    md.EmojiSyntax(),
+                                    ...md.ExtensionSet.gitHubWeb.inlineSyntaxes
+                                  ],
+                                ),
+                                data: component.content,
+                              );
+                            case GameDialogTextFieldComponent():
+                              final multiline =
+                                  component.multiline && !component.password;
+                              final initialValue = value
+                                  .getValue(component.idOrLabel)
+                                  .getAsString();
+                              void updateComponent(
+                                String text,
+                              ) =>
+                                  updateValue(
+                                    value.copyWith.values.put(
+                                      component.idOrLabel,
+                                      GameDialogTextFieldValue(
+                                        value: text,
+                                        component: cIndex,
+                                      ),
+                                    ),
+                                  );
+                              updateComponent(initialValue);
+                              return TextFormField(
+                                decoration: InputDecoration(
+                                  labelText: component.label,
+                                  hintText: component.placeholder,
+                                  filled: !multiline,
+                                  border: multiline
+                                      ? const OutlineInputBorder()
+                                      : null,
+                                ),
+                                maxLines: multiline ? null : 1,
+                                obscureText: component.password,
+                                initialValue: initialValue,
+                                onChanged: updateComponent,
+                              );
+                          }
+                        }),
+                  ),
+                ],
+              ),
               actions: [
                 TextButton(
                   onPressed: () {
