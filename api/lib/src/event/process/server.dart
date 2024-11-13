@@ -52,7 +52,7 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
 sealed class FatalServerEventError {}
 
 final class InvalidPacksError extends FatalServerEventError {
-  final Map<String, FileMetadata> signature;
+  final Map<String, SignatureMetadata> signature;
 
   InvalidPacksError({required this.signature});
 
@@ -61,8 +61,8 @@ final class InvalidPacksError extends FatalServerEventError {
       'Server requested packs, that are not available on the client (or is empty): $signature';
 }
 
-bool isServerSupported(Map<String, FileMetadata> mySignature,
-    Map<String, FileMetadata> serverSignature) {
+bool isServerSupported(Map<String, SignatureMetadata> mySignature,
+    Map<String, SignatureMetadata> serverSignature) {
   for (final entry in serverSignature.entries) {
     final current = mySignature[entry.key];
     if (current == null || !current.supports(entry.value)) {
@@ -82,7 +82,7 @@ class ServerProcessed {
 ServerProcessed processServerEvent(
   ServerWorldEvent event,
   WorldState state, {
-  required Map<String, FileMetadata> signature,
+  required Map<String, SignatureMetadata> signature,
 }) {
   if (!isValidServerEvent(event, state)) return ServerProcessed(null);
   switch (event) {

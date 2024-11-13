@@ -1,4 +1,6 @@
 * Add protection to cells if they are hidden
+* Add image to dialog ([#40](https://github.com/LinwoodDev/Setonix/issues/40))
+* Use hash of archive for signature
 * Make build reproducable
 
 Read more here: https://linwood.dev/setonix/0.1.2

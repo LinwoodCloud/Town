@@ -13,7 +13,7 @@ final class WorldInitialized extends ServerWorldEvent
   final GameInfo? info;
   final Map<String, Set<Channel>>? teamMembers;
   final Channel? id;
-  final Map<String, FileMetadata>? packsSignature;
+  final Map<String, SignatureMetadata>? packsSignature;
 
   WorldInitialized({
     this.table,

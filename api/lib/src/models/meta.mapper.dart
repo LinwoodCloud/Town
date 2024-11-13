@@ -228,3 +228,121 @@ class _FileMetadataCopyWithImpl<$R, $Out>
           Then<$Out2, $R2> t) =>
       _FileMetadataCopyWithImpl($value, $cast, t);
 }
+
+class SignatureMetadataMapper extends ClassMapperBase<SignatureMetadata> {
+  SignatureMetadataMapper._();
+
+  static SignatureMetadataMapper? _instance;
+  static SignatureMetadataMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = SignatureMetadataMapper._());
+      FileMetadataMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'SignatureMetadata';
+
+  static String _$id(SignatureMetadata v) => v.id;
+  static const Field<SignatureMetadata, String> _f$id = Field('id', _$id);
+  static FileMetadata _$metadata(SignatureMetadata v) => v.metadata;
+  static const Field<SignatureMetadata, FileMetadata> _f$metadata =
+      Field('metadata', _$metadata);
+
+  @override
+  final MappableFields<SignatureMetadata> fields = const {
+    #id: _f$id,
+    #metadata: _f$metadata,
+  };
+
+  static SignatureMetadata _instantiate(DecodingData data) {
+    return SignatureMetadata(
+        id: data.dec(_f$id), metadata: data.dec(_f$metadata));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static SignatureMetadata fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<SignatureMetadata>(map);
+  }
+
+  static SignatureMetadata fromJson(String json) {
+    return ensureInitialized().decodeJson<SignatureMetadata>(json);
+  }
+}
+
+mixin SignatureMetadataMappable {
+  String toJson() {
+    return SignatureMetadataMapper.ensureInitialized()
+        .encodeJson<SignatureMetadata>(this as SignatureMetadata);
+  }
+
+  Map<String, dynamic> toMap() {
+    return SignatureMetadataMapper.ensureInitialized()
+        .encodeMap<SignatureMetadata>(this as SignatureMetadata);
+  }
+
+  SignatureMetadataCopyWith<SignatureMetadata, SignatureMetadata,
+          SignatureMetadata>
+      get copyWith => _SignatureMetadataCopyWithImpl(
+          this as SignatureMetadata, $identity, $identity);
+  @override
+  String toString() {
+    return SignatureMetadataMapper.ensureInitialized()
+        .stringifyValue(this as SignatureMetadata);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return SignatureMetadataMapper.ensureInitialized()
+        .equalsValue(this as SignatureMetadata, other);
+  }
+
+  @override
+  int get hashCode {
+    return SignatureMetadataMapper.ensureInitialized()
+        .hashValue(this as SignatureMetadata);
+  }
+}
+
+extension SignatureMetadataValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, SignatureMetadata, $Out> {
+  SignatureMetadataCopyWith<$R, SignatureMetadata, $Out>
+      get $asSignatureMetadata =>
+          $base.as((v, t, t2) => _SignatureMetadataCopyWithImpl(v, t, t2));
+}
+
+abstract class SignatureMetadataCopyWith<$R, $In extends SignatureMetadata,
+    $Out> implements ClassCopyWith<$R, $In, $Out> {
+  FileMetadataCopyWith<$R, FileMetadata, FileMetadata> get metadata;
+  $R call({String? id, FileMetadata? metadata});
+  SignatureMetadataCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _SignatureMetadataCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, SignatureMetadata, $Out>
+    implements SignatureMetadataCopyWith<$R, SignatureMetadata, $Out> {
+  _SignatureMetadataCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<SignatureMetadata> $mapper =
+      SignatureMetadataMapper.ensureInitialized();
+  @override
+  FileMetadataCopyWith<$R, FileMetadata, FileMetadata> get metadata =>
+      $value.metadata.copyWith.$chain((v) => call(metadata: v));
+  @override
+  $R call({String? id, FileMetadata? metadata}) => $apply(FieldCopyWithData(
+      {if (id != null) #id: id, if (metadata != null) #metadata: metadata}));
+  @override
+  SignatureMetadata $make(CopyWithData data) => SignatureMetadata(
+      id: data.get(#id, or: $value.id),
+      metadata: data.get(#metadata, or: $value.metadata));
+
+  @override
+  SignatureMetadataCopyWith<$R2, SignatureMetadata, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _SignatureMetadataCopyWithImpl($value, $cast, t);
+}

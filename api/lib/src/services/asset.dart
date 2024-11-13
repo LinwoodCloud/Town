@@ -8,11 +8,14 @@ abstract class AssetManager {
 
   Iterable<MapEntry<String, SetonixData>> get packs;
 
-  Map<String, FileMetadata> createSignature([Set<String>? packs]) {
-    final signature = <String, FileMetadata>{};
+  Map<String, SignatureMetadata> createSignature([Set<String>? packs]) {
+    final signature = <String, SignatureMetadata>{};
     for (final entry in this.packs) {
       if (!(packs?.contains(entry.key) ?? true)) continue;
-      signature[entry.key] = entry.value.getMetadataOrDefault();
+      signature[entry.key] = SignatureMetadata(
+        metadata: entry.value.getMetadataOrDefault(),
+        id: entry.value.createIdentifier(),
+      );
     }
     return signature;
   }

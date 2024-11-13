@@ -16,7 +16,7 @@ class PacksProgram extends ConsoleProgram {
     final packs = server.assetManager.packs.toList();
     print("Loaded ${packs.length} pack(s).");
     for (final pack in packs) {
-      final checksum = pack.value.getChecksum();
+      final checksum = pack.value.createIdentifier();
       if (pack.key == kCorePackId) {
         print("| Core pack ($checksum)");
       } else {

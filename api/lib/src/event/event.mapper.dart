@@ -195,7 +195,7 @@ class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
       ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       GameTableMapper.ensureInitialized();
       GameInfoMapper.ensureInitialized();
-      FileMetadataMapper.ensureInitialized();
+      SignatureMetadataMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -216,9 +216,9 @@ class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
   static int? _$id(WorldInitialized v) => v.id;
   static const Field<WorldInitialized, int> _f$id =
       Field('id', _$id, opt: true);
-  static Map<String, FileMetadata>? _$packsSignature(WorldInitialized v) =>
+  static Map<String, SignatureMetadata>? _$packsSignature(WorldInitialized v) =>
       v.packsSignature;
-  static const Field<WorldInitialized, Map<String, FileMetadata>>
+  static const Field<WorldInitialized, Map<String, SignatureMetadata>>
       _f$packsSignature = Field('packsSignature', _$packsSignature, opt: true);
 
   @override
@@ -305,15 +305,16 @@ abstract class WorldInitializedCopyWith<$R, $In extends WorldInitialized, $Out>
   GameInfoCopyWith<$R, GameInfo, GameInfo>? get info;
   MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>?
       get teamMembers;
-  MapCopyWith<$R, String, FileMetadata,
-      FileMetadataCopyWith<$R, FileMetadata, FileMetadata>>? get packsSignature;
+  MapCopyWith<$R, String, SignatureMetadata,
+          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>?
+      get packsSignature;
   @override
   $R call(
       {GameTable? table,
       GameInfo? info,
       Map<String, Set<int>>? teamMembers,
       int? id,
-      Map<String, FileMetadata>? packsSignature});
+      Map<String, SignatureMetadata>? packsSignature});
   WorldInitializedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -341,8 +342,8 @@ class _WorldInitializedCopyWithImpl<$R, $Out>
               (v) => call(teamMembers: v))
           : null;
   @override
-  MapCopyWith<$R, String, FileMetadata,
-          FileMetadataCopyWith<$R, FileMetadata, FileMetadata>>?
+  MapCopyWith<$R, String, SignatureMetadata,
+          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>?
       get packsSignature => $value.packsSignature != null
           ? MapCopyWith($value.packsSignature!, (v, t) => v.copyWith.$chain(t),
               (v) => call(packsSignature: v))

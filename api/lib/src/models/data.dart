@@ -203,9 +203,8 @@ class SetonixData extends ArchiveData<SetonixData> {
   SetonixData updateState(ArchiveState state) =>
       SetonixData(archive, state: state);
 
-  Digest getChecksum() {
-    final metadata = getMetadataOrDefault().toJson();
-    return sha512256.convert(utf8.encode(metadata));
+  String createIdentifier() {
+    return createPackIdentifier(exportAsBytes());
   }
 
   TranslationsStore getTranslationsStore(
@@ -214,6 +213,11 @@ class SetonixData extends ArchiveData<SetonixData> {
         translations: getAllTranslations(),
         getLocale: getLocale,
       );
+}
+
+String createPackIdentifier(Uint8List data) {
+  final hash = sha512256.convert(data);
+  return base64Encode(hash.bytes);
 }
 
 final class PackItem<T> {

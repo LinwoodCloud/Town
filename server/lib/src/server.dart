@@ -19,7 +19,7 @@ import 'package:setonix_server/src/programs/stop.dart';
 import 'events/model.dart';
 
 Future<ServerProcessed> _computeEvent(ServerWorldEvent event, WorldState state,
-    Map<String, FileMetadata> signature) {
+    Map<String, SignatureMetadata> signature) {
   return Isolate.run(
       () => processServerEvent(event, state, signature: signature));
 }
