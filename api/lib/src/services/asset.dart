@@ -15,10 +15,13 @@ abstract class AssetManager {
       signature[entry.key] = SignatureMetadata(
         metadata: entry.value.getMetadataOrDefault(),
         id: entry.value.createIdentifier(),
+        downloadUrls: getDownloadUrls(entry.key) ?? [],
       );
     }
     return signature;
   }
+
+  List<String>? getDownloadUrls(String id) => null;
 
   BoardDefinition? getBoard(ItemLocation location) =>
       getPack(location.namespace)?.getBoard(location.id);

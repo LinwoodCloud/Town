@@ -198,6 +198,9 @@ class _PacksGameErrorViewState extends State<_PacksGameErrorView> {
     );
     final success = results.every((e) => e.isSuccess);
     if (!context.mounted) return;
+    setState(() {
+      _currentlyDownloading = false;
+    });
     if (success) {
       showDialog(
         context: context,
@@ -207,7 +210,7 @@ class _PacksGameErrorViewState extends State<_PacksGameErrorView> {
             AppLocalizations.of(context).downloadSuccessMessage,
           ),
           actions: [
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 widget.onReconnect();

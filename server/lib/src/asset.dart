@@ -1,12 +1,26 @@
 import 'dart:io';
 
 import 'package:consoler/consoler.dart';
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:path/path.dart' as p;
 import 'package:setonix_api/setonix_api.dart';
 
+part 'asset.mapper.dart';
+
+@MappableClass()
+final class ServerDataMetadata with ServerDataMetadataMappable {
+  final List<String> downloadUrls;
+
+  ServerDataMetadata({required this.downloadUrls});
+}
+
 class ServerAssetManager extends AssetManager {
   final Map<String, SetonixData> _packs = {};
+  final Map<String, ServerDataMetadata> _metadata = {};
+
   static const _stnxExtension = 'stnx';
+  static const _metadataExtension = 'json';
+
   @override
   Iterable<MapEntry<String, SetonixData>> get packs => _packs.entries;
 
@@ -24,15 +38,25 @@ class ServerAssetManager extends AssetManager {
         final fileName = p.basename(file.path);
         final extension = fileName.split('.').last;
         if (extension != _stnxExtension) {
-          console.print(
-              'WARNING: Invalid pack file extension: $fileName. Skipping.',
-              level: LogLevel.warning);
+          if (extension != _metadataExtension) {
+            console.print(
+                'WARNING: Invalid pack file extension: $fileName. Skipping.',
+                level: LogLevel.warning);
+          }
           continue;
         }
         var name =
             fileName.substring(0, fileName.length - _stnxExtension.length - 1);
         if (name.isEmpty) name = kCorePackId;
         _packs[name] = data;
+
+        final metadataFile =
+            File(p.join(directory.path, '$name.$_metadataExtension'));
+        if (await metadataFile.exists()) {
+          final metadata = ServerDataMetadataMapper.fromJson(
+              await metadataFile.readAsString());
+          _metadata[data.createIdentifier()] = metadata;
+        }
       }
     }
     final coreIncluded = _packs.containsKey(kCorePackId);
@@ -52,4 +76,7 @@ class ServerAssetManager extends AssetManager {
 
   @override
   bool hasPack(String key) => _packs.containsKey(key);
+
+  @override
+  List<String>? getDownloadUrls(String id) => _metadata[id]?.downloadUrls;
 }
