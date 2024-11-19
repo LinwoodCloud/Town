@@ -76,7 +76,7 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
         WorldInitialized(
           table: data.getTableOrDefault(),
           info: data.getInfoOrDefault(),
-          packsSignature: assetManager.createSignature(),
+          packsSignature: assetManager.createSignature().values.toList(),
         ),
       );
     });

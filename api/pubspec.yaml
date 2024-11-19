@@ -27,6 +27,7 @@ dependencies:
       path: packages/dart_leap
       ref: dfda6c2e3cef2e29511f97e9470fd4deb8e0c573
   crypto: ^3.0.5
+  collection: ^1.18.0
   # path: ^1.8.0
 
 dev_dependencies:

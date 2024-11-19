@@ -125,8 +125,10 @@ ServerResponse? processClientEvent(
           table: state.protectTable(channel),
           info: state.info,
           id: channel,
-          packsSignature:
-              assetManager.createSignature(state.info.packs.toSet()),
+          packsSignature: assetManager
+              .createSignature(state.info.packs.toSet())
+              .values
+              .toList(),
           teamMembers: state.teamMembers,
         ),
         channel);

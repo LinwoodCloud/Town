@@ -2,7 +2,6 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/bloc/world/bloc.dart';
@@ -14,9 +13,9 @@ import 'package:setonix/board/game.dart';
 import 'package:setonix/pages/game/chat.dart';
 import 'package:setonix/pages/game/dialog.dart';
 import 'package:setonix/pages/game/drawer.dart';
+import 'package:setonix/pages/game/error.dart';
 import 'package:setonix/pages/game/filter.dart';
 import 'package:setonix/pages/game/notes.dart';
-import 'package:setonix/pages/home/background.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix/services/network.dart';
 import 'package:setonix_api/setonix_api.dart';
@@ -135,7 +134,7 @@ class _GamePageState extends State<GamePage> {
                       return const Center(child: CircularProgressIndicator());
                     }
                     if (state is MultiplayerDisconnectedState) {
-                      return _GameErrorView(
+                      return GameErrorView(
                         state: state,
                         onReconnect: () async => (await _bloc)?.$1.reconnect(),
                       );
@@ -243,79 +242,5 @@ class _GamePageState extends State<GamePage> {
                 )),
           );
         });
-  }
-}
-
-class _GameErrorView extends StatelessWidget {
-  final MultiplayerDisconnectedState state;
-  final VoidCallback onReconnect;
-
-  const _GameErrorView({
-    required this.state,
-    required this.onReconnect,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final error = state.error;
-    var message = AppLocalizations.of(context).disconnectedMessage;
-    if (error is FatalServerEventError) {
-      message = switch (error) {
-        InvalidPacksError() => AppLocalizations.of(context).invalidPacks,
-      };
-    }
-    return Scaffold(
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          const DotsBackground(),
-          Card.filled(
-            child: Container(
-              constraints: const BoxConstraints(
-                maxWidth: LeapBreakpoints.large,
-              ),
-              padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context).disconnected,
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.headlineSmall,
-                    ),
-                    Text(
-                      message,
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.bodySmall,
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        FilledButton(
-                          onPressed: onReconnect,
-                          child: Text(AppLocalizations.of(context).reconnect),
-                        ),
-                        const SizedBox(width: 8),
-                        ElevatedButton(
-                          onPressed: () => GoRouter.of(context).go('/'),
-                          child: Text(AppLocalizations.of(context).home),
-                        ),
-                      ],
-                    ),
-                    if (state.error != null) ...[
-                      const SizedBox(height: 16),
-                      Text(state.error.toString()),
-                    ],
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

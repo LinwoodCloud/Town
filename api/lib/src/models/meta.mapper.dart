@@ -249,16 +249,22 @@ class SignatureMetadataMapper extends ClassMapperBase<SignatureMetadata> {
   static FileMetadata _$metadata(SignatureMetadata v) => v.metadata;
   static const Field<SignatureMetadata, FileMetadata> _f$metadata =
       Field('metadata', _$metadata);
+  static List<String> _$downloadUrls(SignatureMetadata v) => v.downloadUrls;
+  static const Field<SignatureMetadata, List<String>> _f$downloadUrls =
+      Field('downloadUrls', _$downloadUrls, opt: true, def: const []);
 
   @override
   final MappableFields<SignatureMetadata> fields = const {
     #id: _f$id,
     #metadata: _f$metadata,
+    #downloadUrls: _f$downloadUrls,
   };
 
   static SignatureMetadata _instantiate(DecodingData data) {
     return SignatureMetadata(
-        id: data.dec(_f$id), metadata: data.dec(_f$metadata));
+        id: data.dec(_f$id),
+        metadata: data.dec(_f$metadata),
+        downloadUrls: data.dec(_f$downloadUrls));
   }
 
   @override
@@ -317,7 +323,8 @@ extension SignatureMetadataValueCopy<$R, $Out>
 abstract class SignatureMetadataCopyWith<$R, $In extends SignatureMetadata,
     $Out> implements ClassCopyWith<$R, $In, $Out> {
   FileMetadataCopyWith<$R, FileMetadata, FileMetadata> get metadata;
-  $R call({String? id, FileMetadata? metadata});
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get downloadUrls;
+  $R call({String? id, FileMetadata? metadata, List<String>? downloadUrls});
   SignatureMetadataCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -334,12 +341,23 @@ class _SignatureMetadataCopyWithImpl<$R, $Out>
   FileMetadataCopyWith<$R, FileMetadata, FileMetadata> get metadata =>
       $value.metadata.copyWith.$chain((v) => call(metadata: v));
   @override
-  $R call({String? id, FileMetadata? metadata}) => $apply(FieldCopyWithData(
-      {if (id != null) #id: id, if (metadata != null) #metadata: metadata}));
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+      get downloadUrls => ListCopyWith(
+          $value.downloadUrls,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(downloadUrls: v));
+  @override
+  $R call({String? id, FileMetadata? metadata, List<String>? downloadUrls}) =>
+      $apply(FieldCopyWithData({
+        if (id != null) #id: id,
+        if (metadata != null) #metadata: metadata,
+        if (downloadUrls != null) #downloadUrls: downloadUrls
+      }));
   @override
   SignatureMetadata $make(CopyWithData data) => SignatureMetadata(
       id: data.get(#id, or: $value.id),
-      metadata: data.get(#metadata, or: $value.metadata));
+      metadata: data.get(#metadata, or: $value.metadata),
+      downloadUrls: data.get(#downloadUrls, or: $value.downloadUrls));
 
   @override
   SignatureMetadataCopyWith<$R2, SignatureMetadata, $Out2> $chain<$R2, $Out2>(

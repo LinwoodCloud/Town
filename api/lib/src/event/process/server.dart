@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:dart_leap/dart_leap.dart';
 import 'package:networker/networker.dart';
 import 'package:setonix_api/setonix_api.dart';
@@ -6,8 +7,8 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
     switch (event) {
       WorldInitialized() =>
         event.info?.packs.length == event.packsSignature?.length &&
-            (event.info?.packs.every(
-                    (e) => event.packsSignature?.containsKey(e) ?? false) ??
+            (event.info?.packs.every((e) =>
+                    event.packsSignature?.any((p) => p.id == e) ?? false) ??
                 true),
       TeamJoined() => state.info.teams.containsKey(event.team),
       TeamLeft() => state.info.teams.containsKey(event.team),
@@ -52,7 +53,7 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
 sealed class FatalServerEventError {}
 
 final class InvalidPacksError extends FatalServerEventError {
-  final Map<String, SignatureMetadata> signature;
+  final List<SignatureMetadata> signature;
 
   InvalidPacksError({required this.signature});
 
@@ -61,11 +62,11 @@ final class InvalidPacksError extends FatalServerEventError {
       'Server requested packs, that are not available on the client (or is empty): $signature';
 }
 
-bool isServerSupported(Map<String, SignatureMetadata> mySignature,
-    Map<String, SignatureMetadata> serverSignature) {
-  for (final entry in serverSignature.entries) {
-    final current = mySignature[entry.key];
-    if (current == null || !current.supports(entry.value)) {
+bool isServerSupported(List<SignatureMetadata> mySignature,
+    List<SignatureMetadata> serverSignature) {
+  for (final entry in serverSignature) {
+    final current = mySignature.firstWhereOrNull((e) => e.id == entry.id);
+    if (current == null || !current.supports(entry)) {
       return false;
     }
   }

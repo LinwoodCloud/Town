@@ -38,10 +38,12 @@ final class FileMetadata with FileMetadataMappable {
 final class SignatureMetadata with SignatureMetadataMappable {
   final String id;
   final FileMetadata metadata;
+  final List<String> downloadUrls;
 
   SignatureMetadata({
     required this.id,
     required this.metadata,
+    this.downloadUrls = const [],
   });
 
   bool supports(SignatureMetadata other) {
