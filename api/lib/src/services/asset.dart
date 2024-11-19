@@ -11,9 +11,8 @@ abstract class AssetManager {
   Map<String, SignatureMetadata> createSignature([Set<String>? packs]) {
     final signature = <String, SignatureMetadata>{};
     for (final entry in this.packs) {
-      final name = entry.key == kCorePackId
-          ? kCorePackId
-          : entry.value.createIdentifier();
+      final name =
+          entry.key == kCorePackId ? kCorePackId : entry.value.identifier;
       if (!(packs?.contains(name) ?? true)) continue;
       signature[entry.key] = SignatureMetadata(
         metadata: entry.value.getMetadataOrDefault(),

@@ -121,26 +121,30 @@ class SetonixFileSystem {
 
   Future<PackDownloadResult> downloadPack(String url, String expectedIdentifier,
       {bool force = false}) async {
-    final uri = Uri.tryParse(url);
-    if (uri == null) return PackDownloadResult.invalidUri;
-    if (!force && await packSystem.hasKey(expectedIdentifier)) {
-      return PackDownloadResult.alreadyExists;
+    try {
+      final uri = Uri.tryParse(url);
+      if (uri == null) return PackDownloadResult.invalidUri;
+      if (!force && await packSystem.hasKey(expectedIdentifier)) {
+        return PackDownloadResult.alreadyExists;
+      }
+      final response = await http.get(uri);
+      if (response.statusCode != 200) return PackDownloadResult.downloadFailed;
+      final identifier = createPackIdentifier(response.bodyBytes);
+      if (identifier != expectedIdentifier) {
+        return PackDownloadResult.invalidIdentifier;
+      }
+      final pack = SetonixData.fromData(response.bodyBytes);
+      await packSystem.updateFile(expectedIdentifier, pack);
+      await dataInfoSystem.updateFile(
+          expectedIdentifier,
+          DataMetadata(
+            addedAt: DateTime.now(),
+            manuallyAdded: false,
+          ));
+      return PackDownloadResult.success;
+    } catch (e) {
+      return PackDownloadResult.downloadFailed;
     }
-    final response = await http.get(uri);
-    if (response.statusCode != 200) return PackDownloadResult.downloadFailed;
-    final identifier = createPackIdentifier(response.bodyBytes);
-    if (identifier != expectedIdentifier) {
-      return PackDownloadResult.invalidIdentifier;
-    }
-    final pack = SetonixData.fromData(response.bodyBytes);
-    await packSystem.updateFile(expectedIdentifier, pack);
-    await dataInfoSystem.updateFile(
-        expectedIdentifier,
-        DataMetadata(
-          addedAt: DateTime.now(),
-          manuallyAdded: false,
-        ));
-    return PackDownloadResult.success;
   }
 
   Future<void> updateServerLastUsed(String packId, String serverAddress) async {

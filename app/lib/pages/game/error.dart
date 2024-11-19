@@ -108,17 +108,25 @@ class _PacksGameErrorViewState extends State<_PacksGameErrorView> {
   final List<int> _selectedUrls = [];
   final List<int> _excludedPacks = [];
   bool _currentlyDownloading = false;
+  late final List<SignatureMetadata> _packs;
+
+  @override
+  void initState() {
+    super.initState();
+    _packs = widget.error.signature
+        .where((e) => !widget.error.expected.any((f) => f.supports(e)))
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final packs = widget.error.signature;
     return Column(children: [
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: packs.length,
+        itemCount: _packs.length,
         itemBuilder: (context, index) {
-          final pack = packs[index];
+          final pack = _packs[index];
           final currentDownloadUrl = pack.downloadUrls
               .elementAtOrNull(_selectedUrls.elementAtOrNull(index) ?? 0);
           return CheckboxListTile(
@@ -164,7 +172,7 @@ class _PacksGameErrorViewState extends State<_PacksGameErrorView> {
       ),
       Wrap(
         children: [
-          if (packs.any((e) => e.downloadUrls.isNotEmpty))
+          if (_packs.any((e) => e.downloadUrls.isNotEmpty))
             FilledButton(
               onPressed: _currentlyDownloading ? null : _download,
               child: Text(
@@ -179,13 +187,12 @@ class _PacksGameErrorViewState extends State<_PacksGameErrorView> {
   }
 
   void _download() async {
-    final packs = widget.error.signature;
     final context = this.context;
     setState(() {
       _currentlyDownloading = true;
     });
     final fileSystem = context.read<SetonixFileSystem>();
-    final fetched = packs
+    final fetched = _packs
         .asMap()
         .entries
         .where((e) =>
@@ -230,15 +237,12 @@ class _PacksGameErrorViewState extends State<_PacksGameErrorView> {
     } else {
       // Combine packs with result
       final failed = fetched
-          .where((e) {
-            final result = results[e.key];
-            return result != PackDownloadResult.success;
-          })
-          .map((e) => (
+          .mapIndexed((i, e) => (
                 metadata: e.value.metadata,
                 id: e.value.id,
-                result: results[e.key],
+                result: results[i],
               ))
+          .where((e) => e.result != PackDownloadResult.success)
           .toList();
       showDialog(
         context: context,
@@ -251,37 +255,28 @@ class _PacksGameErrorViewState extends State<_PacksGameErrorView> {
               Text(
                 AppLocalizations.of(context).downloadFailedMessage,
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: failed.length,
-                itemBuilder: (context, index) {
-                  final details = failed[index];
-                  return ListTile(
-                    title: Text('${details.metadata.name} (${details.id})'),
-                    subtitle: Text(
-                      switch (details.result) {
-                        PackDownloadResult.invalidUri =>
-                          AppLocalizations.of(context).invalidUri,
-                        PackDownloadResult.downloadFailed =>
-                          AppLocalizations.of(context).downloadFailed,
-                        PackDownloadResult.invalidIdentifier =>
-                          AppLocalizations.of(context).invalidIdentifier,
-                        _ => '',
-                      },
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  );
-                },
-              )
+              const SizedBox(height: 8),
+              for (final details in failed)
+                ListTile(
+                  title: Text('${details.metadata.name} (${details.id})'),
+                  subtitle: Text(
+                    switch (details.result) {
+                      PackDownloadResult.invalidUri =>
+                        AppLocalizations.of(context).invalidUri,
+                      PackDownloadResult.downloadFailed =>
+                        AppLocalizations.of(context).downloadFailed,
+                      PackDownloadResult.invalidIdentifier =>
+                        AppLocalizations.of(context).invalidIdentifier,
+                      _ => '',
+                    },
+                  ),
+                )
             ],
           ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                GoRouter.of(context).go('/');
               },
               child: Text(AppLocalizations.of(context).close),
             ),

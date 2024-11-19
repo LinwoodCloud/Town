@@ -76,6 +76,6 @@ class ServerAssetManager extends AssetManager {
   @override
   List<String>? getDownloadUrls(String id) => _metadata[id]?.downloadUrls;
 
-  Iterable<String> getPackIds() => _packs.entries.map(
-      (e) => e.key == kCorePackId ? kCorePackId : e.value.createIdentifier());
+  Iterable<String> getPackIds() => _packs.entries
+      .map((e) => e.key == kCorePackId ? kCorePackId : e.value.identifier);
 }

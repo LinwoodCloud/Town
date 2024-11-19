@@ -26,11 +26,16 @@ const kGameTeamPath = 'teams.json';
 const kGameNotesPath = 'notes';
 
 class SetonixData extends ArchiveData<SetonixData> {
-  SetonixData(super.archive, {super.state});
-  SetonixData.empty() : super.empty();
+  final String identifier;
+
+  SetonixData(super.archive, {super.state, this.identifier = ''});
+  SetonixData.empty()
+      : identifier = '',
+        super.empty();
 
   factory SetonixData.fromData(Uint8List data) {
-    return SetonixData(ZipDecoder().decodeBytes(data));
+    return SetonixData(ZipDecoder().decodeBytes(data),
+        identifier: createPackIdentifier(data));
   }
 
   GameTable? getTable([String name = '']) {
@@ -202,10 +207,6 @@ class SetonixData extends ArchiveData<SetonixData> {
   @override
   SetonixData updateState(ArchiveState state) =>
       SetonixData(archive, state: state);
-
-  String createIdentifier() {
-    return createPackIdentifier(exportAsBytes());
-  }
 
   TranslationsStore getTranslationsStore(
           {required String Function() getLocale}) =>

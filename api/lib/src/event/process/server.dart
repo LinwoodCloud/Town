@@ -53,13 +53,13 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
 sealed class FatalServerEventError {}
 
 final class InvalidPacksError extends FatalServerEventError {
-  final List<SignatureMetadata> signature;
+  final List<SignatureMetadata> signature, expected;
 
-  InvalidPacksError({required this.signature});
+  InvalidPacksError({required this.signature, required this.expected});
 
   @override
   String toString() =>
-      'Server requested packs, that are not available on the client (or is empty): $signature';
+      'Server requested packs, that are not available on the client (or is empty): $signature, expected: $expected';
 }
 
 bool isServerSupported(List<SignatureMetadata> mySignature,
@@ -93,7 +93,8 @@ ServerProcessed processServerEvent(
           ? true
           : isServerSupported(signature, serverSignature);
       if (!supported) {
-        throw InvalidPacksError(signature: serverSignature);
+        throw InvalidPacksError(
+            signature: serverSignature, expected: signature);
       }
       return ServerProcessed(state.copyWith(
         table: event.table ?? state.table,
