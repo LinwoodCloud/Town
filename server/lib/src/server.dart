@@ -62,7 +62,7 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
     }, transformer: sequential());
     on<ResetWorld>((event, emit) async {
       final data = SetonixData.empty().setInfo(GameInfo(
-        packs: assetManager.packs.map((e) => e.key).toList(),
+        packs: assetManager.getPackIds().toList(),
       ));
       final table = data.getTableOrDefault();
       final metadata = data.getMetadataOrDefault();
