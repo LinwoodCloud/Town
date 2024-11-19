@@ -364,3 +364,139 @@ class _SignatureMetadataCopyWithImpl<$R, $Out>
           Then<$Out2, $R2> t) =>
       _SignatureMetadataCopyWithImpl($value, $cast, t);
 }
+
+class DataMetadataMapper extends ClassMapperBase<DataMetadata> {
+  DataMetadataMapper._();
+
+  static DataMetadataMapper? _instance;
+  static DataMetadataMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DataMetadataMapper._());
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DataMetadata';
+
+  static bool _$manuallyAdded(DataMetadata v) => v.manuallyAdded;
+  static const Field<DataMetadata, bool> _f$manuallyAdded =
+      Field('manuallyAdded', _$manuallyAdded, opt: true, def: true);
+  static DateTime _$addedAt(DataMetadata v) => v.addedAt;
+  static const Field<DataMetadata, DateTime> _f$addedAt =
+      Field('addedAt', _$addedAt);
+  static Map<String, DateTime> _$serversLastUsed(DataMetadata v) =>
+      v.serversLastUsed;
+  static const Field<DataMetadata, Map<String, DateTime>> _f$serversLastUsed =
+      Field('serversLastUsed', _$serversLastUsed, opt: true, def: const {});
+
+  @override
+  final MappableFields<DataMetadata> fields = const {
+    #manuallyAdded: _f$manuallyAdded,
+    #addedAt: _f$addedAt,
+    #serversLastUsed: _f$serversLastUsed,
+  };
+
+  static DataMetadata _instantiate(DecodingData data) {
+    return DataMetadata(
+        manuallyAdded: data.dec(_f$manuallyAdded),
+        addedAt: data.dec(_f$addedAt),
+        serversLastUsed: data.dec(_f$serversLastUsed));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DataMetadata fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DataMetadata>(map);
+  }
+
+  static DataMetadata fromJson(String json) {
+    return ensureInitialized().decodeJson<DataMetadata>(json);
+  }
+}
+
+mixin DataMetadataMappable {
+  String toJson() {
+    return DataMetadataMapper.ensureInitialized()
+        .encodeJson<DataMetadata>(this as DataMetadata);
+  }
+
+  Map<String, dynamic> toMap() {
+    return DataMetadataMapper.ensureInitialized()
+        .encodeMap<DataMetadata>(this as DataMetadata);
+  }
+
+  DataMetadataCopyWith<DataMetadata, DataMetadata, DataMetadata> get copyWith =>
+      _DataMetadataCopyWithImpl(this as DataMetadata, $identity, $identity);
+  @override
+  String toString() {
+    return DataMetadataMapper.ensureInitialized()
+        .stringifyValue(this as DataMetadata);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return DataMetadataMapper.ensureInitialized()
+        .equalsValue(this as DataMetadata, other);
+  }
+
+  @override
+  int get hashCode {
+    return DataMetadataMapper.ensureInitialized()
+        .hashValue(this as DataMetadata);
+  }
+}
+
+extension DataMetadataValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DataMetadata, $Out> {
+  DataMetadataCopyWith<$R, DataMetadata, $Out> get $asDataMetadata =>
+      $base.as((v, t, t2) => _DataMetadataCopyWithImpl(v, t, t2));
+}
+
+abstract class DataMetadataCopyWith<$R, $In extends DataMetadata, $Out>
+    implements ClassCopyWith<$R, $In, $Out> {
+  MapCopyWith<$R, String, DateTime, ObjectCopyWith<$R, DateTime, DateTime>>
+      get serversLastUsed;
+  $R call(
+      {bool? manuallyAdded,
+      DateTime? addedAt,
+      Map<String, DateTime>? serversLastUsed});
+  DataMetadataCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _DataMetadataCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DataMetadata, $Out>
+    implements DataMetadataCopyWith<$R, DataMetadata, $Out> {
+  _DataMetadataCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<DataMetadata> $mapper =
+      DataMetadataMapper.ensureInitialized();
+  @override
+  MapCopyWith<$R, String, DateTime, ObjectCopyWith<$R, DateTime, DateTime>>
+      get serversLastUsed => MapCopyWith(
+          $value.serversLastUsed,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(serversLastUsed: v));
+  @override
+  $R call(
+          {bool? manuallyAdded,
+          DateTime? addedAt,
+          Map<String, DateTime>? serversLastUsed}) =>
+      $apply(FieldCopyWithData({
+        if (manuallyAdded != null) #manuallyAdded: manuallyAdded,
+        if (addedAt != null) #addedAt: addedAt,
+        if (serversLastUsed != null) #serversLastUsed: serversLastUsed
+      }));
+  @override
+  DataMetadata $make(CopyWithData data) => DataMetadata(
+      manuallyAdded: data.get(#manuallyAdded, or: $value.manuallyAdded),
+      addedAt: data.get(#addedAt, or: $value.addedAt),
+      serversLastUsed: data.get(#serversLastUsed, or: $value.serversLastUsed));
+
+  @override
+  DataMetadataCopyWith<$R2, DataMetadata, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _DataMetadataCopyWithImpl($value, $cast, t);
+}

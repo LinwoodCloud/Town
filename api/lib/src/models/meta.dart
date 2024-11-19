@@ -50,3 +50,16 @@ final class SignatureMetadata with SignatureMetadataMappable {
     return id == other.id;
   }
 }
+
+@MappableClass()
+final class DataMetadata with DataMetadataMappable {
+  final bool manuallyAdded;
+  final DateTime addedAt;
+  final Map<String, DateTime> serversLastUsed;
+
+  DataMetadata({
+    this.manuallyAdded = true,
+    required this.addedAt,
+    this.serversLastUsed = const {},
+  });
+}

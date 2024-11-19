@@ -187,5 +187,13 @@
   "resetZoom": "Reset zoom",
   "thirdPartyContent": "This content is provided by the third party server. Please make sure you don't share any personal information that you don't want to be shared with the server owner. If you don't trust the server, please disconnect using the top left corner menu.",
   "showDuplicates": "Show duplicates",
-  "downloadAll": "Download all"
+  "downloadAll": "Download all",
+  "downloadSelected": "Download selected",
+  "noDownloadAvailable": "There are no downloads available",
+  "downloadSuccess": "Download successful",
+  "downloadSuccessMessage": "The download was successful. When reconnecting to the server, the content will be available.",
+  "downloadFailed": "Download failed",
+  "downloadFailedMessage": "There was an error downloading the content. Read the error message below.",
+  "invalidUri": "Invalid URI, the download URL is not valid",
+  "invalidIdentifier": "Invalid identifier, the pack identifier does not match the downloaded pack identifier"
 }
