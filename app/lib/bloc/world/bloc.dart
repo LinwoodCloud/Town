@@ -11,7 +11,7 @@ import 'package:setonix/bloc/multiplayer.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 ServerProcessed _compute(
-        (ServerWorldEvent, WorldState, Map<String, SignatureMetadata>) m) =>
+        (ServerWorldEvent, WorldState, List<SignatureMetadata>) m) =>
     processServerEvent(m.$1, m.$2, signature: m.$3);
 
 SetonixData _saveState(WorldState state) => state.save();
@@ -56,8 +56,9 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         final signature = state.assetManager.createSignature();
         final world = state.world;
         final processed = await compute<
-            (ServerWorldEvent, WorldState, Map<String, SignatureMetadata>),
-            ServerProcessed>(_compute, (event, world, signature));
+                (ServerWorldEvent, WorldState, List<SignatureMetadata>),
+                ServerProcessed>(
+            _compute, (event, world, signature.values.toList()));
         final newWorld = processed.state;
         processed.responses.forEach(process);
         if (newWorld == null) return;

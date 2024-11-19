@@ -11,10 +11,13 @@ abstract class AssetManager {
   Map<String, SignatureMetadata> createSignature([Set<String>? packs]) {
     final signature = <String, SignatureMetadata>{};
     for (final entry in this.packs) {
-      if (!(packs?.contains(entry.key) ?? true)) continue;
+      final name = entry.key == kCorePackId
+          ? kCorePackId
+          : entry.value.createIdentifier();
+      if (!(packs?.contains(name) ?? true)) continue;
       signature[entry.key] = SignatureMetadata(
         metadata: entry.value.getMetadataOrDefault(),
-        id: entry.value.createIdentifier(),
+        id: name,
         downloadUrls: getDownloadUrls(entry.key) ?? [],
       );
     }

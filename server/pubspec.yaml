@@ -13,12 +13,12 @@ dependencies:
   networker:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs
-      ref: 5a3658cad80fcb8594b8be6f84460e77607eb959
+      ref: 071e02761bf55a47bcde0cdc2a711b8ff5fbbb18
       path: packages/networker/networker
   networker_socket:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs
-      ref: 81fcf2b6c6c3cfe5d36c948e424f4c97e1e5f88b
+      ref: 9085d42cf75c3d3edc8edb9ef22697dbbe2bf38c
       path: packages/networker/networker_socket
   consoler:
     git:

@@ -83,16 +83,17 @@ class ServerProcessed {
 ServerProcessed processServerEvent(
   ServerWorldEvent event,
   WorldState state, {
-  required Map<String, SignatureMetadata> signature,
+  required List<SignatureMetadata> signature,
 }) {
   if (!isValidServerEvent(event, state)) return ServerProcessed(null);
   switch (event) {
     case WorldInitialized():
-      final signature = event.packsSignature;
-      final supported =
-          signature == null ? true : isServerSupported(signature, signature);
+      final serverSignature = event.packsSignature;
+      final supported = serverSignature == null
+          ? true
+          : isServerSupported(signature, serverSignature);
       if (!supported) {
-        throw InvalidPacksError(signature: signature);
+        throw InvalidPacksError(signature: serverSignature);
       }
       return ServerProcessed(state.copyWith(
         table: event.table ?? state.table,

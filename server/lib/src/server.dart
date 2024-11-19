@@ -19,7 +19,7 @@ import 'package:setonix_server/src/programs/stop.dart';
 import 'events/model.dart';
 
 Future<ServerProcessed> _computeEvent(ServerWorldEvent event, WorldState state,
-    Map<String, SignatureMetadata> signature) {
+    List<SignatureMetadata> signature) {
   return Isolate.run(
       () => processServerEvent(event, state, signature: signature));
 }
@@ -52,7 +52,8 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
         )) {
     on<ServerWorldEvent>((event, emit) async {
       final signature = assetManager.createSignature();
-      final processed = await _computeEvent(event, state, signature);
+      final processed =
+          await _computeEvent(event, state, signature.values.toList());
       final newState = processed.state;
       processed.responses.forEach(process);
       if (newState == null) return;
@@ -105,7 +106,7 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
       data = SetonixData.fromData(bytes);
     }
     data ??= SetonixData.empty().setInfo(GameInfo(
-      packs: assetManager.packs.map((e) => e.key).toList(),
+      packs: assetManager.getPackIds().toList(),
     ));
     return SetonixServer._(worldFile, consoler, data, assetManager);
   }

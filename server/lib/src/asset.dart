@@ -34,28 +34,24 @@ class ServerAssetManager extends AssetManager {
     }
     await for (final file in directory.list()) {
       if (file is File) {
-        final data = SetonixData.fromData(await file.readAsBytes());
         final fileName = p.basename(file.path);
         final extension = fileName.split('.').last;
-        if (extension != _stnxExtension) {
-          if (extension != _metadataExtension) {
-            console.print(
-                'WARNING: Invalid pack file extension: $fileName. Skipping.',
-                level: LogLevel.warning);
-          }
+        if (extension != _stnxExtension && extension != _metadataExtension) {
+          console.print(
+              'WARNING: Invalid pack file extension: $fileName. Skipping.',
+              level: LogLevel.warning);
           continue;
         }
         var name =
             fileName.substring(0, fileName.length - _stnxExtension.length - 1);
         if (name.isEmpty) name = kCorePackId;
-        _packs[name] = data;
-
-        final metadataFile =
-            File(p.join(directory.path, '$name.$_metadataExtension'));
-        if (await metadataFile.exists()) {
-          final metadata = ServerDataMetadataMapper.fromJson(
-              await metadataFile.readAsString());
-          _metadata[data.createIdentifier()] = metadata;
+        if (extension == _stnxExtension) {
+          final data = SetonixData.fromData(await file.readAsBytes());
+          _packs[name] = data;
+        } else {
+          final metadata =
+              ServerDataMetadataMapper.fromJson(await file.readAsString());
+          _metadata[name] = metadata;
         }
       }
     }
@@ -79,4 +75,7 @@ class ServerAssetManager extends AssetManager {
 
   @override
   List<String>? getDownloadUrls(String id) => _metadata[id]?.downloadUrls;
+
+  Iterable<String> getPackIds() => _packs.entries.map(
+      (e) => e.key == kCorePackId ? kCorePackId : e.value.createIdentifier());
 }
