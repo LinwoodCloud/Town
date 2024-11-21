@@ -34,7 +34,7 @@ class _PacksDialogState extends State<PacksDialog>
   late final TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
   Future<List<(SetonixFile, SetonixData, DataMetadata)>>? _packsFuture;
-  (SetonixData, DataMetadata, String, bool)? _selectedPack;
+  (SetonixFile, DataMetadata, bool)? _selectedPack;
 
   @override
   void initState() {
@@ -80,40 +80,50 @@ class _PacksDialogState extends State<PacksDialog>
   bool get isWorldLoaded => widget.bloc != null;
 
   List<Widget> _buildDetailsChildren(
-      SetonixData pack, FileMetadata metadata, DataMetadata data) {
+      SetonixFile pack, FileMetadata metadata, DataMetadata data) {
     final locale = Localizations.localeOf(context).languageCode;
     final lastUsed = data.lastUsed();
     return [
-      Row(
-        children: [
-          const SizedBox(width: 8),
-          Icon(data.manuallyAdded
-              ? PhosphorIconsLight.plusSquare
-              : PhosphorIconsLight.robot),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(data.manuallyAdded
-                ? AppLocalizations.of(context).manuallyAdded
-                : AppLocalizations.of(context).autoAdded),
-          ),
-          if (!data.manuallyAdded) ...[
+      SizedBox(
+        height: 50,
+        child: Row(
+          children: [
             const SizedBox(width: 8),
-            IconButton(
-              icon: const Icon(PhosphorIconsLight.plusSquare),
-              tooltip: AppLocalizations.of(context).addManually,
-              onPressed: () {
-                final newData = data.copyWith(manuallyAdded: true);
-                _fileSystem.dataInfoSystem.updateFile(pack.identifier, newData);
-                _reloadPacks();
-              },
+            Icon(data.manuallyAdded
+                ? PhosphorIconsLight.plusSquare
+                : PhosphorIconsLight.robot),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(data.manuallyAdded
+                  ? AppLocalizations.of(context).manuallyAdded
+                  : AppLocalizations.of(context).autoAdded),
             ),
+            if (!data.manuallyAdded) ...[
+              const SizedBox(width: 8),
+              IconButton(
+                icon: const Icon(PhosphorIconsLight.plusSquare),
+                tooltip: AppLocalizations.of(context).addManually,
+                onPressed: () {
+                  final newData = data.copyWith(manuallyAdded: true);
+                  _fileSystem.dataInfoSystem
+                      .updateFile(pack.identifier, newData);
+                  _reloadPacks();
+                  setState(() => _selectedPack =
+                      (pack, newData, _selectedPack?.$3 ?? true));
+                },
+              ),
+            ],
+            const SizedBox(width: 8),
           ],
-          const SizedBox(width: 8),
-        ],
+        ),
       ),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(metadata.description),
+      ),
+      ListTile(
+        title: Text(AppLocalizations.of(context).size),
+        subtitle: Text(pack.data.lengthInBytes.toString()),
       ),
       const SizedBox(height: 8),
       ListTile(
@@ -171,7 +181,7 @@ class _PacksDialogState extends State<PacksDialog>
 
   Future<void> _removePack() async {
     _deselectPack();
-    final pack = _selectedPack?.$3;
+    final pack = _selectedPack?.$1.identifier;
     if (pack == null) return;
     await _fileSystem.packSystem.deleteFile(pack);
     _reloadPacks();
@@ -185,23 +195,26 @@ class _PacksDialogState extends State<PacksDialog>
     final currentSize = MediaQuery.sizeOf(context).width;
     final isMobile = currentSize < LeapBreakpoints.medium;
     Future<void> selectPack(
-        SetonixData pack, DataMetadata data, String id, bool installed) async {
+        SetonixFile file, DataMetadata data, bool installed) async {
       _controller.forward();
       setState(() {
-        _selectedPack = (pack, data, id, installed);
+        _selectedPack = (file, data, installed);
         _isMobileOpen = isMobile;
       });
+      final pack = file.load();
       final metadata = pack.getMetadataOrDefault();
       if (isMobile) {
         await showLeapBottomSheet(
           context: context,
           childrenBuilder: (context) => [
-            ..._buildDetailsChildren(pack, metadata, data),
+            ..._buildDetailsChildren(file, metadata, data),
             const SizedBox(height: 16),
             ..._buildActionsChildren(
               pack,
               onInstall: installed ? null : _deselectPack,
-              onRemove: _allowRemoving(id, installed) ? _removePack : null,
+              onRemove: _allowRemoving(file.identifier, installed)
+                  ? _removePack
+                  : null,
             ),
           ],
           titleBuilder: (context) => Text(metadata.name),
@@ -212,10 +225,11 @@ class _PacksDialogState extends State<PacksDialog>
       }
     }
 
-    final onInstall = _selectedPack?.$4 ?? false ? null : _deselectPack;
-    final onRemove = _allowRemoving(_selectedPack?.$3, _selectedPack?.$4)
-        ? _removePack
-        : null;
+    final onInstall = _selectedPack?.$3 ?? false ? null : _deselectPack;
+    final onRemove =
+        _allowRemoving(_selectedPack?.$1.identifier, _selectedPack?.$3)
+            ? _removePack
+            : null;
 
     return ResponsiveAlertDialog(
       title: Text(AppLocalizations.of(context).packs),
@@ -321,10 +335,11 @@ class _PacksDialogState extends State<PacksDialog>
                         width: 300,
                         child: Card(child: Builder(
                           builder: (context) {
-                            final pack = _selectedPack?.$1;
-                            if (pack == null) {
+                            final data = _selectedPack?.$1;
+                            if (data == null) {
                               return const SizedBox();
                             }
+                            final pack = data.load();
                             final metadata = pack.getMetadataOrDefault();
                             return Padding(
                               padding: const EdgeInsets.only(
@@ -406,8 +421,8 @@ class _PacksDialogState extends State<PacksDialog>
 
 class _InstalledPacksView extends StatelessWidget {
   final List<(SetonixFile, SetonixData, DataMetadata)> filtered;
-  final (SetonixData, DataMetadata, String, bool)? selectedPack;
-  final void Function(SetonixData, DataMetadata, String, bool) selectPack;
+  final (SetonixFile, DataMetadata, bool)? selectedPack;
+  final void Function(SetonixFile, DataMetadata, bool) selectPack;
   final bool isMobile;
   final bool isMobileOpen;
   final WorldBloc? bloc;
@@ -427,15 +442,16 @@ class _InstalledPacksView extends StatelessWidget {
       itemCount: filtered.length,
       itemBuilder: (context, index) {
         final pack = filtered[index];
-        final key = pack.$1.identifier;
-        final data = pack.$2;
+        final file = pack.$1;
+        final key = file.identifier;
         final dataMeta = pack.$3;
-        final metadata = data.getMetadata();
+        final metadata = file.load().getMetadata();
         return ListTile(
           title: Text(metadata?.name ?? AppLocalizations.of(context).unnamed),
           subtitle: Text(key),
-          selected: selectedPack?.$3 == key && (!isMobile || isMobileOpen),
-          onTap: () => selectPack(data, dataMeta, key, true),
+          selected:
+              selectedPack?.$1.identifier == key && (!isMobile || isMobileOpen),
+          onTap: () => selectPack(pack.$1, dataMeta, true),
           leading: bloc != null
               ? BlocBuilder<WorldBloc, ClientWorldState>(
                   bloc: bloc,

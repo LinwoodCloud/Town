@@ -201,5 +201,6 @@
   "addManually": "Add manually",
   "version": "Version",
   "author": "Author",
-  "lastUsed": "Last used"
+  "lastUsed": "Last used",
+  "size": "Size"
 }
