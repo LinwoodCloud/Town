@@ -62,4 +62,8 @@ final class DataMetadata with DataMetadataMappable {
     required this.addedAt,
     this.serversLastUsed = const {},
   });
+
+  DateTime lastUsed() {
+    return serversLastUsed.values.fold(addedAt, (a, b) => a.isAfter(b) ? a : b);
+  }
 }

@@ -195,5 +195,11 @@
   "downloadFailed": "Download failed",
   "downloadFailedMessage": "There was an error downloading the content. Read the error message below.",
   "invalidUri": "Invalid URI, the download URL is not valid",
-  "invalidIdentifier": "Invalid identifier, the pack identifier does not match the downloaded pack identifier"
+  "invalidIdentifier": "Invalid identifier, the pack identifier does not match the downloaded pack identifier",
+  "manuallyAdded": "Manually added",
+  "autoAdded": "Automatically added",
+  "addManually": "Add manually",
+  "version": "Version",
+  "author": "Author",
+  "lastUsed": "Last used"
 }

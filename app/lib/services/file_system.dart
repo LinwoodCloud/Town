@@ -56,8 +56,7 @@ class SetonixFileSystem {
             onDatabaseUpgrade: _onDatabaseUpgrade,
           ),
           onEncode: (data) => utf8.encode(data.toJson()),
-          onDecode: (data) =>
-              DataMetadataMapper.fromJson(jsonDecode(utf8.decode(data))),
+          onDecode: (data) => DataMetadataMapper.fromJson(utf8.decode(data)),
         ),
         templateSystem = TypedKeyFileSystem.build(
           FileSystemConfig(
