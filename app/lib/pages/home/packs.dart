@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:lw_file_system/lw_file_system.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/api/open.dart';
@@ -33,7 +32,7 @@ class _PacksDialogState extends State<PacksDialog>
   late final SetonixFileSystem _fileSystem = context.read<SetonixFileSystem>();
   late final TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
-  Future<List<FileSystemFile<SetonixData>>>? _packsFuture;
+  Future<Iterable<SetonixFile>>? _packsFuture;
   (SetonixData, String, bool)? _selectedPack;
 
   @override
@@ -182,7 +181,7 @@ class _PacksDialogState extends State<PacksDialog>
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: FutureBuilder<List<FileSystemFile<SetonixData>>>(
+            child: FutureBuilder<Iterable<SetonixFile>>(
               future: _packsFuture,
               builder: (context, snapshot) {
                 final packs = snapshot.data ?? [];
@@ -204,12 +203,13 @@ class _PacksDialogState extends State<PacksDialog>
                       final query = _searchController.text.toLowerCase();
                       final filtered = packs
                           .where((entry) =>
-                              entry.data
-                                  ?.getMetadata()
+                              entry
+                                  .load()
+                                  .getMetadata()
                                   ?.name
                                   .toLowerCase()
                                   .contains(query) ??
-                              entry.fileName.toLowerCase().contains(query))
+                              entry.identifier.toLowerCase().contains(query))
                           .toList();
                       final bloc = widget.bloc;
                       return TabBarView(
@@ -221,7 +221,7 @@ class _PacksDialogState extends State<PacksDialog>
                             ),
                           _InstalledPacksView(
                             filtered: filtered,
-                            packs: packs,
+                            packs: packs.toList(),
                             selectedPack: _selectedPack,
                             isMobile: isMobile,
                             isMobileOpen: _isMobileOpen,
@@ -337,8 +337,8 @@ class _PacksDialogState extends State<PacksDialog>
 }
 
 class _InstalledPacksView extends StatelessWidget {
-  final List<FileSystemFile<SetonixData>> filtered;
-  final List<FileSystemFile<SetonixData>> packs;
+  final List<SetonixFile> filtered;
+  final List<SetonixFile> packs;
   final (SetonixData, String, bool)? selectedPack;
   final void Function(SetonixData, String, bool) selectPack;
   final bool isMobile;
@@ -361,8 +361,8 @@ class _InstalledPacksView extends StatelessWidget {
       itemCount: filtered.length,
       itemBuilder: (context, index) {
         final pack = packs[index];
-        final key = pack.pathWithoutLeadingSlash;
-        final data = pack.data!;
+        final key = pack.identifier;
+        final data = pack.load();
         final metadata = data.getMetadata();
         return ListTile(
           title: Text(metadata?.name ?? AppLocalizations.of(context).unnamed),

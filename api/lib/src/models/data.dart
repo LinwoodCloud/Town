@@ -33,9 +33,9 @@ class SetonixData extends ArchiveData<SetonixData> {
       : identifier = '',
         super.empty();
 
-  factory SetonixData.fromData(Uint8List data) {
+  factory SetonixData.fromData(Uint8List data, [String? identifier]) {
     return SetonixData(ZipDecoder().decodeBytes(data),
-        identifier: createPackIdentifier(data));
+        identifier: identifier ?? createPackIdentifier(data));
   }
 
   GameTable? getTable([String name = '']) {
@@ -214,6 +214,16 @@ class SetonixData extends ArchiveData<SetonixData> {
         translations: getAllTranslations(),
         getLocale: getLocale,
       );
+}
+
+class SetonixFile {
+  final String identifier;
+  final Uint8List data;
+
+  SetonixFile(this.data, [String? identifier])
+      : identifier = identifier ?? createPackIdentifier(data);
+
+  SetonixData load() => SetonixData.fromData(data, identifier);
 }
 
 String createPackIdentifier(Uint8List data) {

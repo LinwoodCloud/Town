@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/bloc/multiplayer.dart';
+import 'package:setonix/bloc/world/bloc.dart';
 import 'package:setonix/pages/home/background.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix_api/setonix_api.dart';
@@ -209,6 +210,8 @@ class _PacksGameErrorViewState extends State<_PacksGameErrorView> {
       _currentlyDownloading = false;
     });
     if (success) {
+      await context.read<WorldBloc>().state.assetManager.loadPacks();
+      if (!context.mounted) return;
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -218,7 +221,7 @@ class _PacksGameErrorViewState extends State<_PacksGameErrorView> {
           ),
           actions: [
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(context).pop();
                 widget.onReconnect();
               },

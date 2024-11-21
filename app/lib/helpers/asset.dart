@@ -101,14 +101,13 @@ class GameAssetManager extends AssetManager {
 
   Future<void> loadPacks() async {
     final files = await fileSystem.getPacks();
-    unloadPacks(_loadedPacks.keys
-        .where((e) => !files.any((f) => f.pathWithoutLeadingSlash == e)));
+    unloadPacks(
+        _loadedPacks.keys.where((e) => !files.any((f) => f.identifier == e)));
     for (final file in files) {
       try {
-        final key = file.pathWithoutLeadingSlash;
-        final pack = file.data!;
-        _loadedPacks[key] = pack;
-        _loadedTranslations[key] =
+        final pack = file.load();
+        _loadedPacks[file.identifier] = pack;
+        _loadedTranslations[file.identifier] =
             pack.getTranslationsStore(getLocale: () => currentLocale);
       } catch (_) {}
     }

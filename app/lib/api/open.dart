@@ -41,15 +41,17 @@ Future<void> importFile(
   );
   if (result == null) return;
   final bytes = await result.readAsBytes();
-  final data = SetonixData.fromData(bytes);
+  final data = SetonixFile(bytes);
   if (context.mounted) return importFileData(context, fileSystem, data);
 }
 
-Future<SetonixData?> getCorePack() async => SetonixData.fromData(
-    (await rootBundle.load('assets/pack.stnx')).buffer.asUint8List());
+Future<SetonixFile?> getCorePack() async => SetonixFile(
+    (await rootBundle.load('assets/pack.stnx')).buffer.asUint8List(),
+    kCorePackId);
 
 Future<void> importFileData(BuildContext context, SetonixFileSystem fileSystem,
-    SetonixData data) async {
+    SetonixFile file) async {
+  final data = file.load();
   final metadata = data.getMetadataOrDefault();
   final type = metadata.type;
   final result = await showDialog<bool>(
@@ -84,7 +86,7 @@ Future<void> importFileData(BuildContext context, SetonixFileSystem fileSystem,
   final namespace = metadata.id;
   switch (type) {
     case FileType.pack:
-      await fileSystem.packSystem.updateFile(namespace, data);
+      await fileSystem.packSystem.updateFile(namespace, file);
     case FileType.template:
       await fileSystem.templateSystem.updateFile(namespace, data);
     case FileType.game:

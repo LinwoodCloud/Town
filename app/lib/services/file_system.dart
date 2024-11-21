@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -18,15 +19,16 @@ enum PackDownloadResult {
 }
 
 class SetonixFileSystem {
-  SetonixData? _corePack;
-  final TypedKeyFileSystem<SetonixData> packSystem, templateSystem, worldSystem;
+  SetonixFile? _corePack;
+  final TypedKeyFileSystem<SetonixFile> packSystem;
+  final TypedKeyFileSystem<SetonixData> templateSystem, worldSystem;
   final TypedKeyFileSystem<DataMetadata> dataInfoSystem;
 
   static _onDatabaseUpgrade(event) =>
       initStores(event, ['packs', 'templates', 'worlds']);
 
   SetonixFileSystem({
-    SetonixData? corePack,
+    SetonixFile? corePack,
   })  : _corePack = corePack,
         packSystem = TypedKeyFileSystem.build(
           FileSystemConfig(
@@ -39,8 +41,8 @@ class SetonixFileSystem {
             keySuffix: '.stnx',
             onDatabaseUpgrade: _onDatabaseUpgrade,
           ),
-          onDecode: SetonixData.fromData,
-          onEncode: (data) => data.exportAsBytes(),
+          onDecode: SetonixFile.new,
+          onEncode: (data) => data.data,
         ),
         dataInfoSystem = TypedKeyFileSystem.build(
           FileSystemConfig(
@@ -86,28 +88,30 @@ class SetonixFileSystem {
           onEncode: (data) => data.exportAsBytes(),
         );
 
-  Future<SetonixData?> fetchCorePack() async =>
+  Future<SetonixFile?> fetchCorePack() async =>
       _corePack ?? (_corePack = await getCorePack());
 
-  Future<List<FileSystemFile<SetonixData>>> getPacks({
+  Future<Iterable<SetonixFile>> getPacks({
     bool fetchCore = true,
     bool force = false,
   }) async {
     final corePack = fetchCore ? await fetchCorePack() : null;
     await packSystem.initialize();
-    return [
-      ...await packSystem.getFiles(),
-      if (corePack != null)
-        FileSystemFile(const AssetLocation(path: kCorePackId), data: corePack),
-    ];
+    return HashSet<SetonixFile>(
+      equals: (a, b) => a.identifier == b.identifier,
+      hashCode: (a) => a.identifier.hashCode,
+    )..addAll([
+        ...(await packSystem.getFiles()).map((e) => e.data!),
+        if (corePack != null) corePack,
+      ]);
   }
 
-  Future<SetonixData?> getPack(String packId) =>
+  Future<SetonixFile?> getPack(String packId) =>
       packId == kCorePackId ? fetchCorePack() : packSystem.getFile(packId);
 
   Future<bool> addPack(Uint8List data, {bool force = false}) async {
-    final pack = SetonixData.fromData(data);
-    final identifier = createPackIdentifier(data);
+    final pack = SetonixFile(data);
+    final identifier = pack.identifier;
     if (!force && await packSystem.hasKey(identifier)) return false;
     await packSystem.updateFile(identifier, pack);
     await dataInfoSystem.updateFile(
@@ -124,6 +128,9 @@ class SetonixFileSystem {
     try {
       final uri = Uri.tryParse(url);
       if (uri == null) return PackDownloadResult.invalidUri;
+      if (!uri.isScheme('http') && !uri.isScheme('https')) {
+        return PackDownloadResult.invalidUri;
+      }
       if (!force && await packSystem.hasKey(expectedIdentifier)) {
         return PackDownloadResult.alreadyExists;
       }
@@ -133,8 +140,8 @@ class SetonixFileSystem {
       if (identifier != expectedIdentifier) {
         return PackDownloadResult.invalidIdentifier;
       }
-      final pack = SetonixData.fromData(response.bodyBytes);
-      await packSystem.updateFile(expectedIdentifier, pack);
+      await packSystem.fileSystem
+          .updateFile(expectedIdentifier, response.bodyBytes);
       await dataInfoSystem.updateFile(
           expectedIdentifier,
           DataMetadata(

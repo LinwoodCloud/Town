@@ -28,7 +28,7 @@ class _CreateDialogState extends State<CreateDialog>
   late final TypedKeyFileSystem<SetonixData> _templateSystem, _worldSystem;
   late final SetonixFileSystem _fileSystem;
   late Stream<List<FileSystemFile<SetonixData>>> _templatesStream;
-  late final Future<List<FileSystemFile<SetonixData>>> _packsFuture;
+  late final Future<Iterable<SetonixFile>> _packsFuture;
 
   String? _selectedTemplate;
   PackItem<BackgroundTranslation>? _background;
@@ -300,7 +300,7 @@ class _CreateDialogState extends State<CreateDialog>
               template ??= SetonixData.empty().setInfo(
                 GameInfo(
                   packs: _selectedPacks ??
-                      (await _packsFuture).map((e) => e.path).toList(),
+                      (await _packsFuture).map((e) => e.identifier).toList(),
                 ),
               );
               template = template
@@ -330,12 +330,12 @@ class _CreateDialogState extends State<CreateDialog>
 
   Future<void> _showBackgroundPicker() async {
     List<PackItem<BackgroundDefinition>> backgrounds = [];
-    final packs =
-        _selectedPacks ?? (await _packsFuture).map((e) => e.path).toList();
+    final packs = _selectedPacks ??
+        (await _packsFuture).map((e) => e.identifier).toList();
     for (final name in packs) {
       final pack = await _fileSystem.getPack(name);
       if (pack == null) continue;
-      final backgroundItems = pack.getBackgroundItems(name);
+      final backgroundItems = pack.load().getBackgroundItems(name);
       backgrounds.addAll(backgroundItems);
     }
     if (!mounted) return;
@@ -367,7 +367,7 @@ class _CreateDialogState extends State<CreateDialog>
 }
 
 class _CustomCreateView extends StatelessWidget {
-  final Future<List<FileSystemFile<SetonixData>>> packsFuture;
+  final Future<Iterable<SetonixFile>> packsFuture;
   final List<String>? selectedPacksId;
   final void Function(List<String>) onPacksSelected;
 
@@ -379,7 +379,7 @@ class _CustomCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<FileSystemFile<SetonixData>>>(
+    return FutureBuilder<Iterable<SetonixFile>>(
         future: packsFuture,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -387,15 +387,15 @@ class _CustomCreateView extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          final allPacks = snapshot.data!;
+          final allPacks = snapshot.data!.toList();
           final addedPacks = selectedPacksId
-                  ?.map((e) =>
-                      allPacks.firstWhereOrNull((element) => element.path == e))
+                  ?.map((e) => allPacks
+                      .firstWhereOrNull((element) => element.identifier == e))
                   .nonNulls
                   .toList() ??
               allPacks;
           final notAdded = allPacks
-              .where((e) => !(selectedPacksId?.contains(e.path) ?? true))
+              .where((e) => !(selectedPacksId?.contains(e.identifier) ?? true))
               .toList();
 
           return Column(
@@ -406,18 +406,20 @@ class _CustomCreateView extends StatelessWidget {
                   itemCount: addedPacks.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    final pack = addedPacks[index];
+                    final item = addedPacks[index];
+                    final id = item.identifier;
+                    final pack = item.load();
                     return ListTile(
-                      title: Text(pack.data?.getMetadata()?.name ??
+                      title: Text(pack.getMetadata()?.name ??
                           AppLocalizations.of(context).unnamed),
-                      subtitle: Text(pack.pathWithoutLeadingSlash),
-                      key: ObjectKey(pack.path),
+                      subtitle: Text(id),
+                      key: ObjectKey(id),
                       leading: IconButton.outlined(
                         icon: const Icon(PhosphorIconsLight.minus),
                         onPressed: () {
                           final newSelected = addedPacks
-                              .map((e) => e.path)
-                              .where((e) => e != pack.path)
+                              .map((e) => e.identifier)
+                              .where((e) => e != pack.identifier)
                               .toList();
                           onPacksSelected(newSelected);
                         },
@@ -428,7 +430,8 @@ class _CustomCreateView extends StatelessWidget {
                     if (oldIndex < newIndex) {
                       newIndex -= 1;
                     }
-                    final newSelected = addedPacks.map((e) => e.path).toList();
+                    final newSelected =
+                        addedPacks.map((e) => e.identifier).toList();
                     final item = newSelected.removeAt(oldIndex);
                     newSelected.insert(newIndex, item);
                     onPacksSelected(newSelected);
@@ -449,14 +452,14 @@ class _CustomCreateView extends StatelessWidget {
                                 Text(AppLocalizations.of(context).addPack),
                             childrenBuilder: (context) => notAdded.map((e) {
                               return ListTile(
-                                title: Text(e.data!.getMetadata()?.name ??
+                                title: Text(e.load().getMetadata()?.name ??
                                     AppLocalizations.of(context).unnamed),
-                                subtitle: Text(e.pathWithoutLeadingSlash),
+                                subtitle: Text(e.identifier),
                                 onTap: () {
                                   Navigator.of(context).pop();
                                   onPacksSelected([
                                     ...?selectedPacksId,
-                                    e.path,
+                                    e.identifier,
                                   ]);
                                 },
                               );
