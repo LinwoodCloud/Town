@@ -4,6 +4,7 @@
 * Use hash of archive for signature
 * Add dialog image support ([#40](https://github.com/LinwoodDev/Setonix/issues/40))
 * Fix multiple settings button on home page
+* Disable packs item if client is not a server
 * Make build reproducable
 
 Read more here: https://linwood.dev/setonix/0.2.0

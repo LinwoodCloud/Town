@@ -174,19 +174,23 @@ class GameDrawer extends StatelessWidget {
                 ),
               ),
             ),
-            ListTile(
-              leading: const Icon(PhosphorIconsLight.package),
-              title: Text(AppLocalizations.of(context).packs),
-              onTap: () {
-                final bloc = context.read<WorldBloc>();
-                showDialog(
-                  builder: (context) => PacksDialog(
-                    bloc: bloc,
-                  ),
-                  context: context,
-                );
-              },
-            ),
+            BlocBuilder<MultiplayerCubit, MultiplayerState>(
+                builder: (context, state) {
+              if (!state.isServer) return SizedBox.shrink();
+              return ListTile(
+                leading: const Icon(PhosphorIconsLight.package),
+                title: Text(AppLocalizations.of(context).packs),
+                onTap: () {
+                  final bloc = context.read<WorldBloc>();
+                  showDialog(
+                    builder: (context) => PacksDialog(
+                      bloc: bloc,
+                    ),
+                    context: context,
+                  );
+                },
+              );
+            }),
             BlocBuilder<WorldBloc, ClientWorldState>(
               buildWhen: (previous, current) =>
                   previous.tableName != current.tableName,
