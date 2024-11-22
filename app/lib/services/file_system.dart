@@ -139,8 +139,8 @@ class SetonixFileSystem {
       if (identifier != expectedIdentifier) {
         return PackDownloadResult.invalidIdentifier;
       }
-      await packSystem.fileSystem
-          .updateFile(expectedIdentifier, response.bodyBytes);
+      await packSystem.updateFile(
+          expectedIdentifier, SetonixFile(response.bodyBytes));
       await dataInfoSystem.updateFile(
           expectedIdentifier,
           DataMetadata(
