@@ -78,4 +78,11 @@ class ServerAssetManager extends AssetManager {
 
   Iterable<String> getPackIds() => _packs.entries
       .map((e) => e.key == kCorePackId ? kCorePackId : e.value.identifier);
+
+  String? getPackId(String name) {
+    if (name == kCorePackId) return kCorePackId;
+    return _packs[name]?.identifier;
+  }
+
+  String getPackIdOrDefault(String name) => getPackId(name) ?? name;
 }
