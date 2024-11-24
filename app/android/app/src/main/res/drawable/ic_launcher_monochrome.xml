@@ -4,36 +4,36 @@
     android:viewportWidth="100"
     android:viewportHeight="100">
   <path
-      android:strokeWidth="1"
-      android:pathData="M36.5,35.5m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0"
+      android:pathData="M36.5,35.5m-3.5,0a3.5,3.5 0,1 1,7 0a3.5,3.5 0,1 1,-7 0"
+      android:strokeWidth="2"
       android:fillColor="#00000000"
       android:strokeColor="#000000"/>
   <path
-      android:strokeWidth="1"
-      android:pathData="M63.5,35.5m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0"
+      android:pathData="M63.5,35.5m-3.5,0a3.5,3.5 0,1 1,7 0a3.5,3.5 0,1 1,-7 0"
+      android:strokeWidth="2"
       android:fillColor="#00000000"
       android:strokeColor="#000000"/>
   <path
-      android:strokeWidth="1"
-      android:pathData="M43.97,33.5H56.03C61.02,33.5 65.31,37 66.32,41.88L68.79,53.88C70.13,60.4 65.15,66.5 58.5,66.5H41.5C34.85,66.5 29.87,60.4 31.21,53.88L33.68,41.88C34.69,37 38.98,33.5 43.97,33.5Z"
+      android:pathData="M43.97,34H56.03C60.78,34 64.87,37.34 65.83,41.98L68.3,53.98C69.58,60.19 64.84,66 58.5,66H41.5C35.16,66 30.42,60.19 31.7,53.98L34.17,41.98C35.13,37.34 39.22,34 43.97,34Z"
+      android:strokeWidth="2"
       android:fillColor="#00000000"
       android:strokeColor="#000000"/>
   <path
-      android:strokeWidth="1"
-      android:pathData="M39,43m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0"
+      android:pathData="M39,43m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0"
+      android:strokeWidth="2"
       android:fillColor="#00000000"
       android:strokeColor="#000000"/>
   <path
-      android:strokeWidth="1"
-      android:pathData="M61,43m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0"
+      android:pathData="M61,43m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0"
+      android:strokeWidth="2"
       android:fillColor="#00000000"
       android:strokeColor="#000000"/>
   <path
       android:pathData="M54,52C54,53.1 52,54 50,54C48,54 46,53.1 46,52C46,50.9 48.9,50 50,50C51.1,50 54,50.9 54,52Z"
       android:fillColor="#000000"/>
   <path
+      android:strokeWidth="1"
       android:pathData="M50,53C50,53 50,53.09 50,57M50,57C50,57 47.92,58 47,58C45.28,58 44,57 44,57M50,57C50,57 51.74,58 53,58C54.51,58 56,57 56,57"
-      android:strokeWidth="0.5"
       android:fillColor="#00000000"
       android:strokeColor="#000000"/>
 </vector>
