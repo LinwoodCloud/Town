@@ -8,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:material_leap/l10n/leap_localizations.dart';
 import 'package:material_leap/material_leap.dart';
+import 'package:setonix/pages/editor/general.dart';
 import 'package:setonix/pages/game/page.dart';
 import 'package:setonix/pages/home/page.dart';
 import 'package:setonix/pages/settings/data.dart';
@@ -122,6 +123,13 @@ class SetonixApp extends StatelessWidget {
             path: 'game/:name',
             builder: (context, state) => GamePage(
               name: state.pathParameters['name'],
+            ),
+          ),
+          GoRoute(
+            name: 'editor',
+            path: 'editor/:name',
+            builder: (context, state) => GeneralEditorPage(
+              name: state.pathParameters['name']!,
             ),
           ),
           GoRoute(

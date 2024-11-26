@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -39,7 +40,7 @@ class _PacksDialogState extends State<PacksDialog>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: isWorldLoaded ? 3 : 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.dismissed) {
         setState(() {
@@ -257,6 +258,11 @@ class _PacksDialogState extends State<PacksDialog>
                 icon: const PhosphorIcon(PhosphorIconsLight.globe),
                 label: Text(AppLocalizations.of(context).browse),
               ),
+              if (!isWorldLoaded)
+                HorizontalTab(
+                  icon: const PhosphorIcon(PhosphorIconsLight.notePencil),
+                  label: Text(AppLocalizations.of(context).editor),
+                ),
             ],
           ),
           const SizedBox(height: 8),
@@ -313,6 +319,7 @@ class _PacksDialogState extends State<PacksDialog>
                             child:
                                 Text(AppLocalizations.of(context).comingSoon),
                           ),
+                          if (bloc == null) _EditorPacksView(),
                         ],
                       );
                     });
@@ -535,6 +542,22 @@ class _WorldPacksView extends StatelessWidget {
             );
           },
         );
+      },
+    );
+  }
+}
+
+class _EditorPacksView extends StatelessWidget {
+  const _EditorPacksView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        return ListTile(
+            title: Text('Pack $index'),
+            onTap: () => GoRouter.of(context).go('/editor/$index'));
       },
     );
   }

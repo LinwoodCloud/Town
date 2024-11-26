@@ -202,5 +202,8 @@
   "version": "Version",
   "author": "Author",
   "lastUsed": "Last used",
-  "size": "Size"
+  "size": "Size",
+  "backgrounds": "Backgorunds",
+  "translations": "Translations",
+  "editor": "Editor"
 }

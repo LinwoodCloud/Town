@@ -744,6 +744,13 @@ jobs:
       - uses: subosito/flutter-action@v2.17.0
         with:
           flutter-version-file: app/pubspec.yaml
+      - name: Build nessesary files
+        working-directory: ./
+        run: |
+          cd tools
+          dart pub get
+          cd ..
+          dart run tools/generate.dart
       - name: 📦 Get dependencies
         run: |
           flutter pub get
