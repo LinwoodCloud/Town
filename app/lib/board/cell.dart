@@ -210,7 +210,9 @@ class GameCell extends PositionComponent
     final tile = cell?.tiles.lastOrNull;
     if (top == _currentTop &&
         visible == _currentVisible &&
-        tile == _currentTile) return;
+        tile == _currentTile) {
+      return;
+    }
     _currentTop = top;
     _currentVisible = visible;
     _currentTile = tile;

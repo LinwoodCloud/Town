@@ -16,7 +16,7 @@ publish_to: none
 
 environment:
   sdk: ">=3.5.0 <4.0.0"
-  flutter: 3.24.5
+  flutter: 3.27.0
 
 dependencies:
   flutter:
@@ -47,8 +47,8 @@ dependencies:
   rxdart: ^0.28.0
   collection: ^1.18.0
   flame_bloc: ">=1.12.2 <1.13.0"
-  flame: ">=1.21.0 <1.22.0"
-  flame_tiled: ">=1.21.0 <1.22.0"
+  flame: ">=1.22.0 <1.23.0"
+  flame_tiled: ">=1.21.1 <1.22.0"
   # Networking
   http: ^1.2.1
   web_socket_channel: ^3.0.0

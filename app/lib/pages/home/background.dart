@@ -70,7 +70,7 @@ class DotsPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = color.withOpacity(value)
+      ..color = color.withValues(alpha: value)
       ..strokeWidth = 2
       ..style = PaintingStyle.fill;
 

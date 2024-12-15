@@ -548,7 +548,7 @@ class _WorldPacksView extends StatelessWidget {
 }
 
 class _EditorPacksView extends StatelessWidget {
-  const _EditorPacksView({super.key});
+  const _EditorPacksView();
 
   @override
   Widget build(BuildContext context) {

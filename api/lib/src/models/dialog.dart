@@ -56,8 +56,6 @@ final class GameDialog with GameDialogMappable {
             return e.label.length <= 50 &&
                 (e.id?.length ?? 0) <= 100 &&
                 (e.placeholder?.length ?? 0) <= 50;
-          default:
-            return false;
         }
       }) &&
       (actions ?? [])
