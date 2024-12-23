@@ -15,7 +15,7 @@ import 'package:setonix/helpers/visualizer.dart';
 import 'package:setonix/pages/game/info.dart';
 import 'package:setonix/pages/game/multiplayer.dart';
 import 'package:setonix/pages/game/team.dart';
-import 'package:setonix/pages/home/packs.dart';
+import 'package:setonix/pages/packs/dialog.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 class GameDrawer extends StatelessWidget {

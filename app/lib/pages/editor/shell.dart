@@ -157,7 +157,8 @@ class _EditorShellState extends State<EditorShell> {
       orElse: () => EditorPage.general,
     );
     return BlocProvider(
-      create: (context) => EditorCubit(widget.name, data),
+      create: (context) =>
+          EditorCubit(widget.name, context.read<SetonixFileSystem>(), data),
       child: Row(
         children: [
           if (!isMobile) EditorNavigatorView(currentPage: currentPage),

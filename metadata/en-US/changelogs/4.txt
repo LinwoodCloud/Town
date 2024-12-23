@@ -1,1 +1,2 @@
+* Rework packs dialog
 * Upgrade to flutter 3.27

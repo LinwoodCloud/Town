@@ -7,7 +7,7 @@ import 'package:setonix/main.dart';
 import 'package:setonix/pages/home/background.dart';
 import 'package:setonix/pages/home/connect.dart';
 import 'package:setonix/pages/home/header.dart';
-import 'package:setonix/pages/home/packs.dart';
+import 'package:setonix/pages/packs/dialog.dart';
 import 'package:setonix/pages/home/play.dart';
 
 import '../../api/settings.dart';

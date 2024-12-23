@@ -206,5 +206,13 @@
   "backgrounds": "Backgorunds",
   "translations": "Translations",
   "editor": "Editor",
-  "noData": "No data available"
+  "noData": "No data available",
+  "removePackMessage": "Are you sure you want to remove the pack {name}?",
+  "@removePackMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }

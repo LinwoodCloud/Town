@@ -134,6 +134,7 @@ class SetonixApp extends StatelessWidget {
             ),
             routes: [
               GoRoute(
+                name: 'editor',
                 path: kEditorPath,
                 builder: (context, state) => const GeneralEditorPage(),
               ),
