@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
+import 'package:idb_shim/idb.dart';
 import 'package:lw_file_system/lw_file_system.dart';
 import 'package:setonix/api/open.dart';
 import 'package:setonix/api/storage.dart';
@@ -21,11 +22,19 @@ enum PackDownloadResult {
 class SetonixFileSystem {
   SetonixFile? _corePack;
   final TypedKeyFileSystem<SetonixFile> packSystem;
-  final TypedKeyFileSystem<SetonixData> templateSystem, worldSystem;
+  final TypedKeyFileSystem<SetonixData> templateSystem,
+      worldSystem,
+      editorSystem;
   final TypedKeyFileSystem<DataMetadata> dataInfoSystem;
 
-  static _onDatabaseUpgrade(event) =>
-      initStores(event, ['packs', 'templates', 'worlds']);
+  static Future<void> _onDatabaseUpgrade(VersionChangeEvent event) async {
+    await initStores(event, ['packs', 'templates', 'worlds']);
+    if (event.oldVersion < 2) {
+      event.database.createObjectStore('packs-data');
+    }
+  }
+
+  static const kDatabaseVersion = 2;
 
   SetonixFileSystem({
     SetonixFile? corePack,
@@ -37,7 +46,7 @@ class SetonixFileSystem {
             getDirectory: (storage) async =>
                 '${await getSetonixDirectory()}/Packs',
             database: 'setonix.db',
-            databaseVersion: 1,
+            databaseVersion: kDatabaseVersion,
             keySuffix: '.stnx',
             onDatabaseUpgrade: _onDatabaseUpgrade,
           ),
@@ -51,7 +60,7 @@ class SetonixFileSystem {
             getDirectory: (storage) async =>
                 '${await getSetonixDirectory()}/Packs',
             database: 'setonix.db',
-            databaseVersion: 1,
+            databaseVersion: kDatabaseVersion,
             keySuffix: '.json',
             onDatabaseUpgrade: _onDatabaseUpgrade,
           ),
@@ -65,7 +74,7 @@ class SetonixFileSystem {
             getDirectory: (storage) async =>
                 '${await getSetonixDirectory()}/Templates',
             database: 'setonix.db',
-            databaseVersion: 1,
+            databaseVersion: kDatabaseVersion,
             keySuffix: '.stnx',
             onDatabaseUpgrade: _onDatabaseUpgrade,
           ),
@@ -79,7 +88,21 @@ class SetonixFileSystem {
             getDirectory: (storage) async =>
                 '${await getSetonixDirectory()}/Worlds',
             database: 'setonix.db',
-            databaseVersion: 1,
+            databaseVersion: kDatabaseVersion,
+            keySuffix: '.stnx',
+            onDatabaseUpgrade: _onDatabaseUpgrade,
+          ),
+          onDecode: SetonixData.fromData,
+          onEncode: (data) => data.exportAsBytes(),
+        ),
+        editorSystem = TypedKeyFileSystem.build(
+          FileSystemConfig(
+            passwordStorage: SecureStoragePasswordStorage(),
+            storeName: 'editor',
+            getDirectory: (storage) async =>
+                '${await getSetonixDirectory()}/Editor',
+            database: 'setonix.db',
+            databaseVersion: kDatabaseVersion,
             keySuffix: '.stnx',
             onDatabaseUpgrade: _onDatabaseUpgrade,
           ),

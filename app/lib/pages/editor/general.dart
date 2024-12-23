@@ -1,45 +1,88 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
-import 'package:setonix/pages/editor/navigation.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:setonix/bloc/editor.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 class GeneralEditorPage extends StatelessWidget {
-  final String name;
-
-  const GeneralEditorPage({super.key, required this.name});
+  const GeneralEditorPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return EditorScaffold(
-      currentPage: EditorPage.general,
-      body: SingleChildScrollView(
-        child: Center(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: LeapBreakpoints.expanded),
-            child: Column(
-              children: [
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context).name,
-                    filled: true,
+    return SingleChildScrollView(
+      child: Center(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: LeapBreakpoints.expanded),
+          padding: const EdgeInsets.all(4),
+          child: BlocBuilder<EditorCubit, SetonixData>(
+            builder: (context, state) {
+              final metadata = state.getMetadataOrDefault();
+              var currentName = metadata.name,
+                  currentAuthor = metadata.author,
+                  currentVersion = metadata.version,
+                  currentDescription = metadata.description;
+              void updateMeta() => context.read<EditorCubit>().updateMeta(
+                    metadata.copyWith(
+                      name: currentName,
+                      author: currentAuthor,
+                      version: currentVersion,
+                      description: currentDescription,
+                    ),
+                  );
+              return Column(
+                children: [
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context).name,
+                      filled: true,
+                      icon: const Icon(PhosphorIconsLight.textT),
+                    ),
+                    initialValue: currentName,
+                    onChanged: (value) => currentName = value,
+                    onEditingComplete: updateMeta,
+                    onTapOutside: (_) => updateMeta(),
                   ),
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context).version,
-                    filled: true,
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context).author,
+                      filled: true,
+                      icon: const Icon(PhosphorIconsLight.user),
+                    ),
+                    initialValue: currentAuthor,
+                    onChanged: (value) => currentAuthor = value,
+                    onEditingComplete: updateMeta,
+                    onTapOutside: (_) => updateMeta(),
                   ),
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context).description,
-                    border: OutlineInputBorder(),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context).version,
+                      filled: true,
+                      icon: const Icon(PhosphorIconsLight.info),
+                    ),
+                    initialValue: currentVersion,
+                    onChanged: (value) => currentVersion = value,
+                    onEditingComplete: updateMeta,
+                    onTapOutside: (_) => updateMeta(),
                   ),
-                  minLines: 3,
-                  maxLines: 5,
-                ),
-              ],
-            ),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context).description,
+                      border: OutlineInputBorder(),
+                      icon: const Icon(PhosphorIconsLight.article),
+                    ),
+                    initialValue: currentDescription,
+                    onChanged: (value) => currentDescription = value,
+                    minLines: 3,
+                    maxLines: 5,
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),

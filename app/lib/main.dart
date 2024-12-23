@@ -9,6 +9,7 @@ import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:material_leap/l10n/leap_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:setonix/pages/editor/general.dart';
+import 'package:setonix/pages/editor/shell.dart';
 import 'package:setonix/pages/game/page.dart';
 import 'package:setonix/pages/home/page.dart';
 import 'package:setonix/pages/settings/data.dart';
@@ -125,12 +126,18 @@ class SetonixApp extends StatelessWidget {
               name: state.pathParameters['name'],
             ),
           ),
-          GoRoute(
-            name: 'editor',
-            path: 'editor/:name',
-            builder: (context, state) => GeneralEditorPage(
+          ShellRoute(
+            builder: (context, state, child) => EditorShell(
+              state: state,
               name: state.pathParameters['name']!,
+              child: child,
             ),
+            routes: [
+              GoRoute(
+                path: kEditorPath,
+                builder: (context, state) => const GeneralEditorPage(),
+              ),
+            ],
           ),
           GoRoute(
             name: 'connect',

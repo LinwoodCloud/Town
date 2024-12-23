@@ -205,5 +205,6 @@
   "size": "Size",
   "backgrounds": "Backgorunds",
   "translations": "Translations",
-  "editor": "Editor"
+  "editor": "Editor",
+  "noData": "No data available"
 }

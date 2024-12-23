@@ -104,7 +104,7 @@ class DataSettingsPage extends StatelessWidget {
                                 );
                               }
                               final bytes = ZipEncoder().encode(archive);
-                              if (context.mounted && bytes != null) {
+                              if (context.mounted) {
                                 exportFile(
                                   context: context,
                                   bytes: bytes,
