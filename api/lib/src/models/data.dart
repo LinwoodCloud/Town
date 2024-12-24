@@ -137,7 +137,7 @@ class SetonixData extends ArchiveData<SetonixData> {
 
   Iterable<PackItem<FigureDefinition>> getFigureItems(
           [String namespace = '']) =>
-      getDecks().map((e) => getFigureItem(e, namespace)).nonNulls;
+      getFigures().map((e) => getFigureItem(e, namespace)).nonNulls;
 
   Iterable<String> getBoards() => getAssets(kPackBoardsPath, true);
 
@@ -214,6 +214,12 @@ class SetonixData extends ArchiveData<SetonixData> {
         translations: getAllTranslations(),
         getLocale: getLocale,
       );
+
+  SetonixData removeFigure(String figure) =>
+      removeAsset('$kPackFiguresPath/$figure.json');
+
+  SetonixData setFigure(String figure, FigureDefinition definition) => setAsset(
+      '$kPackFiguresPath/$figure.json', utf8.encode(definition.toJson()));
 }
 
 class SetonixFile {

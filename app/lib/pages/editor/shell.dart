@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/bloc/editor.dart';
+import 'package:setonix/pages/editor/figures.dart';
+import 'package:setonix/pages/editor/general.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix_api/setonix_api.dart';
 
@@ -12,15 +14,18 @@ const kEditorPath = '/editor/:name';
 
 enum EditorPage {
   general(PhosphorIcons.house, ''),
-  figures(PhosphorIcons.cube, 'figures'),
-  decks(PhosphorIcons.stack, 'decks'),
-  backgrounds(PhosphorIcons.image, 'backgrounds'),
-  translations(PhosphorIcons.translate, 'translations');
+  figures(PhosphorIcons.cube, '/figures'),
+  decks(PhosphorIcons.stack, '/decks'),
+  backgrounds(PhosphorIcons.image, '/backgrounds'),
+  translations(PhosphorIcons.translate, '/translations');
 
   final IconGetter icon;
   final String location;
 
   const EditorPage(this.icon, this.location);
+
+  String get fullLocation => '$kEditorPath$location';
+  String get route => 'editor-$name';
 
   String getLocalizedName(BuildContext context) {
     final loc = AppLocalizations.of(context);
@@ -30,6 +35,16 @@ enum EditorPage {
       EditorPage.decks => loc.decks,
       EditorPage.backgrounds => loc.backgrounds,
       EditorPage.translations => loc.translations,
+    };
+  }
+
+  Widget getPage() {
+    return switch (this) {
+      EditorPage.general => const GeneralEditorPage(),
+      EditorPage.figures => const FiguresEditorPage(),
+      EditorPage.decks => const GeneralEditorPage(),
+      EditorPage.backgrounds => const GeneralEditorPage(),
+      EditorPage.translations => const GeneralEditorPage(),
     };
   }
 }
@@ -44,36 +59,36 @@ class EditorNavigatorView extends StatelessWidget {
     this.isMobile = false,
   });
 
+  void _navigate(BuildContext context, EditorPage page) {
+    final cubit = context.read<EditorCubit>();
+    context.goNamed(page.route, pathParameters: {'name': cubit.path});
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (isMobile) {
-      return NavigationDrawer(
-        selectedIndex: currentPage.index + 1,
-        onDestinationSelected: (value) {},
-        children: [
+    return NavigationDrawer(
+      selectedIndex: currentPage.index + 1,
+      onDestinationSelected: (value) {
+        if (value == 0) {
+          context.go('/');
+        } else {
+          _navigate(context, EditorPage.values[value - 1]);
+        }
+      },
+      children: [
+        if (isMobile) ...[
           NavigationDrawerDestination(
             icon: Icon(PhosphorIconsLight.arrowLeft),
             label: Text(AppLocalizations.of(context).back),
           ),
           const Divider(),
-          ...EditorPage.values.map((e) => NavigationDrawerDestination(
-                icon: Icon(e.icon(PhosphorIconsStyle.light)),
-                label: Text(e.getLocalizedName(context)),
-                selectedIcon: Icon(e.icon(PhosphorIconsStyle.fill)),
-              )),
         ],
-      );
-    }
-    return NavigationRail(
-      destinations: EditorPage.values
-          .map((e) => NavigationRailDestination(
-                icon: Icon(e.icon(PhosphorIconsStyle.light)),
-                label: Text(e.getLocalizedName(context)),
-                selectedIcon: Icon(e.icon(PhosphorIconsStyle.fill)),
-              ))
-          .toList(),
-      selectedIndex: currentPage.index,
-      extended: true,
+        ...EditorPage.values.map((e) => NavigationDrawerDestination(
+              icon: Icon(e.icon(PhosphorIconsStyle.light)),
+              label: Text(e.getLocalizedName(context)),
+              selectedIcon: Icon(e.icon(PhosphorIconsStyle.fill)),
+            )),
+      ],
     );
   }
 }
@@ -151,9 +166,9 @@ class _EditorShellState extends State<EditorShell> {
   Widget _buildContent(BuildContext context, SetonixData data) {
     final width = MediaQuery.sizeOf(context).width;
     final isMobile = width < LeapBreakpoints.medium;
-    final location = widget.state.path?.substring(kEditorPath.length + 1);
+    final name = widget.state.fullPath;
     final currentPage = EditorPage.values.firstWhere(
-      (e) => e.location == location,
+      (e) => e.fullLocation == name,
       orElse: () => EditorPage.general,
     );
     return BlocProvider(
@@ -161,7 +176,10 @@ class _EditorShellState extends State<EditorShell> {
           EditorCubit(widget.name, context.read<SetonixFileSystem>(), data),
       child: Row(
         children: [
-          if (!isMobile) EditorNavigatorView(currentPage: currentPage),
+          if (!isMobile) ...[
+            EditorNavigatorView(currentPage: currentPage),
+            const SizedBox(width: 8)
+          ],
           Expanded(
             child: Scaffold(
               appBar: AppBar(

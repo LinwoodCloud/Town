@@ -81,7 +81,6 @@ class GameDrawer extends StatelessWidget {
                               if (newInfo == null) return;
                               bloc.process(MetadataChanged(newInfo.copyWith(
                                 type: metadata.type,
-                                id: metadata.id,
                               )));
                             },
                           ),

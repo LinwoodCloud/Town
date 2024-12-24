@@ -14,7 +14,6 @@ enum FileType {
 @MappableClass()
 final class FileMetadata with FileMetadataMappable {
   final FileType type;
-  final String id;
   final String name;
   final String description;
   final String author;
@@ -24,7 +23,6 @@ final class FileMetadata with FileMetadataMappable {
 
   const FileMetadata({
     this.type = FileType.pack,
-    this.id = '',
     this.name = '',
     this.description = '',
     this.author = '',

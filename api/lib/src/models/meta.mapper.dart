@@ -74,9 +74,6 @@ class FileMetadataMapper extends ClassMapperBase<FileMetadata> {
   static FileType _$type(FileMetadata v) => v.type;
   static const Field<FileMetadata, FileType> _f$type =
       Field('type', _$type, opt: true, def: FileType.pack);
-  static String _$id(FileMetadata v) => v.id;
-  static const Field<FileMetadata, String> _f$id =
-      Field('id', _$id, opt: true, def: '');
   static String _$name(FileMetadata v) => v.name;
   static const Field<FileMetadata, String> _f$name =
       Field('name', _$name, opt: true, def: '');
@@ -99,7 +96,6 @@ class FileMetadataMapper extends ClassMapperBase<FileMetadata> {
   @override
   final MappableFields<FileMetadata> fields = const {
     #type: _f$type,
-    #id: _f$id,
     #name: _f$name,
     #description: _f$description,
     #author: _f$author,
@@ -111,7 +107,6 @@ class FileMetadataMapper extends ClassMapperBase<FileMetadata> {
   static FileMetadata _instantiate(DecodingData data) {
     return FileMetadata(
         type: data.dec(_f$type),
-        id: data.dec(_f$id),
         name: data.dec(_f$name),
         description: data.dec(_f$description),
         author: data.dec(_f$author),
@@ -174,7 +169,6 @@ abstract class FileMetadataCopyWith<$R, $In extends FileMetadata, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call(
       {FileType? type,
-      String? id,
       String? name,
       String? description,
       String? author,
@@ -195,7 +189,6 @@ class _FileMetadataCopyWithImpl<$R, $Out>
   @override
   $R call(
           {FileType? type,
-          String? id,
           String? name,
           String? description,
           String? author,
@@ -204,7 +197,6 @@ class _FileMetadataCopyWithImpl<$R, $Out>
           int? fileVersion}) =>
       $apply(FieldCopyWithData({
         if (type != null) #type: type,
-        if (id != null) #id: id,
         if (name != null) #name: name,
         if (description != null) #description: description,
         if (author != null) #author: author,
@@ -215,7 +207,6 @@ class _FileMetadataCopyWithImpl<$R, $Out>
   @override
   FileMetadata $make(CopyWithData data) => FileMetadata(
       type: data.get(#type, or: $value.type),
-      id: data.get(#id, or: $value.id),
       name: data.get(#name, or: $value.name),
       description: data.get(#description, or: $value.description),
       author: data.get(#author, or: $value.author),

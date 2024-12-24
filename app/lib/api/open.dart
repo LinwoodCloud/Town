@@ -83,12 +83,12 @@ Future<void> importFileData(BuildContext context, SetonixFileSystem fileSystem,
     ),
   );
   if (!(result ?? false)) return;
-  final namespace = metadata.id;
+  final id = file.identifier;
   switch (type) {
     case FileType.pack:
-      await fileSystem.packSystem.updateFile(namespace, file);
+      await fileSystem.packSystem.updateFile(id, file);
     case FileType.template:
-      await fileSystem.templateSystem.updateFile(namespace, data);
+      await fileSystem.templateSystem.createFile(metadata.name, data);
     case FileType.game:
       await fileSystem.worldSystem.createFile(metadata.name, data);
   }

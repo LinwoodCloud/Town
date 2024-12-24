@@ -17,7 +17,27 @@ class EditorCubit extends Cubit<SetonixData> {
     save();
   }
 
-  Future<void> save() {
-    return fileSystem.editorSystem.updateFile(path, state);
+  bool _needsSave = false;
+  bool _isSaving = false;
+
+  Future<void> save() async {
+    _needsSave = true;
+    if (_isSaving) {
+      return;
+    }
+    _isSaving = true;
+    while (_needsSave) {
+      _needsSave = false;
+      await fileSystem.editorSystem.updateFile(path, state);
+    }
+    _isSaving = false;
+  }
+
+  void removeFigure(String figure) {
+    emit(state.removeFigure(figure));
+  }
+
+  void setFigure(String figure, FigureDefinition definition) {
+    emit(state.setFigure(figure, definition));
   }
 }
