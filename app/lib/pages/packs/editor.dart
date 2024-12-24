@@ -97,7 +97,7 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
               if (name == null) return;
               await _fileSystem.editorSystem.createFile(
                   name,
-                  SetonixData.empty().setFileMetadata(FileMetadata(
+                  SetonixData.empty().setMetadata(FileMetadata(
                     name: name,
                     type: FileType.pack,
                   )));

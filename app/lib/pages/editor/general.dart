@@ -40,9 +40,10 @@ class GeneralEditorPage extends StatelessWidget {
                       icon: const Icon(PhosphorIconsLight.textT),
                     ),
                     initialValue: currentName,
-                    onChanged: (value) => currentName = value,
-                    onEditingComplete: updateMeta,
-                    onTapOutside: (_) => updateMeta(),
+                    onChanged: (value) {
+                      currentName = value;
+                      updateMeta();
+                    },
                   ),
                   const SizedBox(height: 8),
                   TextFormField(
@@ -52,9 +53,10 @@ class GeneralEditorPage extends StatelessWidget {
                       icon: const Icon(PhosphorIconsLight.user),
                     ),
                     initialValue: currentAuthor,
-                    onChanged: (value) => currentAuthor = value,
-                    onEditingComplete: updateMeta,
-                    onTapOutside: (_) => updateMeta(),
+                    onChanged: (value) {
+                      currentAuthor = value;
+                      updateMeta();
+                    },
                   ),
                   const SizedBox(height: 8),
                   TextFormField(
@@ -64,9 +66,10 @@ class GeneralEditorPage extends StatelessWidget {
                       icon: const Icon(PhosphorIconsLight.info),
                     ),
                     initialValue: currentVersion,
-                    onChanged: (value) => currentVersion = value,
-                    onEditingComplete: updateMeta,
-                    onTapOutside: (_) => updateMeta(),
+                    onChanged: (value) {
+                      currentVersion = value;
+                      updateMeta();
+                    },
                   ),
                   const SizedBox(height: 8),
                   TextFormField(
@@ -76,7 +79,10 @@ class GeneralEditorPage extends StatelessWidget {
                       icon: const Icon(PhosphorIconsLight.article),
                     ),
                     initialValue: currentDescription,
-                    onChanged: (value) => currentDescription = value,
+                    onChanged: (value) {
+                      currentDescription = value;
+                      updateMeta();
+                    },
                     minLines: 3,
                     maxLines: 5,
                   ),

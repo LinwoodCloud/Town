@@ -8,7 +8,7 @@ class EditorCubit extends Cubit<SetonixData> {
 
   EditorCubit(this.path, this.fileSystem, super.initialState);
 
-  void updateMeta(FileMetadata meta) => emit(state.setFileMetadata(meta));
+  void updateMeta(FileMetadata meta) => emit(state.setMetadata(meta));
 
   @override
   void onChange(Change<SetonixData> change) {
@@ -39,5 +39,21 @@ class EditorCubit extends Cubit<SetonixData> {
 
   void setFigure(String figure, FigureDefinition definition) {
     emit(state.setFigure(figure, definition));
+  }
+
+  void removeDeck(String deck) {
+    emit(state.removeDeck(deck));
+  }
+
+  void setDeck(String deck, DeckDefinition definition) {
+    emit(state.setDeck(deck, definition));
+  }
+
+  void removeBackground(String background) {
+    emit(state.removeBackground(background));
+  }
+
+  void setBackground(String background, BackgroundDefinition definition) {
+    emit(state.setBackground(background, definition));
   }
 }

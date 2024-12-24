@@ -407,7 +407,7 @@ class GameDrawer extends StatelessWidget {
                   if (!(result ?? false)) return;
                   final state = bloc.state;
                   var data = state.world.save();
-                  data = data.setFileMetadata(data
+                  data = data.setMetadata(data
                       .getMetadataOrDefault()
                       .copyWith(name: name, type: FileType.template));
                   state.fileSystem.templateSystem.createFile(name, data);

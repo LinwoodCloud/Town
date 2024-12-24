@@ -199,7 +199,7 @@ class SetonixData extends ArchiveData<SetonixData> {
     return PackTranslationMapper.fromJson(content);
   }
 
-  SetonixData setFileMetadata(FileMetadata metadata) => setAsset(
+  SetonixData setMetadata(FileMetadata metadata) => setAsset(
         kPackMetadataPath,
         utf8.encode(metadata.toJson()),
       );
@@ -220,6 +220,19 @@ class SetonixData extends ArchiveData<SetonixData> {
 
   SetonixData setFigure(String figure, FigureDefinition definition) => setAsset(
       '$kPackFiguresPath/$figure.json', utf8.encode(definition.toJson()));
+
+  SetonixData removeDeck(String id) => removeAsset('$kPackDecksPath/$id.json');
+
+  SetonixData setDeck(String id, DeckDefinition definition) =>
+      setAsset('$kPackDecksPath/$id.json', utf8.encode(definition.toJson()));
+
+  SetonixData removeBackground(String background) =>
+      removeAsset('$kPackBackgroundsPath/$background.json');
+
+  SetonixData setBackground(
+          String background, BackgroundDefinition definition) =>
+      setAsset('$kPackBackgroundsPath/$background.json',
+          utf8.encode(definition.toJson()));
 }
 
 class SetonixFile {

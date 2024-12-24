@@ -90,7 +90,7 @@ final class WorldState with WorldStateMappable {
   }
 
   SetonixData save() =>
-      data.setTable(table, tableName).setInfo(info).setFileMetadata(metadata);
+      data.setTable(table, tableName).setInfo(info).setMetadata(metadata);
 
   GameTable? getTable(String name) =>
       name == tableName ? table : data.getTable(name);

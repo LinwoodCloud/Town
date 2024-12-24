@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/bloc/editor.dart';
+import 'package:setonix/pages/editor/backgrounds.dart';
+import 'package:setonix/pages/editor/decks.dart';
 import 'package:setonix/pages/editor/figures.dart';
 import 'package:setonix/pages/editor/general.dart';
 import 'package:setonix/services/file_system.dart';
@@ -25,7 +27,7 @@ enum EditorPage {
   const EditorPage(this.icon, this.location);
 
   String get fullLocation => '$kEditorPath$location';
-  String get route => 'editor-$name';
+  String get route => this == EditorPage.general ? 'editor' : 'editor-$name';
 
   String getLocalizedName(BuildContext context) {
     final loc = AppLocalizations.of(context);
@@ -42,8 +44,8 @@ enum EditorPage {
     return switch (this) {
       EditorPage.general => const GeneralEditorPage(),
       EditorPage.figures => const FiguresEditorPage(),
-      EditorPage.decks => const GeneralEditorPage(),
-      EditorPage.backgrounds => const GeneralEditorPage(),
+      EditorPage.decks => const DecksEditorPage(),
+      EditorPage.backgrounds => const BackgroundsEditorPage(),
       EditorPage.translations => const GeneralEditorPage(),
     };
   }
@@ -67,12 +69,12 @@ class EditorNavigatorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NavigationDrawer(
-      selectedIndex: currentPage.index + 1,
+      selectedIndex: isMobile ? currentPage.index + 1 : currentPage.index,
       onDestinationSelected: (value) {
-        if (value == 0) {
+        if (isMobile && value == 0) {
           context.go('/');
         } else {
-          _navigate(context, EditorPage.values[value - 1]);
+          _navigate(context, EditorPage.values[isMobile ? value - 1 : value]);
         }
       },
       children: [

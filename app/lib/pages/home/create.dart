@@ -304,7 +304,7 @@ class _CreateDialogState extends State<CreateDialog>
                 ),
               );
               template = template
-                  .setFileMetadata(
+                  .setMetadata(
                     FileMetadata(
                       name: name,
                       description: description,
