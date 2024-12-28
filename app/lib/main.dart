@@ -132,9 +132,10 @@ class SetonixApp extends StatelessWidget {
               child: child,
             ),
             routes: EditorPage.values
+                .where((e) => e.location != null)
                 .map(
                   (e) => GoRoute(
-                    path: '$kEditorPath${e.location}',
+                    path: e.fullLocation!,
                     name: e.route,
                     builder: (context, state) => e.getPage(),
                   ),

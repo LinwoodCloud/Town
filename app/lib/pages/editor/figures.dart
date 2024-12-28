@@ -21,6 +21,14 @@ class FiguresEditorPage extends StatelessWidget {
             child: BlocBuilder<EditorCubit, SetonixData>(
               builder: (context, state) {
                 final figures = state.getFigureItems();
+                if (figures.isEmpty) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(AppLocalizations.of(context).noData),
+                    ),
+                  );
+                }
                 return Column(
                   children: figures.map((figure) {
                     final id = figure.id;
@@ -37,6 +45,15 @@ class FiguresEditorPage extends StatelessWidget {
                             cubit.removeFigure(id);
                           },
                         ),
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => BlocProvider.value(
+                              value: cubit,
+                              child: FigureEditorDialog(name: id),
+                            ),
+                          );
+                        },
                       ),
                     );
                   }).toList(),
@@ -61,6 +78,68 @@ class FiguresEditorPage extends StatelessWidget {
         label: Text(AppLocalizations.of(context).create),
         icon: const Icon(PhosphorIconsLight.plus),
       ),
+    );
+  }
+}
+
+class FigureEditorDialog extends StatefulWidget {
+  final String name;
+
+  const FigureEditorDialog({super.key, required this.name});
+
+  @override
+  State<FigureEditorDialog> createState() => _FigureEditorDialogState();
+}
+
+class _FigureEditorDialogState extends State<FigureEditorDialog> {
+  late FigureDefinition? _value;
+
+  @override
+  void initState() {
+    super.initState();
+    _value = context.read<EditorCubit>().state.getFigure(widget.name);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final value = _value;
+    if (value == null) {
+      return const SizedBox();
+    }
+    return ResponsiveAlertDialog(
+      title: Text(widget.name),
+      constraints: const BoxConstraints(maxWidth: LeapBreakpoints.compact),
+      content: ListView(
+        shrinkWrap: true,
+        children: [
+          CheckboxListTile(
+            value: value.rollable,
+            title: Text(AppLocalizations.of(context).roll),
+            onChanged: (bool? value) {
+              if (value != null) {
+                setState(() {
+                  _value = _value?.copyWith(rollable: value);
+                });
+              }
+            },
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text(AppLocalizations.of(context).cancel),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            context.read<EditorCubit>().setFigure(widget.name, value);
+            Navigator.of(context).pop();
+          },
+          child: Text(AppLocalizations.of(context).save),
+        ),
+      ],
     );
   }
 }

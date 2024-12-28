@@ -19,15 +19,19 @@ enum EditorPage {
   figures(PhosphorIcons.cube, '/figures'),
   decks(PhosphorIcons.stack, '/decks'),
   backgrounds(PhosphorIcons.image, '/backgrounds'),
-  translations(PhosphorIcons.translate, '/translations');
+  translations(PhosphorIcons.translate, null);
 
   final IconGetter icon;
-  final String location;
+  final String? location;
 
   const EditorPage(this.icon, this.location);
 
-  String get fullLocation => '$kEditorPath$location';
-  String get route => this == EditorPage.general ? 'editor' : 'editor-$name';
+  String? get fullLocation => location == null ? null : '$kEditorPath$location';
+  String? get route => location == null
+      ? null
+      : this == EditorPage.general
+          ? 'editor'
+          : 'editor-$name';
 
   String getLocalizedName(BuildContext context) {
     final loc = AppLocalizations.of(context);
@@ -63,7 +67,11 @@ class EditorNavigatorView extends StatelessWidget {
 
   void _navigate(BuildContext context, EditorPage page) {
     final cubit = context.read<EditorCubit>();
-    context.goNamed(page.route, pathParameters: {'name': cubit.path});
+    final route = page.route;
+    if (route == null) {
+      return;
+    }
+    context.goNamed(route, pathParameters: {'name': cubit.path});
   }
 
   @override
@@ -89,6 +97,7 @@ class EditorNavigatorView extends StatelessWidget {
               icon: Icon(e.icon(PhosphorIconsStyle.light)),
               label: Text(e.getLocalizedName(context)),
               selectedIcon: Icon(e.icon(PhosphorIconsStyle.fill)),
+              enabled: e.location != null,
             )),
       ],
     );
