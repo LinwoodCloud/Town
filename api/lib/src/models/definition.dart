@@ -21,53 +21,36 @@ class FigureDefinition extends GameObjectDefinition
 }
 
 @MappableClass()
-class BoardDefinition with BoardDefinitionMappable, VisualDefinition {
-  @override
-  final VectorDefinition offset;
-  @override
-  final VectorDefinition? size;
-  @override
-  final String texture;
+class BoardDefinition extends VisualDefinition with BoardDefinitionMappable {
   final VectorDefinition tiles;
 
   BoardDefinition({
-    this.offset = VectorDefinition.zero,
-    this.size,
-    required this.texture,
+    super.offset,
+    super.size,
+    required super.texture,
     this.tiles = VectorDefinition.one,
   });
 }
 
 @MappableClass()
-class VariationDefinition with VariationDefinitionMappable, VisualDefinition {
+class VariationDefinition extends VisualDefinition
+    with VariationDefinitionMappable {
   final String? category;
-  @override
-  final String texture;
-  @override
-  final VectorDefinition offset;
-  @override
-  final VectorDefinition? size;
 
   VariationDefinition({
     this.category,
-    required this.texture,
-    this.offset = VectorDefinition.zero,
-    this.size,
+    required super.texture,
+    super.offset,
+    super.size,
   });
 }
 
 @MappableClass()
-class FigureBackDefinition with FigureBackDefinitionMappable, VisualDefinition {
-  @override
-  final String texture;
-  @override
-  final VectorDefinition offset;
-  @override
-  final VectorDefinition? size;
-
+class FigureBackDefinition extends VisualDefinition
+    with FigureBackDefinitionMappable {
   FigureBackDefinition({
-    required this.texture,
-    this.offset = VectorDefinition.zero,
-    this.size,
+    required super.texture,
+    super.offset,
+    super.size,
   });
 }

@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/bloc/editor.dart';
+import 'package:setonix/pages/editor/texture.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 class FiguresEditorPage extends StatelessWidget {
@@ -93,11 +94,14 @@ class FigureEditorDialog extends StatefulWidget {
 
 class _FigureEditorDialogState extends State<FigureEditorDialog> {
   late FigureDefinition? _value;
+  late PackTranslation _translation;
 
   @override
   void initState() {
     super.initState();
-    _value = context.read<EditorCubit>().state.getFigure(widget.name);
+    final editorState = context.read<EditorCubit>().state;
+    _value = editorState.getFigure(widget.name);
+    _translation = editorState.getTranslationOrDefault();
   }
 
   @override
@@ -106,40 +110,148 @@ class _FigureEditorDialogState extends State<FigureEditorDialog> {
     if (value == null) {
       return const SizedBox();
     }
-    return ResponsiveAlertDialog(
-      title: Text(widget.name),
-      constraints: const BoxConstraints(maxWidth: LeapBreakpoints.compact),
-      content: ListView(
-        shrinkWrap: true,
-        children: [
-          CheckboxListTile(
-            value: value.rollable,
-            title: Text(AppLocalizations.of(context).roll),
-            onChanged: (bool? value) {
-              if (value != null) {
-                setState(() {
-                  _value = _value?.copyWith(rollable: value);
-                });
-              }
+    final variations = value.variations.entries.toList();
+    return DefaultTabController(
+      length: 3,
+      child: ResponsiveAlertDialog(
+        title: Text(widget.name),
+        constraints: const BoxConstraints(
+            maxWidth: LeapBreakpoints.compact, maxHeight: 600),
+        content: Column(
+          children: [
+            TabBar(
+              tabs: [
+                HorizontalTab(
+                  icon: const Icon(PhosphorIconsLight.textT),
+                  label: Text(AppLocalizations.of(context).general),
+                ),
+                HorizontalTab(
+                  icon: const Icon(PhosphorIconsLight.spade),
+                  label: Text(AppLocalizations.of(context).back),
+                ),
+                HorizontalTab(
+                  icon: const Icon(PhosphorIconsLight.stack),
+                  label: Text(AppLocalizations.of(context).variations),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  ListView(
+                    shrinkWrap: true,
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context).name,
+                          filled: true,
+                          icon: const Icon(PhosphorIconsLight.textT),
+                        ),
+                        initialValue: _translation.figures[widget.name]?.name,
+                        onChanged: (value) {
+                          final translation = FigureTranslation(name: value);
+                          _translation = _translation.copyWith.figures
+                              .put(widget.name, translation);
+                        },
+                      ),
+                      CheckboxListTile(
+                        value: value.rollable,
+                        title: Text(AppLocalizations.of(context).roll),
+                        onChanged: (bool? value) {
+                          if (value != null) {
+                            setState(() {
+                              _value = _value?.copyWith(rollable: value);
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  SingleChildScrollView(
+                    child: VisualEditingView(
+                        value: value.back,
+                        onChanged: (v) {
+                          setState(() {
+                            _value = value.copyWith(back: v);
+                          });
+                        }),
+                  ),
+                  Stack(
+                    children: [
+                      variations.isEmpty
+                          ? Center(
+                              child: Text(AppLocalizations.of(context).noData))
+                          : ListView.builder(
+                              itemCount: variations.length,
+                              itemBuilder: (context, index) {
+                                final variation = variations[index];
+                                return ListTile(
+                                  title: Text(variation.key),
+                                  trailing: IconButton(
+                                    icon: const Icon(PhosphorIconsLight.trash),
+                                    onPressed: () {
+                                      setState(() {
+                                        _value = value.copyWith.variations
+                                            .remove(variation.key);
+                                      });
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: FloatingActionButton.extended(
+                          onPressed: () async {
+                            final result = await showDialog<String>(
+                              context: context,
+                              builder: (context) => NameDialog(
+                                validator: defaultNameValidator(
+                                  context,
+                                  value.variations.keys.toList(),
+                                ),
+                              ),
+                            );
+                            if (result == null) return;
+                            setState(() {
+                              _value = value.copyWith.variations.put(
+                                result,
+                                VariationDefinition(texture: ''),
+                              );
+                            });
+                          },
+                          label: Text(AppLocalizations.of(context).create),
+                          icon: Icon(PhosphorIconsLight.plus),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
             },
+            child: Text(AppLocalizations.of(context).cancel),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              context.read<EditorCubit>().setFigure(widget.name, value);
+              context.read<EditorCubit>().setTranslation(
+                    _translation,
+                    widget.name,
+                  );
+              Navigator.of(context).pop();
+            },
+            child: Text(AppLocalizations.of(context).save),
           ),
         ],
       ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text(AppLocalizations.of(context).cancel),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            context.read<EditorCubit>().setFigure(widget.name, value);
-            Navigator.of(context).pop();
-          },
-          child: Text(AppLocalizations.of(context).save),
-        ),
-      ],
     );
   }
 }

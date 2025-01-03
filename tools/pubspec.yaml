@@ -2,9 +2,9 @@ name: setonix_tools
 environment:
   sdk: ">=2.13.0 <3.0.0"
 dependencies:
-  archive: ^3.4.10
+  archive: ^4.0.1
   args: ^2.5.0
-  intl: ^0.19.0
+  intl: ^0.20.1
   lints: ^5.0.0
   shelf: ^1.4.1
   shelf_proxy: ^1.0.4
@@ -15,5 +15,5 @@ dependencies:
   generate_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs
-      ref: 40b8553ab86ab4f06d9f689268a65d65ed936fda
+      ref: f29b1ae0e338ec155e1c5b0a204c399232904540
       path: packages/generate_leap

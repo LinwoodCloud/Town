@@ -192,12 +192,15 @@ class SetonixData extends ArchiveData<SetonixData> {
         return MapEntry(e, translation);
       }).nonNulls;
 
-  PackTranslation? getTranslation(String id) {
+  PackTranslation? getTranslation([String id = kFallbackLocale]) {
     final data = getAsset('$kPackTranslationsPath/$id.json');
     if (data == null) return null;
     final content = utf8.decode(data);
     return PackTranslationMapper.fromJson(content);
   }
+
+  PackTranslation getTranslationOrDefault([String id = kFallbackLocale]) =>
+      getTranslation(id) ?? PackTranslation();
 
   SetonixData setMetadata(FileMetadata metadata) => setAsset(
         kPackMetadataPath,
@@ -209,7 +212,7 @@ class SetonixData extends ArchiveData<SetonixData> {
       SetonixData(archive, state: state);
 
   TranslationsStore getTranslationsStore(
-          {required String Function() getLocale}) =>
+          {String? Function() getLocale = getDefaultLocale}) =>
       TranslationsStore(
         translations: getAllTranslations(),
         getLocale: getLocale,
@@ -233,6 +236,13 @@ class SetonixData extends ArchiveData<SetonixData> {
           String background, BackgroundDefinition definition) =>
       setAsset('$kPackBackgroundsPath/$background.json',
           utf8.encode(definition.toJson()));
+
+  SetonixData setTranslation(PackTranslation translation,
+          [String locale = kFallbackLocale]) =>
+      setAsset(
+        '$kPackTranslationsPath/$locale.json',
+        utf8.encode(translation.toJson()),
+      );
 }
 
 class SetonixFile {

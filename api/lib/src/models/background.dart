@@ -5,19 +5,14 @@ import 'visual.dart';
 part 'background.mapper.dart';
 
 @MappableClass()
-class BackgroundDefinition with BackgroundDefinitionMappable, VisualDefinition {
-  @override
-  final VectorDefinition offset;
-  @override
-  final VectorDefinition? size;
-  @override
-  final String texture;
+class BackgroundDefinition extends VisualDefinition
+    with BackgroundDefinitionMappable {
   final int priority;
 
   BackgroundDefinition({
-    this.offset = VectorDefinition.zero,
-    this.size,
-    required this.texture,
+    super.offset,
+    super.size,
+    required super.texture,
     this.priority = 0,
   });
 }

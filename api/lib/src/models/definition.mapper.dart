@@ -166,6 +166,7 @@ class VariationDefinitionMapper extends ClassMapperBase<VariationDefinition> {
   static VariationDefinitionMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = VariationDefinitionMapper._());
+      VisualDefinitionMapper.ensureInitialized();
       VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
@@ -257,9 +258,12 @@ extension VariationDefinitionValueCopy<$R, $Out>
 }
 
 abstract class VariationDefinitionCopyWith<$R, $In extends VariationDefinition,
-    $Out> implements ClassCopyWith<$R, $In, $Out> {
+    $Out> implements VisualDefinitionCopyWith<$R, $In, $Out> {
+  @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get offset;
+  @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get size;
+  @override
   $R call(
       {String? category,
       String? texture,
@@ -315,6 +319,7 @@ class FigureBackDefinitionMapper extends ClassMapperBase<FigureBackDefinition> {
   static FigureBackDefinitionMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = FigureBackDefinitionMapper._());
+      VisualDefinitionMapper.ensureInitialized();
       VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
@@ -403,9 +408,12 @@ extension FigureBackDefinitionValueCopy<$R, $Out>
 abstract class FigureBackDefinitionCopyWith<
     $R,
     $In extends FigureBackDefinition,
-    $Out> implements ClassCopyWith<$R, $In, $Out> {
+    $Out> implements VisualDefinitionCopyWith<$R, $In, $Out> {
+  @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get offset;
+  @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get size;
+  @override
   $R call({String? texture, VectorDefinition? offset, VectorDefinition? size});
   FigureBackDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
@@ -451,6 +459,7 @@ class BoardDefinitionMapper extends ClassMapperBase<BoardDefinition> {
   static BoardDefinitionMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = BoardDefinitionMapper._());
+      VisualDefinitionMapper.ensureInitialized();
       VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
@@ -540,10 +549,13 @@ extension BoardDefinitionValueCopy<$R, $Out>
 }
 
 abstract class BoardDefinitionCopyWith<$R, $In extends BoardDefinition, $Out>
-    implements ClassCopyWith<$R, $In, $Out> {
+    implements VisualDefinitionCopyWith<$R, $In, $Out> {
+  @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get offset;
+  @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get size;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get tiles;
+  @override
   $R call(
       {VectorDefinition? offset,
       VectorDefinition? size,

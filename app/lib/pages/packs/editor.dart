@@ -39,6 +39,11 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
                 );
               }
               final files = snapshot.data ?? [];
+              if (files.isEmpty) {
+                return Center(
+                  child: Text(AppLocalizations.of(context).noData),
+                );
+              }
               return ListView.builder(
                 itemCount: files.length,
                 itemBuilder: (context, index) {

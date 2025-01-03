@@ -32,9 +32,9 @@ dependencies:
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 0d83610bb542f25f58cca7b64a0799e17da1a00b
+      ref: 54f7ac141410938babff9539dca190f5d130a0db
       path: packages/material_leap
-  flex_color_scheme: ^8.0.0-dev.1
+  flex_color_scheme: ^8.1.0
   flutter_svg: ^2.0.10+1
   window_manager: ^0.4.0
   go_router: ^14.2.2
@@ -47,7 +47,7 @@ dependencies:
   rxdart: ^0.28.0
   collection: ^1.18.0
   flame_bloc: ">=1.12.2 <1.13.0"
-  flame: ">=1.22.0 <1.23.0"
+  flame: ">=1.23.0 <1.24.0"
   flame_tiled: ">=1.21.1 <1.22.0"
   # Networking
   http: ^1.2.1
@@ -72,7 +72,7 @@ dependencies:
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs
-      ref: f2e717b77237fb7cdfce6ec22f1b3c296a79d348
+      ref: 54f7ac141410938babff9539dca190f5d130a0db
       path: packages/lw_file_system
   lw_sysapi:
     git:

@@ -13,6 +13,7 @@ class BackgroundDefinitionMapper extends ClassMapperBase<BackgroundDefinition> {
   static BackgroundDefinitionMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = BackgroundDefinitionMapper._());
+      VisualDefinitionMapper.ensureInitialized();
       VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
@@ -106,9 +107,12 @@ extension BackgroundDefinitionValueCopy<$R, $Out>
 abstract class BackgroundDefinitionCopyWith<
     $R,
     $In extends BackgroundDefinition,
-    $Out> implements ClassCopyWith<$R, $In, $Out> {
+    $Out> implements VisualDefinitionCopyWith<$R, $In, $Out> {
+  @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get offset;
+  @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get size;
+  @override
   $R call(
       {VectorDefinition? offset,
       VectorDefinition? size,

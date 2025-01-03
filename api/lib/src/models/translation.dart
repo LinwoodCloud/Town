@@ -2,17 +2,21 @@ import 'package:dart_mappable/dart_mappable.dart';
 
 part 'translation.mapper.dart';
 
+const kFallbackLocale = 'en';
+
+String? getDefaultLocale() => null;
+
 class TranslationsStore {
-  final String Function() getLocale;
+  final String? Function() getLocale;
   final Map<String, PackTranslation> translations;
 
   TranslationsStore({
     Iterable<MapEntry<String, PackTranslation>> translations = const [],
-    required this.getLocale,
+    this.getLocale = getDefaultLocale,
   }) : translations = Map.fromEntries(translations);
 
   PackTranslation getTranslation([String? locale]) =>
-      (locale == null ? null : translations[locale]) ??
+      (locale == null ? translations[kFallbackLocale] : translations[locale]) ??
       translations[getLocale()] ??
       PackTranslation();
 

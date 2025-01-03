@@ -14,13 +14,13 @@ class EditorCubit extends Cubit<SetonixData> {
   void onChange(Change<SetonixData> change) {
     super.onChange(change);
 
-    save();
+    _save(change.nextState);
   }
 
   bool _needsSave = false;
   bool _isSaving = false;
 
-  Future<void> save() async {
+  Future<void> _save(SetonixData data) async {
     _needsSave = true;
     if (_isSaving) {
       return;
@@ -28,7 +28,7 @@ class EditorCubit extends Cubit<SetonixData> {
     _isSaving = true;
     while (_needsSave) {
       _needsSave = false;
-      await fileSystem.editorSystem.updateFile(path, state);
+      await fileSystem.editorSystem.updateFile(path, data);
     }
     _isSaving = false;
   }
@@ -55,5 +55,10 @@ class EditorCubit extends Cubit<SetonixData> {
 
   void setBackground(String background, BackgroundDefinition definition) {
     emit(state.setBackground(background, definition));
+  }
+
+  void setTranslation(PackTranslation translation,
+      [String locale = kFallbackLocale]) {
+    emit(state.setTranslation(translation, locale));
   }
 }
