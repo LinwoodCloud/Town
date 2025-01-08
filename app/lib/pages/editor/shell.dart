@@ -5,10 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/bloc/editor.dart';
+import 'package:setonix/bloc/settings.dart';
 import 'package:setonix/pages/editor/backgrounds.dart';
 import 'package:setonix/pages/editor/decks.dart';
 import 'package:setonix/pages/editor/figures.dart';
 import 'package:setonix/pages/editor/general.dart';
+import 'package:setonix/pages/editor/textures.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix_api/setonix_api.dart';
 
@@ -19,7 +21,8 @@ enum EditorPage {
   figures(PhosphorIcons.cube, '/figures'),
   decks(PhosphorIcons.stack, '/decks'),
   backgrounds(PhosphorIcons.image, '/backgrounds'),
-  translations(PhosphorIcons.translate, null);
+  translations(PhosphorIcons.translate, null),
+  textures(PhosphorIcons.paintBucket, '/textures');
 
   final IconGetter icon;
   final String? location;
@@ -41,6 +44,7 @@ enum EditorPage {
       EditorPage.decks => loc.decks,
       EditorPage.backgrounds => loc.backgrounds,
       EditorPage.translations => loc.translations,
+      EditorPage.textures => loc.textures,
     };
   }
 
@@ -51,6 +55,7 @@ enum EditorPage {
       EditorPage.decks => const DecksEditorPage(),
       EditorPage.backgrounds => const BackgroundsEditorPage(),
       EditorPage.translations => const GeneralEditorPage(),
+      EditorPage.textures => const TexturesEditorPage(),
     };
   }
 }
@@ -140,7 +145,7 @@ class _EditorShellState extends State<EditorShell> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            appBar: AppBar(
+            appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
               title: Text(AppLocalizations.of(context).loading),
             ),
             body: const Center(child: CircularProgressIndicator()),
@@ -148,7 +153,7 @@ class _EditorShellState extends State<EditorShell> {
         }
         if (snapshot.hasError) {
           return Scaffold(
-            appBar: AppBar(
+            appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
               title: Text(AppLocalizations.of(context).error),
             ),
             body: Center(
@@ -161,7 +166,7 @@ class _EditorShellState extends State<EditorShell> {
         final data = snapshot.data;
         if (data == null) {
           return Scaffold(
-            appBar: AppBar(
+            appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
               title: Text(AppLocalizations.of(context).error),
             ),
             body: Center(
@@ -189,11 +194,11 @@ class _EditorShellState extends State<EditorShell> {
         children: [
           if (!isMobile) ...[
             EditorNavigatorView(currentPage: currentPage),
-            const SizedBox(width: 8)
+            const SizedBox(width: 4)
           ],
           Expanded(
             child: Scaffold(
-              appBar: AppBar(
+              appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
                 title: Text(currentPage.getLocalizedName(context)),
               ),
               drawer: isMobile

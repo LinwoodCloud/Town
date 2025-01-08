@@ -243,6 +243,22 @@ class SetonixData extends ArchiveData<SetonixData> {
         '$kPackTranslationsPath/$locale.json',
         utf8.encode(translation.toJson()),
       );
+
+  Iterable<String> getTextures() => getAssets(kPackTexturesPath);
+  Map<String, Uint8List> getTexturesData() =>
+      Map.fromEntries(getTextures().map((e) {
+        final data = getTexture(e);
+        if (data == null) return null;
+        return MapEntry(e, data);
+      }).nonNulls);
+
+  SetonixData setTexture(String texture, Uint8List data) => setAsset(
+        '$kPackTexturesPath/$texture',
+        data,
+      );
+
+  SetonixData removeTexture(String texture) =>
+      removeAsset('$kPackTexturesPath/$texture');
 }
 
 class SetonixFile {

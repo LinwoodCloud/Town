@@ -1,3 +1,7 @@
+* Add editor
 * Fix importing of packs
 * Rework packs dialog
 * Upgrade to flutter 3.27
+* Use minSdkVersion 23 instead of 21 (The minimum version of android is 6.0 (Marshmallow))
+
+Read more here: https://linwood.dev/setonix/0.3.0

@@ -32,7 +32,7 @@ dependencies:
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 54f7ac141410938babff9539dca190f5d130a0db
+      ref: 742b507106900b65490551d42a2ef4c7d049889a
       path: packages/material_leap
   flex_color_scheme: ^8.1.0
   flutter_svg: ^2.0.10+1
@@ -69,15 +69,16 @@ dependencies:
   path_provider: ^2.1.4
   url_launcher: ^6.2.6
   file_selector: ^1.0.3
+  flutter_secure_storage: ^10.0.0-beta.1
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs
-      ref: 54f7ac141410938babff9539dca190f5d130a0db
+      ref: 760972dc351ab9aecd3df37e8679b2b029f34e80
       path: packages/lw_file_system
   lw_sysapi:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs
-      ref: f0a948c8df10fe8a52c05ea84e19d5517ac1692d
+      ref: 742b507106900b65490551d42a2ef4c7d049889a
       path: packages/lw_sysapi
   setonix_api:
     path: ../api
@@ -89,11 +90,6 @@ dependencies:
   bloc_concurrency: ^0.2.5
   idb_shim: ^2.6.1+7
 dependency_overrides:
-  flutter_secure_storage_web:
-    git:
-      url: https://github.com/CodeDoctorDE/flutter_secure_storage.git
-      ref: 1d7b32bde7910bc2ffd1db5245ee0b2478ff4b7d
-      path: flutter_secure_storage_web
   tiled:
     git:
       url: https://github.com/flame-engine/tiled.dart.git

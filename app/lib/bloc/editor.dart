@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix_api/setonix_api.dart';
@@ -33,32 +35,28 @@ class EditorCubit extends Cubit<SetonixData> {
     _isSaving = false;
   }
 
-  void removeFigure(String figure) {
-    emit(state.removeFigure(figure));
-  }
+  void removeFigure(String figure) => emit(state.removeFigure(figure));
 
-  void setFigure(String figure, FigureDefinition definition) {
-    emit(state.setFigure(figure, definition));
-  }
+  void setFigure(String figure, FigureDefinition definition) =>
+      emit(state.setFigure(figure, definition));
 
-  void removeDeck(String deck) {
-    emit(state.removeDeck(deck));
-  }
+  void removeDeck(String deck) => emit(state.removeDeck(deck));
 
-  void setDeck(String deck, DeckDefinition definition) {
-    emit(state.setDeck(deck, definition));
-  }
+  void setDeck(String deck, DeckDefinition definition) =>
+      emit(state.setDeck(deck, definition));
 
-  void removeBackground(String background) {
-    emit(state.removeBackground(background));
-  }
+  void removeBackground(String background) =>
+      emit(state.removeBackground(background));
 
-  void setBackground(String background, BackgroundDefinition definition) {
-    emit(state.setBackground(background, definition));
-  }
+  void setBackground(String background, BackgroundDefinition definition) =>
+      emit(state.setBackground(background, definition));
 
   void setTranslation(PackTranslation translation,
-      [String locale = kFallbackLocale]) {
-    emit(state.setTranslation(translation, locale));
-  }
+          [String locale = kFallbackLocale]) =>
+      emit(state.setTranslation(translation, locale));
+
+  void removeTexture(String texture) => emit(state.removeTexture(texture));
+
+  void setTexture(String name, Uint8List bytes) =>
+      emit(state.setTexture(name, bytes));
 }

@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/bloc/editor.dart';
-import 'package:setonix/pages/editor/texture.dart';
+import 'package:setonix/pages/editor/textures.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 class FiguresEditorPage extends StatelessWidget {
