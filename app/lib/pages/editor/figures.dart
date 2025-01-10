@@ -93,7 +93,7 @@ class FigureEditorDialog extends StatefulWidget {
 }
 
 class _FigureEditorDialogState extends State<FigureEditorDialog> {
-  late FigureDefinition? _value;
+  FigureDefinition? _value;
   late PackTranslation _translation;
 
   @override
@@ -188,6 +188,27 @@ class _FigureEditorDialogState extends State<FigureEditorDialog> {
                                 final variation = variations[index];
                                 return ListTile(
                                   title: Text(variation.key),
+                                  onTap: () async {
+                                    final bloc = context.read<EditorCubit>();
+                                    final result =
+                                        await showDialog<VariationDefinition>(
+                                      context: context,
+                                      builder: (context) => BlocProvider.value(
+                                        value: bloc,
+                                        child: _FigureVariationEditorDialog(
+                                          name: variation.key,
+                                          value: variation.value,
+                                        ),
+                                      ),
+                                    );
+                                    if (result == null) return;
+                                    setState(() {
+                                      _value = value.copyWith.variations.put(
+                                        variation.key,
+                                        result,
+                                      );
+                                    });
+                                  },
                                   trailing: IconButton(
                                     icon: const Icon(PhosphorIconsLight.trash),
                                     onPressed: () {
@@ -252,6 +273,59 @@ class _FigureEditorDialogState extends State<FigureEditorDialog> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _FigureVariationEditorDialog extends StatefulWidget {
+  final String name;
+  final VariationDefinition value;
+
+  const _FigureVariationEditorDialog({
+    super.key,
+    required this.name,
+    required this.value,
+  });
+
+  @override
+  State<_FigureVariationEditorDialog> createState() =>
+      __FigureVariationEditorDialogState();
+}
+
+class __FigureVariationEditorDialogState
+    extends State<_FigureVariationEditorDialog> {
+  late VariationDefinition _value;
+
+  @override
+  void initState() {
+    super.initState();
+    _value = widget.value;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveAlertDialog(
+      title: Text(widget.name),
+      content: VisualEditingView(
+        value: _value,
+        onChanged: (v) => setState(() {
+          _value = v;
+        }),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text(AppLocalizations.of(context).cancel),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop(_value);
+          },
+          child: Text(AppLocalizations.of(context).save),
+        ),
+      ],
     );
   }
 }
