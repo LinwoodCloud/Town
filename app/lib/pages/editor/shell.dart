@@ -84,6 +84,7 @@ class EditorNavigatorView extends StatelessWidget {
     return NavigationDrawer(
       selectedIndex: isMobile ? currentPage.index + 1 : currentPage.index,
       onDestinationSelected: (value) {
+        if (isMobile) Navigator.of(context).pop();
         if (isMobile && value == 0) {
           context.go('/');
         } else {

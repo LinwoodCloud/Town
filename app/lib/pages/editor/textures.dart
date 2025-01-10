@@ -64,6 +64,51 @@ class TexturesEditorPage extends StatelessWidget {
   }
 }
 
+class EditorTextureListTile extends StatelessWidget {
+  final String? label;
+  final String value;
+  final ValueChanged<String> onChanged;
+  final VoidCallback? onRemove;
+
+  const EditorTextureListTile({
+    super.key,
+    this.label,
+    required this.value,
+    required this.onChanged,
+    this.onRemove,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EditorCubit, SetonixData>(
+      builder: (context, state) {
+        final data = state.getTexture(value);
+        return ListTile(
+          title: Text(label ?? AppLocalizations.of(context).texture),
+          subtitle:
+              Text(value.isEmpty ? AppLocalizations.of(context).notSet : ''),
+          leading:
+              data == null ? null : Image.memory(data, width: 48, height: 48),
+          onTap: () => showDialog(
+            context: context,
+            builder: (context) =>
+                TextureDialog(textures: state.getTexturesData()),
+          ).then((texture) {
+            if (texture == null) return;
+            onChanged(texture);
+          }),
+          trailing: onRemove == null
+              ? null
+              : IconButton(
+                  icon: const Icon(PhosphorIconsLight.trash),
+                  onPressed: onRemove,
+                ),
+        );
+      },
+    );
+  }
+}
+
 class TextureDialog extends StatelessWidget {
   final Map<String, Uint8List?> textures;
 
@@ -80,6 +125,12 @@ class TextureDialog extends StatelessWidget {
       content: _TexturesColumn(
           textures: textures,
           onClick: (texture) => Navigator.of(context).pop(texture)),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(AppLocalizations.of(context).cancel),
+        ),
+      ],
     );
   }
 }
@@ -139,6 +190,14 @@ class VisualEditingView<T extends VisualDefinition> extends StatelessWidget {
     final size = value.size;
     return Column(
       children: [
+        EditorTextureListTile(
+          value: value.texture,
+          onChanged: (texture) =>
+              onChanged(value.copyWith(texture: texture) as T),
+          onRemove: value.texture.isEmpty
+              ? null
+              : () => onChanged(value.copyWith(texture: '') as T),
+        ),
         OffsetListTile(
           value: value.offset.toOffset(),
           title: Text(AppLocalizations.of(context).offset),

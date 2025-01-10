@@ -219,5 +219,7 @@
   "offset": "Offset",
   "wholeSizeClickCustomize": "Whole size, click to customize",
   "clear": "Clear",
-  "textures": "Textures"
+  "textures": "Textures",
+  "texture": "Texture",
+  "notSet": "Not set"
 }
