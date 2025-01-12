@@ -222,5 +222,8 @@
   "textures": "Textures",
   "texture": "Texture",
   "notSet": "Not set",
-  "category": "Category"
+  "category": "Category",
+  "figure": "Figure",
+  "variation": "Variation",
+  "position": "Position"
 }

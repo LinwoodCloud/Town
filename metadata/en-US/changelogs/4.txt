@@ -1,5 +1,6 @@
 * Add editor
 * Fix importing of packs
+* Fix packs not available on singleplayer
 * Rework packs dialog
 * Upgrade to flutter 3.27
 * Use minSdkVersion 23 instead of 21 (The minimum version of android is 6.0 (Marshmallow))

@@ -175,7 +175,7 @@ class GameDrawer extends StatelessWidget {
             ),
             BlocBuilder<MultiplayerCubit, MultiplayerState>(
                 builder: (context, state) {
-              if (!state.isServer) return SizedBox.shrink();
+              if (state.isClient) return SizedBox.shrink();
               return ListTile(
                 leading: const Icon(PhosphorIconsLight.package),
                 title: Text(AppLocalizations.of(context).packs),
