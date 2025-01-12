@@ -50,45 +50,64 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
                   final file = files[index];
                   final data = file.data!;
                   final metadata = data.getMetadataOrDefault();
-                  return ListTile(
-                    title: Text(metadata.name),
-                    subtitle: Text(file.identifier),
-                    onTap: () =>
-                        GoRouter.of(context).goNamed('editor', pathParameters: {
-                      'name': file.identifier,
-                    }),
-                    trailing: IconButton(
-                      icon: const Icon(PhosphorIconsLight.trash),
-                      onPressed: () async {
-                        final result = await showDialog<bool>(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title:
-                                Text(AppLocalizations.of(context).removePack),
-                            content: Text(AppLocalizations.of(context)
-                                .removePackMessage(file.identifier)),
-                            actions: [
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.of(context).pop(false),
-                                child:
-                                    Text(AppLocalizations.of(context).cancel),
-                              ),
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.of(context).pop(true),
-                                child:
-                                    Text(AppLocalizations.of(context).remove),
-                              ),
-                            ],
-                          ),
-                        );
-                        if (!(result ?? false)) return;
-                        await _fileSystem.editorSystem
-                            .deleteFile(file.identifier);
-                        _reloadPacks();
-                      },
-                    ),
+                  return ContextRegion(
+                    builder: (context, widget, controller) {
+                      return ListTile(
+                        title: Text(metadata.name),
+                        subtitle: Text(file.identifier),
+                        onTap: () => GoRouter.of(context)
+                            .goNamed('editor', pathParameters: {
+                          'name': file.identifier,
+                        }),
+                        trailing: widget,
+                      );
+                    },
+                    menuChildren: [
+                      MenuItemButton(
+                        leadingIcon: const Icon(PhosphorIconsLight.export),
+                        child: Text(AppLocalizations.of(context).export),
+                        onPressed: () async {
+                          exportData(
+                            context,
+                            data,
+                            metadata.name,
+                          );
+                        },
+                      ),
+                      MenuItemButton(
+                        leadingIcon: const Icon(PhosphorIconsLight.trash),
+                        child: Text(AppLocalizations.of(context).delete),
+                        onPressed: () async {
+                          final result = await showDialog<bool>(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title:
+                                  Text(AppLocalizations.of(context).removePack),
+                              content: Text(AppLocalizations.of(context)
+                                  .removePackMessage(file.identifier)),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(false),
+                                  child:
+                                      Text(AppLocalizations.of(context).cancel),
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(true),
+                                  child:
+                                      Text(AppLocalizations.of(context).remove),
+                                ),
+                              ],
+                            ),
+                          );
+                          if (!(result ?? false)) return;
+                          await _fileSystem.editorSystem
+                              .deleteFile(file.identifier);
+                          _reloadPacks();
+                        },
+                      ),
+                    ],
                   );
                 },
               );
