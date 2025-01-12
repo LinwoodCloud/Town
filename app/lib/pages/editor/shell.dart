@@ -7,6 +7,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/bloc/editor.dart';
 import 'package:setonix/bloc/settings.dart';
 import 'package:setonix/pages/editor/backgrounds.dart';
+import 'package:setonix/pages/editor/boards.dart';
 import 'package:setonix/pages/editor/decks.dart';
 import 'package:setonix/pages/editor/figures.dart';
 import 'package:setonix/pages/editor/general.dart';
@@ -19,10 +20,11 @@ const kEditorPath = '/editor/:name';
 enum EditorPage {
   general(PhosphorIcons.house, ''),
   figures(PhosphorIcons.cube, '/figures'),
+  boards(PhosphorIcons.mapTrifold, '/boards'),
   decks(PhosphorIcons.stack, '/decks'),
   backgrounds(PhosphorIcons.image, '/backgrounds'),
-  translations(PhosphorIcons.translate, null),
-  textures(PhosphorIcons.paintBucket, '/textures');
+  textures(PhosphorIcons.paintBucket, '/textures'),
+  translations(PhosphorIcons.translate, null);
 
   final IconGetter icon;
   final String? location;
@@ -41,6 +43,7 @@ enum EditorPage {
     return switch (this) {
       EditorPage.general => loc.general,
       EditorPage.figures => loc.figures,
+      EditorPage.boards => loc.boards,
       EditorPage.decks => loc.decks,
       EditorPage.backgrounds => loc.backgrounds,
       EditorPage.translations => loc.translations,
@@ -52,6 +55,7 @@ enum EditorPage {
     return switch (this) {
       EditorPage.general => const GeneralEditorPage(),
       EditorPage.figures => const FiguresEditorPage(),
+      EditorPage.boards => const BoardsEditorPage(),
       EditorPage.decks => const DecksEditorPage(),
       EditorPage.backgrounds => const BackgroundsEditorPage(),
       EditorPage.translations => const GeneralEditorPage(),

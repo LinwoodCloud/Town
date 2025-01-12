@@ -59,4 +59,9 @@ class EditorCubit extends Cubit<SetonixData> {
 
   void setTexture(String name, Uint8List bytes) =>
       emit(state.setTexture(name, bytes));
+
+  void removeBoard(String id) => emit(state.removeBoard(id));
+
+  void setBoard(String id, BoardDefinition definition) =>
+      emit(state.setBoard(id, definition));
 }

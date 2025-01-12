@@ -107,16 +107,16 @@ class _FigureEditorDialogState extends State<FigureEditorDialog> {
   @override
   Widget build(BuildContext context) {
     final value = _value;
-    if (value == null) {
-      return const SizedBox();
-    }
+    if (value == null) return const SizedBox();
     final variations = value.variations.entries.toList();
     return DefaultTabController(
       length: 3,
       child: ResponsiveAlertDialog(
         title: Text(widget.name),
         constraints: const BoxConstraints(
-            maxWidth: LeapBreakpoints.compact, maxHeight: 600),
+          maxWidth: LeapBreakpoints.compact,
+          maxHeight: 600,
+        ),
         content: Column(
           children: [
             TabBar(
@@ -282,7 +282,6 @@ class _FigureVariationEditorDialog extends StatefulWidget {
   final VariationDefinition value;
 
   const _FigureVariationEditorDialog({
-    super.key,
     required this.name,
     required this.value,
   });
@@ -306,11 +305,32 @@ class __FigureVariationEditorDialogState
   Widget build(BuildContext context) {
     return ResponsiveAlertDialog(
       title: Text(widget.name),
-      content: VisualEditingView(
-        value: _value,
-        onChanged: (v) => setState(() {
-          _value = v;
-        }),
+      constraints: const BoxConstraints(
+          maxWidth: LeapBreakpoints.compact, maxHeight: 600),
+      content: ListView(
+        shrinkWrap: true,
+        children: [
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context).category,
+              filled: true,
+              icon: const Icon(PhosphorIconsLight.tag),
+            ),
+            initialValue: _value.category,
+            onChanged: (value) {
+              setState(() {
+                _value = _value.copyWith(category: value);
+              });
+            },
+          ),
+          const SizedBox(height: 8),
+          VisualEditingView(
+            value: _value,
+            onChanged: (v) => setState(() {
+              _value = v;
+            }),
+          ),
+        ],
       ),
       actions: [
         TextButton(

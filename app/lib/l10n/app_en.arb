@@ -221,5 +221,6 @@
   "clear": "Clear",
   "textures": "Textures",
   "texture": "Texture",
-  "notSet": "Not set"
+  "notSet": "Not set",
+  "category": "Category"
 }

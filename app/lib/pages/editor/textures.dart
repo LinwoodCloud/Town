@@ -8,6 +8,7 @@ import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/bloc/editor.dart';
 import 'package:setonix/helpers/vector.dart';
+import 'package:setonix/services/file_system.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 class TexturesEditorPage extends StatelessWidget {
@@ -35,12 +36,6 @@ class TexturesEditorPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          const imageTypeGroup = fs.XTypeGroup(
-            label: 'Images',
-            extensions: <String>['png', 'jpg', 'jpeg', 'gif'],
-            mimeTypes: <String>['image/png', 'image/jpeg', 'image/gif'],
-            uniformTypeIdentifiers: <String>['public.png', 'public.jpeg'],
-          );
           final data = await fs.openFile(acceptedTypeGroups: [
             imageTypeGroup,
           ]);
@@ -198,6 +193,7 @@ class VisualEditingView<T extends VisualDefinition> extends StatelessWidget {
               ? null
               : () => onChanged(value.copyWith(texture: '') as T),
         ),
+        const SizedBox(height: 4),
         OffsetListTile(
           value: value.offset.toOffset(),
           title: Text(AppLocalizations.of(context).offset),

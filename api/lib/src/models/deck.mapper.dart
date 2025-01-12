@@ -22,12 +22,6 @@ class DeckDefinitionMapper extends ClassMapperBase<DeckDefinition> {
   @override
   final String id = 'DeckDefinition';
 
-  static String? _$name(DeckDefinition v) => v.name;
-  static const Field<DeckDefinition, String> _f$name =
-      Field('name', _$name, opt: true);
-  static String? _$description(DeckDefinition v) => v.description;
-  static const Field<DeckDefinition, String> _f$description =
-      Field('description', _$description, opt: true);
   static List<FigureDeckDefinition> _$figures(DeckDefinition v) => v.figures;
   static const Field<DeckDefinition, List<FigureDeckDefinition>> _f$figures =
       Field('figures', _$figures, opt: true, def: const []);
@@ -37,18 +31,13 @@ class DeckDefinitionMapper extends ClassMapperBase<DeckDefinition> {
 
   @override
   final MappableFields<DeckDefinition> fields = const {
-    #name: _f$name,
-    #description: _f$description,
     #figures: _f$figures,
     #boards: _f$boards,
   };
 
   static DeckDefinition _instantiate(DecodingData data) {
     return DeckDefinition(
-        name: data.dec(_f$name),
-        description: data.dec(_f$description),
-        figures: data.dec(_f$figures),
-        boards: data.dec(_f$boards));
+        figures: data.dec(_f$figures), boards: data.dec(_f$boards));
   }
 
   @override
@@ -115,10 +104,7 @@ abstract class DeckDefinitionCopyWith<$R, $In extends DeckDefinition, $Out>
       BoardDeckDefinitionCopyWith<$R, BoardDeckDefinition,
           BoardDeckDefinition>> get boards;
   $R call(
-      {String? name,
-      String? description,
-      List<FigureDeckDefinition>? figures,
-      List<BoardDeckDefinition>? boards});
+      {List<FigureDeckDefinition>? figures, List<BoardDeckDefinition>? boards});
   DeckDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -147,20 +133,14 @@ class _DeckDefinitionCopyWithImpl<$R, $Out>
       $value.boards, (v, t) => v.copyWith.$chain(t), (v) => call(boards: v));
   @override
   $R call(
-          {Object? name = $none,
-          Object? description = $none,
-          List<FigureDeckDefinition>? figures,
+          {List<FigureDeckDefinition>? figures,
           List<BoardDeckDefinition>? boards}) =>
       $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (description != $none) #description: description,
         if (figures != null) #figures: figures,
         if (boards != null) #boards: boards
       }));
   @override
   DeckDefinition $make(CopyWithData data) => DeckDefinition(
-      name: data.get(#name, or: $value.name),
-      description: data.get(#description, or: $value.description),
       figures: data.get(#figures, or: $value.figures),
       boards: data.get(#boards, or: $value.boards));
 

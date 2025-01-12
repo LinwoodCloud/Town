@@ -141,6 +141,9 @@ class SetonixData extends ArchiveData<SetonixData> {
 
   Iterable<String> getBoards() => getAssets(kPackBoardsPath, true);
 
+  Iterable<PackItem<BoardDefinition>> getBoardItems([String namespace = '']) =>
+      getBoards().map((e) => getBoardItem(e, namespace)).nonNulls;
+
   BoardDefinition? getBoard(String id) {
     try {
       final data = getAsset('$kPackBoardsPath/$id.json');
@@ -158,6 +161,14 @@ class SetonixData extends ArchiveData<SetonixData> {
         namespace: namespace,
         id: id,
         item: getBoard(id),
+      );
+
+  SetonixData removeBoard(String id) =>
+      removeAsset('$kPackBoardsPath/$id.json');
+
+  SetonixData setBoard(String id, BoardDefinition definition) => setAsset(
+        '$kPackBoardsPath/$id.json',
+        utf8.encode(definition.toJson()),
       );
 
   Iterable<String> getBackgrounds() =>

@@ -5,14 +5,10 @@ part 'deck.mapper.dart';
 
 @MappableClass()
 class DeckDefinition with DeckDefinitionMappable {
-  final String? name;
-  final String? description;
   final List<FigureDeckDefinition> figures;
   final List<BoardDeckDefinition> boards;
 
   DeckDefinition({
-    this.name,
-    this.description,
     this.figures = const [],
     this.boards = const [],
   });
