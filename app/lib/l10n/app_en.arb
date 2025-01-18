@@ -225,5 +225,6 @@
   "category": "Category",
   "figure": "Figure",
   "variation": "Variation",
-  "position": "Position"
+  "position": "Position",
+  "tiles": "Tiles"
 }

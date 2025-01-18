@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/bloc/editor.dart';
+import 'package:setonix/helpers/vector.dart';
 import 'package:setonix/pages/editor/textures.dart';
 import 'package:setonix_api/setonix_api.dart';
 
@@ -129,6 +130,16 @@ class _BoardEditorDialogState extends State<BoardEditorDialog> {
             },
           ),
           const SizedBox(height: 8),
+          OffsetListTile(
+            value: value.tiles.toOffset(),
+            fractionDigits: 0,
+            onChanged: (value) {
+              setState(() {
+                _value = _value?.copyWith(tiles: value.toDefinition());
+              });
+            },
+            title: Text(AppLocalizations.of(context).tiles),
+          ),
           VisualEditingView(
             value: value,
             onChanged: (value) {

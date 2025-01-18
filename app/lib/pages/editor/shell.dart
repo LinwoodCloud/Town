@@ -195,27 +195,28 @@ class _EditorShellState extends State<EditorShell> {
     return BlocProvider(
       create: (context) =>
           EditorCubit(widget.name, context.read<SetonixFileSystem>(), data),
-      child: Row(
-        children: [
-          if (!isMobile) ...[
-            EditorNavigatorView(currentPage: currentPage),
-            const SizedBox(width: 4)
-          ],
-          Expanded(
-            child: Scaffold(
-              appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
-                title: Text(currentPage.getLocalizedName(context)),
-              ),
-              drawer: isMobile
-                  ? EditorNavigatorView(
-                      currentPage: currentPage,
-                      isMobile: true,
-                    )
-                  : null,
-              body: widget.child,
+      child: Scaffold(
+        appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
+          title: Text(
+              isMobile ? currentPage.getLocalizedName(context) : widget.name),
+        ),
+        drawer: isMobile
+            ? EditorNavigatorView(
+                currentPage: currentPage,
+                isMobile: true,
+              )
+            : null,
+        body: Row(
+          children: [
+            if (!isMobile) ...[
+              EditorNavigatorView(currentPage: currentPage),
+              const SizedBox(width: 2)
+            ],
+            Expanded(
+              child: widget.child,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

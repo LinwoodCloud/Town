@@ -220,7 +220,7 @@ packages:
       path: "packages/dart_leap"
       ref: db69a03082e6811c58dc2d0e5c23d04305e1623f
       resolved-ref: db69a03082e6811c58dc2d0e5c23d04305e1623f
-      url: "https://github.com/LinwoodDev/dart_pkgs"
+      url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
   dart_mappable:
@@ -251,10 +251,10 @@ packages:
     dependency: "direct main"
     description:
       name: device_info_plus
-      sha256: "4fa68e53e26ab17b70ca39f072c285562cfc1589df5bb1e9295db90f6645f431"
+      sha256: b37d37c2f912ad4e8ec694187de87d05de2a3cb82b465ff1f65f65a2d05de544
       url: "https://pub.dev"
     source: hosted
-    version: "11.2.0"
+    version: "11.2.1"
   device_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -474,10 +474,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_secure_storage_linux
-      sha256: b777e220fbf21c149574aa31f9e4ed56dcf025c4ef196664fe90954c265105dc
+      sha256: "9b4b73127e857cd3117d43a70fa3dddadb6e0b253be62e6a6ab85caa0742182c"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.1"
   flutter_secure_storage_platform_interface:
     dependency: transitive
     description:
@@ -670,9 +670,9 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/lw_file_system"
-      ref: "760972dc351ab9aecd3df37e8679b2b029f34e80"
-      resolved-ref: "760972dc351ab9aecd3df37e8679b2b029f34e80"
-      url: "https://github.com/LinwoodDev/dart_pkgs"
+      ref: ada8a1a9ef9624cb0c546b318247626c7514b6ea
+      resolved-ref: ada8a1a9ef9624cb0c546b318247626c7514b6ea
+      url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
   lw_file_system_api:
@@ -681,7 +681,7 @@ packages:
       path: "packages/lw_file_system_api"
       ref: e4c17cb5e3a53c0cd02d4127458c2215f7c6e7d4
       resolved-ref: e4c17cb5e3a53c0cd02d4127458c2215f7c6e7d4
-      url: "https://github.com/LinwoodDev/dart_pkgs"
+      url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
   lw_sysapi:
@@ -690,7 +690,7 @@ packages:
       path: "packages/lw_sysapi"
       ref: "742b507106900b65490551d42a2ef4c7d049889a"
       resolved-ref: "742b507106900b65490551d42a2ef4c7d049889a"
-      url: "https://github.com/LinwoodDev/dart_pkgs"
+      url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "0.0.1"
   macros:
@@ -705,10 +705,10 @@ packages:
     dependency: "direct main"
     description:
       name: markdown
-      sha256: ef2a1298144e3f985cc736b22e0ccdaf188b5b3970648f2d9dc13efd1d9df051
+      sha256: "935e23e1ff3bc02d390bad4d4be001208ee92cc217cb5b5a6c19bc14aaa318c1"
       url: "https://pub.dev"
     source: hosted
-    version: "7.2.2"
+    version: "7.3.0"
   matcher:
     dependency: transitive
     description:
@@ -729,8 +729,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/material_leap"
-      ref: "742b507106900b65490551d42a2ef4c7d049889a"
-      resolved-ref: "742b507106900b65490551d42a2ef4c7d049889a"
+      ref: ada8a1a9ef9624cb0c546b318247626c7514b6ea
+      resolved-ref: ada8a1a9ef9624cb0c546b318247626c7514b6ea
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "0.0.1"
@@ -762,18 +762,18 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/networker/networker"
-      ref: "071e02761bf55a47bcde0cdc2a711b8ff5fbbb18"
-      resolved-ref: "071e02761bf55a47bcde0cdc2a711b8ff5fbbb18"
-      url: "https://github.com/LinwoodDev/dart_pkgs"
+      ref: "0bdc62d3af7f31e19a694d9cd39fe020dced8754"
+      resolved-ref: "0bdc62d3af7f31e19a694d9cd39fe020dced8754"
+      url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
   networker_socket:
     dependency: "direct main"
     description:
       path: "packages/networker/networker_socket"
-      ref: "2400638352d6c877d09b97dd4030382f88deb2a4"
-      resolved-ref: "2400638352d6c877d09b97dd4030382f88deb2a4"
-      url: "https://github.com/LinwoodDev/dart_pkgs"
+      ref: fa036587c2a26db6455dd063701aef32b3531800
+      resolved-ref: fa036587c2a26db6455dd063701aef32b3531800
+      url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
   ordered_set:
@@ -796,10 +796,10 @@ packages:
     dependency: "direct main"
     description:
       name: package_info_plus
-      sha256: "70c421fe9d9cc1a9a7f3b05ae56befd469fe4f8daa3b484823141a55442d858d"
+      sha256: "739e0a5c3c4055152520fa321d0645ee98e932718b4c8efeeb51451968fe0790"
       url: "https://pub.dev"
     source: hosted
-    version: "8.1.2"
+    version: "8.1.3"
   package_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -1027,10 +1027,10 @@ packages:
     dependency: transitive
     description:
       name: share_plus
-      sha256: "6327c3f233729374d0abaafd61f6846115b2a481b4feddd8534211dc10659400"
+      sha256: fce43200aa03ea87b91ce4c3ac79f0cecd52e2a7a56c7a4185023c271fbfa6da
       url: "https://pub.dev"
     source: hosted
-    version: "10.1.3"
+    version: "10.1.4"
   share_plus_platform_interface:
     dependency: transitive
     description:
@@ -1051,10 +1051,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_android
-      sha256: bf808be89fe9dc467475e982c1db6c2faf3d2acf54d526cd5ec37d86c99dbd84
+      sha256: "138b7bbbc7f59c56236e426c37afb8f78cbc57b094ac64c440e0bb90e380a4f5"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.1"
+    version: "2.4.2"
   shared_preferences_foundation:
     dependency: transitive
     description:
@@ -1439,4 +1439,4 @@ packages:
     version: "3.1.3"
 sdks:
   dart: ">=3.6.0 <4.0.0"
-  flutter: ">=3.27.1"
+  flutter: ">=3.27.2"

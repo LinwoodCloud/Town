@@ -57,7 +57,7 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
                         subtitle: Text(file.identifier),
                         onTap: () => GoRouter.of(context)
                             .goNamed('editor', pathParameters: {
-                          'name': file.identifier,
+                          'name': file.pathWithoutLeadingSlash,
                         }),
                         trailing: widget,
                       );
