@@ -33,10 +33,9 @@ class SetonixData extends ArchiveData<SetonixData> {
       : identifier = '',
         super.empty();
 
-  factory SetonixData.fromData(Uint8List data, [String? identifier]) {
-    return SetonixData(ZipDecoder().decodeBytes(data),
-        identifier: identifier ?? createPackIdentifier(data));
-  }
+  SetonixData.fromData(super.data, [String? identifier])
+      : identifier = identifier ?? createPackIdentifier(data),
+        super.fromBytes();
 
   GameTable? getTable([String name = '']) {
     final data = getAsset('$kGameTablePath/$name.json');
@@ -203,6 +202,10 @@ class SetonixData extends ArchiveData<SetonixData> {
         return MapEntry(e, translation);
       }).nonNulls;
 
+  @override
+  Uint8List exportAsBytes() => ZipEncoder(password: state.password)
+      .encodeBytes(export(), autoClose: true);
+
   PackTranslation? getTranslation([String id = kFallbackLocale]) {
     final data = getAsset('$kPackTranslationsPath/$id.json');
     if (data == null) return null;
@@ -282,7 +285,7 @@ class SetonixFile {
   SetonixData load() => SetonixData.fromData(data, identifier);
 }
 
-String createPackIdentifier(Uint8List data) {
+String createPackIdentifier(List<int> data) {
   final hash = sha512256.convert(data);
   return base64Encode(hash.bytes);
 }

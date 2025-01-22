@@ -227,7 +227,10 @@ class _PacksDialogState extends State<PacksDialog>
                             child:
                                 Text(AppLocalizations.of(context).comingSoon),
                           ),
-                          if (bloc == null) _EditorPacksView(),
+                          if (bloc == null)
+                            _EditorPacksView(
+                              onReload: _reloadPacks,
+                            ),
                         ],
                       );
                     });

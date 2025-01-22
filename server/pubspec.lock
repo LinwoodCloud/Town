@@ -58,18 +58,18 @@ packages:
     dependency: "direct main"
     description:
       name: bloc
-      sha256: "106842ad6569f0b60297619e9e0b1885c2fb9bf84812935490e6c5275777804e"
+      sha256: "52c10575f4445c61dd9e0cafcc6356fdd827c4c64dd7945ef3c4105f6b6ac189"
       url: "https://pub.dev"
     source: hosted
-    version: "8.1.4"
+    version: "9.0.0"
   bloc_concurrency:
     dependency: "direct main"
     description:
       name: bloc_concurrency
-      sha256: "456b7a3616a7c1ceb975c14441b3f198bf57d81cb95b7c6de5cb0c60201afcd8"
+      sha256: "86b7b17a0a78f77fca0d7c030632b59b593b22acea2d96972588f40d4ef53a94"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.5"
+    version: "0.3.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -205,7 +205,7 @@ packages:
       path: "packages/dart_leap"
       ref: db69a03082e6811c58dc2d0e5c23d04305e1623f
       resolved-ref: db69a03082e6811c58dc2d0e5c23d04305e1623f
-      url: "https://github.com/LinwoodDev/dart_pkgs"
+      url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
   dart_mappable:
@@ -342,7 +342,7 @@ packages:
       path: "packages/lw_file_system_api"
       ref: e4c17cb5e3a53c0cd02d4127458c2215f7c6e7d4
       resolved-ref: e4c17cb5e3a53c0cd02d4127458c2215f7c6e7d4
-      url: "https://github.com/LinwoodDev/dart_pkgs"
+      url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
   macros:
@@ -381,18 +381,18 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/networker/networker"
-      ref: "071e02761bf55a47bcde0cdc2a711b8ff5fbbb18"
-      resolved-ref: "071e02761bf55a47bcde0cdc2a711b8ff5fbbb18"
-      url: "https://github.com/LinwoodDev/dart_pkgs"
+      ref: "0bdc62d3af7f31e19a694d9cd39fe020dced8754"
+      resolved-ref: "0bdc62d3af7f31e19a694d9cd39fe020dced8754"
+      url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
   networker_socket:
     dependency: "direct main"
     description:
       path: "packages/networker/networker_socket"
-      ref: "2400638352d6c877d09b97dd4030382f88deb2a4"
-      resolved-ref: "2400638352d6c877d09b97dd4030382f88deb2a4"
-      url: "https://github.com/LinwoodDev/dart_pkgs"
+      ref: fa036587c2a26db6455dd063701aef32b3531800
+      resolved-ref: fa036587c2a26db6455dd063701aef32b3531800
+      url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
   node_preamble:

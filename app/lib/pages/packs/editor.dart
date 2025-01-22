@@ -1,7 +1,11 @@
 part of 'dialog.dart';
 
 class _EditorPacksView extends StatefulWidget {
-  const _EditorPacksView();
+  final VoidCallback onReload;
+
+  const _EditorPacksView({
+    required this.onReload,
+  });
 
   @override
   State<_EditorPacksView> createState() => _EditorPacksViewState();
@@ -63,6 +67,15 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
                       );
                     },
                     menuChildren: [
+                      MenuItemButton(
+                        leadingIcon: const Icon(PhosphorIconsLight.download),
+                        child: Text(AppLocalizations.of(context).install),
+                        onPressed: () async {
+                          await importFileData(context, _fileSystem,
+                              SetonixFile(data.exportAsBytes()));
+                          widget.onReload();
+                        },
+                      ),
                       MenuItemButton(
                         leadingIcon: const Icon(PhosphorIconsLight.export),
                         child: Text(AppLocalizations.of(context).export),
