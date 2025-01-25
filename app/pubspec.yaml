@@ -89,6 +89,11 @@ dependencies:
   markdown: ^7.2.2
   bloc_concurrency: ^0.2.5
   idb_shim: ^2.6.1+7
+  rust_lib_setonix_plugin:
+    path: rust_builder
+  setonix_plugin:
+    path: ../plugin
+  flutter_rust_bridge: 2.7.0
 dependency_overrides:
   tiled:
     git:

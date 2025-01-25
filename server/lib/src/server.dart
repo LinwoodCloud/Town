@@ -15,6 +15,7 @@ import 'package:setonix_server/src/programs/players.dart';
 import 'package:setonix_server/src/programs/save.dart';
 import 'package:setonix_server/src/programs/say.dart';
 import 'package:setonix_server/src/programs/stop.dart';
+import 'package:setonix_plugin/setonix_plugin.dart';
 
 import 'events/model.dart';
 
@@ -185,6 +186,9 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
       ));
 
   Future<void> run() async {
+    await initPluginSystem();
+    final result = await simpleAdderTwinNormal(a: 1, b: 6);
+    print("1 + 6 = $result");
     consoler.run();
     log('Server running on ${_server?.address}', level: LogLevel.info);
     await _server?.onClosed.first;

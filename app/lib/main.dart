@@ -19,6 +19,7 @@ import 'package:setonix/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:setonix_plugin/setonix_plugin.dart';
 
 import 'bloc/settings.dart';
 import 'pages/settings/page.dart';
@@ -44,6 +45,11 @@ Future<void> main(List<String> args) async {
   await networkService.init();
 
   await setup(settingsCubit);
+
+  await initPluginSystem();
+  if (kDebugMode) {
+    print('6 + 8 = ${await simpleAdderTwinNormal(a: 6, b: 8)}');
+  }
   runApp(
     MultiBlocProvider(
       providers: [
