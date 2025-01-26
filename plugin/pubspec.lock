@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.4.1"
+  archive:
+    dependency: transitive
+    description:
+      name: archive
+      sha256: "6199c74e3db4fbfbd04f66d739e72fe11c8a8957d5f219f1f4482dbde6420b5a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.2"
   args:
     dependency: transitive
     description:
@@ -157,10 +165,27 @@ packages:
     dependency: transitive
     description:
       name: crypto
-      sha256: ff625774173754681d66daaf4a448684fb04b78f902da9cb3d308c19cc5e8bab
+      sha256: "1e445881f28f22d6140f181e07737b22f1e099a5e1ff94b0af2f9e4a463f4855"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.3"
+    version: "3.0.6"
+  dart_leap:
+    dependency: transitive
+    description:
+      path: "packages/dart_leap"
+      ref: db69a03082e6811c58dc2d0e5c23d04305e1623f
+      resolved-ref: db69a03082e6811c58dc2d0e5c23d04305e1623f
+      url: "https://github.com/LinwoodDev/dart_pkgs.git"
+    source: git
+    version: "1.0.0"
+  dart_mappable:
+    dependency: transitive
+    description:
+      name: dart_mappable
+      sha256: f69a961ae8589724ebb542e588f228ae844c5f78028899cbe2cc718977c1b382
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.3.0"
   dart_style:
     dependency: transitive
     description:
@@ -297,6 +322,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  lw_file_system_api:
+    dependency: transitive
+    description:
+      path: "packages/lw_file_system_api"
+      ref: e4c17cb5e3a53c0cd02d4127458c2215f7c6e7d4
+      resolved-ref: e4c17cb5e3a53c0cd02d4127458c2215f7c6e7d4
+      url: "https://github.com/LinwoodDev/dart_pkgs.git"
+    source: git
+    version: "1.0.0"
   matcher:
     dependency: transitive
     description:
@@ -306,7 +340,7 @@ packages:
     source: hosted
     version: "0.12.16+1"
   meta:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: meta
       sha256: e3641ec5d63ebf0d9b41bd43201a66e3fc79a65db5f61fc181f04cd27aab950c
@@ -321,6 +355,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  networker:
+    dependency: "direct main"
+    description:
+      path: "packages/networker/networker"
+      ref: "0bdc62d3af7f31e19a694d9cd39fe020dced8754"
+      resolved-ref: "0bdc62d3af7f31e19a694d9cd39fe020dced8754"
+      url: "https://github.com/LinwoodDev/dart_pkgs.git"
+    source: git
+    version: "1.0.0"
   package_config:
     dependency: transitive
     description:
@@ -345,6 +388,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.1"
+  posix:
+    dependency: transitive
+    description:
+      name: posix
+      sha256: a0117dc2167805aa9125b82eee515cc891819bac2f538c83646d355b16f58b9a
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.1"
   pub_semver:
     dependency: transitive
     description:
@@ -369,6 +420,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
+  setonix_api:
+    dependency: "direct main"
+    description:
+      path: "../api"
+      relative: true
+    source: path
+    version: "0.2.0"
   shelf:
     dependency: transitive
     description:
@@ -457,6 +515,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  type_plus:
+    dependency: transitive
+    description:
+      name: type_plus
+      sha256: d5d1019471f0d38b91603adb9b5fd4ce7ab903c879d2fbf1a3f80a630a03fcc9
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   typed_data:
     dependency: transitive
     description:
@@ -506,4 +572,4 @@ packages:
     source: hosted
     version: "2.1.1"
 sdks:
-  dart: ">=3.4.0 <4.0.0"
+  dart: ">=3.5.1 <4.0.0"

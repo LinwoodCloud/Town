@@ -4,25 +4,9 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
 import 'package:setonix_api/setonix_api.dart';
 
-import '../server.dart';
-
 part 'model.mapper.dart';
 
-mixin ServerReference {
-  SetonixServer get server;
-
-  void sendEvent(ServerWorldEvent event, [Channel target = kAnyChannel]) =>
-      server.sendEvent(event, target);
-
-  WorldState get state => server.state;
-
-  GameTable? getTable(String name) => state.getTable(name);
-  GameTable getTableOrDefault(String name) => state.getTableOrDefault(name);
-}
-
-base class Event<T> with ServerReference {
-  @override
-  final SetonixServer server;
+base class Event<T> {
   final T clientEvent;
   final Channel source;
   ServerWorldEvent serverEvent;
@@ -30,8 +14,8 @@ base class Event<T> with ServerReference {
   bool cancelled = false;
   Set<Channel>? needsUpdate;
 
-  Event(this.server, this.serverEvent, this.target, this.clientEvent,
-      this.source, this.needsUpdate);
+  Event(this.serverEvent, this.target, this.clientEvent, this.source,
+      this.needsUpdate);
 
   Event<C> castEvent<C extends WorldEvent>() {
     return _LinkedEvent<C>(this);
@@ -44,9 +28,7 @@ base class Event<T> with ServerReference {
 }
 
 // Allows casting an event to another
-final class _LinkedEvent<T extends WorldEvent?>
-    with ServerReference
-    implements Event<T> {
+final class _LinkedEvent<T extends WorldEvent?> implements Event<T> {
   final Event parent;
 
   _LinkedEvent(this.parent);
@@ -76,9 +58,6 @@ final class _LinkedEvent<T extends WorldEvent?>
   T get clientEvent => parent.clientEvent as T;
 
   @override
-  SetonixServer get server => parent.server;
-
-  @override
   Channel get source => parent.source;
 
   @override
@@ -98,14 +77,11 @@ final class ServerPing {
   });
 }
 
-final class UserLeaveCallback with ServerReference {
-  @override
-  final SetonixServer server;
+final class UserLeaveCallback {
   final Channel channel;
   final ConnectionInfo info;
 
   UserLeaveCallback({
-    required this.server,
     required this.channel,
     required this.info,
   });

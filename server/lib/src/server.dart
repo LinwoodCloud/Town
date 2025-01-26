@@ -9,15 +9,13 @@ import 'package:networker/networker.dart';
 import 'package:networker_socket/server.dart';
 import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_server/src/asset.dart';
-import 'package:setonix_server/src/events/system.dart';
+import 'package:setonix_plugin/src/events/system.dart';
 import 'package:setonix_server/src/programs/packs.dart';
 import 'package:setonix_server/src/programs/players.dart';
 import 'package:setonix_server/src/programs/save.dart';
 import 'package:setonix_server/src/programs/say.dart';
 import 'package:setonix_server/src/programs/stop.dart';
 import 'package:setonix_plugin/setonix_plugin.dart';
-
-import 'events/model.dart';
 
 Future<ServerProcessed> _computeEvent(ServerWorldEvent event, WorldState state,
     List<SignatureMetadata> signature) {
