@@ -43,10 +43,14 @@ dependencies:
   # Generation
   barcode: ^2.2.7
   # Internal
-  flutter_bloc: ^8.1.3
+  flutter_bloc: ^9.0.0
   rxdart: ^0.28.0
   collection: ^1.18.0
-  flame_bloc: ">=1.12.2 <1.13.0"
+  flame_bloc:
+    git:
+      url: https://github.com/CodeDoctorDE/flame.git
+      ref: 2d76592b9d40007ede2dc0cb9c87858e1ec50bb5
+      path: packages/flame_bloc
   flame: ">=1.23.0 <1.24.0"
   flame_tiled: ">=1.21.1 <1.22.0"
   # Networking
@@ -87,13 +91,13 @@ dependencies:
   archive: ^4.0.2
   flutter_markdown: ^0.7.3+1
   markdown: ^7.2.2
-  bloc_concurrency: ^0.2.5
+  bloc_concurrency: ^0.3.0
   idb_shim: ^2.6.1+7
 dependency_overrides:
   tiled:
     git:
-      url: https://github.com/flame-engine/tiled.dart.git
-      ref: 581391cf4b4e5a504b42324e353876e9e7afbb75
+      url: https://github.com/CodeDoctorDE/tiled.dart.git
+      ref: c4fa680778ba36c4cb53f6e49474ea3881b69552
       path: packages/tiled
 dev_dependencies:
   flutter_test:
