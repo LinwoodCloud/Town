@@ -3,10 +3,12 @@ import starlight from "@astrojs/starlight";
 import react from "@astrojs/react";
 import remarkHeadingID from "remark-heading-id";
 import remarkGemoji from "remark-gemoji";
+import AstroPWA from "@vite-pwa/astro";
+import manifest from "./webmanifest.json";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://setonix.world",
+  site: "https://butterfly.linwood.dev",
   markdown: {
     remarkPlugins: [remarkHeadingID, remarkGemoji],
   },
@@ -106,6 +108,22 @@ export default defineConfig({
           ],
         },
       ],
+    }),
+    AstroPWA({
+      workbox: {
+        skipWaiting: true,
+        clientsClaim: true,
+        navigateFallback: "/404",
+        ignoreURLParametersMatching: [/./],
+        globPatterns: [
+          "**/*.{html,js,css,png,svg,json,ttf,pf_fragment,pf_index,pf_meta,pagefind,wasm}",
+        ],
+      },
+      experimental: {
+        directoryAndTrailingSlashHandler: true,
+      },
+      registerType: "autoUpdate",
+      manifest,
     }),
     react(),
   ],
