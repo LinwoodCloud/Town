@@ -14,7 +14,7 @@ AppDir:
     id: dev.linwood.setonix
     name: Linwood Setonix
     icon: dev.linwood.setonix
-    version: 0.3.0
+    version: 0.3.1
     exec: setonix
     exec_args: $@
   apt:
