@@ -268,10 +268,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_rust_bridge
-      sha256: "35c257fc7f98e34c1314d6c145e5ed54e7c94e8a9f469947e31c9298177d546f"
+      sha256: "3292ad6085552987b8b3b9a7e5805567f4013372d302736b702801acb001ee00"
       url: "https://pub.dev"
     source: hosted
-    version: "2.7.0"
+    version: "2.7.1"
   freezed_annotation:
     dependency: transitive
     description:
@@ -284,18 +284,18 @@ packages:
     dependency: transitive
     description:
       name: frontend_server_client
-      sha256: "408e3ca148b31c20282ad6f37ebfa6f4bdc8fede5b74bc2f08d9d92b55db3612"
+      sha256: f64a0333a82f30b0cca061bc3d143813a486dc086b574bfb233b7c1372427694
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.0"
+    version: "4.0.0"
   glob:
     dependency: transitive
     description:
       name: glob
-      sha256: "0e7014b3b7d4dac1ca4d6114f82bf1782ee86745b9b42a92c9289c23d8a0ab63"
+      sha256: c3f1ee72c96f8f78935e18aa8cecced9ab132419e8625dc187e1c2408efc20de
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.2"
+    version: "2.1.3"
   graphs:
     dependency: transitive
     description:
@@ -381,10 +381,10 @@ packages:
     dependency: transitive
     description:
       name: matcher
-      sha256: d2323aa2060500f906aa31a895b4030b6da3ebdcc5619d14ce1aada65cd161cb
+      sha256: dc58c723c3c24bf8d3e2d3ad3f2f9d7bd9cf43ec6feaa64181775e60190153f2
       url: "https://pub.dev"
     source: hosted
-    version: "0.12.16+1"
+    version: "0.12.17"
   meta:
     dependency: transitive
     description:
@@ -489,7 +489,7 @@ packages:
       path: "../api"
       relative: true
     source: path
-    version: "0.2.0"
+    version: "0.3.1"
   setonix_plugin:
     dependency: "direct main"
     description:
@@ -653,10 +653,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-      sha256: b3d56ff4341b8f182b96aceb2fa20e3dcb336b9f867bc0eafc0de10f1048e957
+      sha256: ddfa8d30d89985b96407efce8acbdd124701f96741f2d981ca860662f1c0dc02
       url: "https://pub.dev"
     source: hosted
-    version: "13.0.0"
+    version: "15.0.0"
   watcher:
     dependency: transitive
     description:
@@ -685,10 +685,10 @@ packages:
     dependency: transitive
     description:
       name: web_socket_channel
-      sha256: "9f187088ed104edd8662ca07af4b124465893caf063ba29758f97af57e61da8f"
+      sha256: "0b8e2457400d8a859b7b2030786835a28a8e80836ef64402abef392ff4f1d0e5"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1"
+    version: "3.0.2"
   webkit_inspection_protocol:
     dependency: transitive
     description:
