@@ -95,7 +95,7 @@ jobs:
           name: apk-x86_64-build
           path: app/linwood-setonix-android-x86_64.apk
   build-windows:
-    runs-on: windows-2022
+    runs-on: windows-2025
     defaults:
       run:
         working-directory: app
@@ -519,7 +519,7 @@ jobs:
             label: linux-x86_64
           - name: ubuntu-24.04-arm
             label: linux-arm64
-          - name: windows-2022
+          - name: windows-2025
             label: windows-x86_64
           - name: macos-latest
             label: macos
@@ -528,11 +528,15 @@ jobs:
       - name: ⬆️ Checkout
         uses: actions/checkout@v4
       - name: Install yq
-        if: ${{ matrix.os.name == 'windows-2022' }}
+        if: ${{ matrix.os.name == 'windows-2025' }}
         run: choco install yq
       - uses: subosito/flutter-action@v2.18.0
         with:
           flutter-version-file: app/pubspec.yaml
+          channel: 'master'
+          cache: true
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
       - name: 📦 Get dependencies
         run: |
           flutter clean
