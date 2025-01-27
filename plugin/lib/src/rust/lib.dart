@@ -3,8 +3,8 @@
 
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
-import '../frb_generated.dart';
+import 'frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-Future<int> simpleAdderTwinNormal({required int a, required int b}) =>
-    RustLib.instance.api.crateApiSimpleSimpleAdderTwinNormal(a: a, b: b);
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc < dyn Fn (String) -> () + Send + Sync >>>
+abstract class ArcFnString implements RustOpaqueInterface {}

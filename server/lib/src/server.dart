@@ -9,7 +9,6 @@ import 'package:networker/networker.dart';
 import 'package:networker_socket/server.dart';
 import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_server/src/asset.dart';
-import 'package:setonix_plugin/src/events/system.dart';
 import 'package:setonix_server/src/programs/packs.dart';
 import 'package:setonix_server/src/programs/players.dart';
 import 'package:setonix_server/src/programs/save.dart';
@@ -209,7 +208,6 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
     }
     if (process == null) return;
     final event = Event(
-      this,
       process.main.data,
       process.main.channel,
       data,
@@ -259,7 +257,7 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
   void _onLeave((Channel, ConnectionInfo) event) {
     final (user, info) = event;
     log('${info.address} ($user) left the game', level: LogLevel.info);
-    eventSystem.runLeaveCallback(this, event.$1, event.$2);
+    eventSystem.runLeaveCallback(event.$1, event.$2);
   }
 
   Future<void> save({bool force = false}) async {

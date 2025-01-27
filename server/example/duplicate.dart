@@ -14,7 +14,7 @@ Future<void> onLoad(SetonixServer server) async {
     // Cancel the event every second time and duplicate the objects instead
     if (toggleCancel) {
       final event = e.clientEvent;
-      final table = e.getTableOrDefault(event.table);
+      final table = server.state.getTableOrDefault(event.table);
       final cell = table.getCell(event.from);
       final objects = <GameObject>[];
       for (final index in event.objects) {
@@ -22,7 +22,8 @@ Future<void> onLoad(SetonixServer server) async {
         objects.add(object);
       }
       // Send the event to all clients
-      e.sendEvent(ObjectsSpawned(e.clientEvent.table, {event.to: objects}));
+      server
+          .sendEvent(ObjectsSpawned(e.clientEvent.table, {event.to: objects}));
       // Cancel the event
       e.cancel();
     }

@@ -47,7 +47,7 @@ Future<void> onLoad(SetonixServer server) async {
   server.eventSystem
     ..on<ObjectsMoved>((e) {
       print("Listener was called, opening dialog");
-      e.sendEvent(DialogOpened(
+      server.sendEvent(DialogOpened(
         GameDialog(id: "testDialog", title: "TestDialog", image: "logo")
             .markdown(testContent)
             .textField(

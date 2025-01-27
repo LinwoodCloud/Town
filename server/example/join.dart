@@ -8,7 +8,7 @@ Future<void> onLoad(SetonixServer server) async {
   print("on load was called");
   server.eventSystem
     ..on<UserJoined>((e) {
-      e.sendEvent(DialogOpened(GameDialog(
+      server.sendEvent(DialogOpened(GameDialog(
         id: "joinDialog",
         title: "Please login",
       )

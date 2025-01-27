@@ -7,8 +7,9 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-anyhow = { version = "1.0.64", features = ["backtrace"] }
-flutter_rust_bridge = "=2.7.0"
-log = "0.4.19"
+anyhow = { version = "1", features = ["backtrace"] }
+flutter_rust_bridge = "=2.7.1"
+mlua = { version = "0.10.2", features = ["luau", "send"]}
+futures = "0.3"
 
 [features]
