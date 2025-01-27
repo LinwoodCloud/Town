@@ -154,7 +154,17 @@ jobs:
           path: |
             app/linwood-setonix-windows-setup-x86_64.exe
   build-linux:
-    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - image: ubuntu-24.04
+            name: x86_64
+            dir: x64
+          - image: ubuntu-24.04-arm
+            name: arm64
+            dir: arm64
+    runs-on: ${{ matrix.arch.image }}
     defaults:
       run:
         working-directory: app
@@ -188,6 +198,10 @@ jobs:
       - uses: subosito/flutter-action@v2.18.0
         with:
           flutter-version-file: app/pubspec.yaml
+          channel: 'master'
+          cache: true
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
       - name: ✅ Enable platforms
         run: flutter config --enable-linux-desktop
       - name: 📦 Get dependencies
@@ -214,64 +228,77 @@ jobs:
           flutter build linux -v --release --dart-define=flavor=production
       - name: 🏭 Make binary executable
         run: |
-          chmod +x build/linux/x64/release/bundle/setonix
+          chmod +x build/linux/${{ matrix.arch.dir }}/release/bundle/setonix
       - name: Build .deb executable
         run: |
-          cp -fr build/linux/x64/release/bundle linux/debian/usr/bin
+          cp -fr build/linux/${{ matrix.arch.dir }}/release/bundle linux/debian/usr/bin
           dpkg-deb --build --root-owner-group linux/debian
-          cp linux/*.deb linwood-setonix-linux-x86_64.deb
+          cp linux/*.deb linwood-setonix-linux-${{ matrix.arch.name }}.deb
       - name: Build .rpm executable
         run: |
-          bash scripts/build-rpm.sh
+          bash scripts/build-rpm.sh -d ${{ matrix.arch.dir }} -b ${{ matrix.arch.name }}
       - name: Build .AppImage executable
+        if: ${{ matrix.arch.name == 'x86_64' }}
         run: |
-          wget -O appimage-builder-x86_64.AppImage https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
-          chmod +x appimage-builder-x86_64.AppImage
-          sudo mv appimage-builder-x86_64.AppImage /usr/local/bin/appimage-builder
+          wget -O appimage-builder.AppImage https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
+          chmod +x appimage-builder.AppImage
+          sudo mv appimage-builder.AppImage /usr/local/bin/appimage-builder
           appimage-builder --recipe AppImageBuilder.yml --skip-test
       - name: Copy nessessary files
         run: |
-          cp assets/images/logo.svg build/linux/x64/release/bundle/dev.linwood.setonix.svg
-          mkdir -p build/linux/x64/release/bundle/usr/share
-          cp -r linux/debian/usr/share build/linux/x64/release/bundle/usr
+          cp assets/images/logo.svg build/linux/${{ matrix.arch.dir }}/release/bundle/dev.linwood.setonix.svg
+          mkdir -p build/linux/${{ matrix.arch.dir }}/release/bundle/usr/share
+          cp -r linux/debian/usr/share build/linux/${{ matrix.arch.dir }}/release/bundle/usr
       - name: Rename AppImage
+        if: ${{ matrix.arch.name == 'x86_64' }}
         run: |
           ls
-          mv ./*.AppImage linwood-setonix-linux-x86_64.AppImage
+          mv ./*.AppImage linwood-setonix-linux-${{ matrix.arch.name }}.AppImage
       - name: Copy portable start script
         run: |
           chmod +x scripts/start.sh
-          cp scripts/start.sh build/linux/x64/release/bundle
+          cp scripts/start.sh build/linux/${{ matrix.arch.dir }}/release/bundle
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
-          name: linux-build
+          name: linux-${{ matrix.arch.name }}-build
           path: |
-            app/build/linux/x64/release/bundle/**
+            app/build/linux/${{ matrix.arch.dir }}/release/bundle/**
       - name: Archive .deb
         uses: actions/upload-artifact@v4
         with:
-          name: linux-deb
+          name: linux-${{ matrix.arch.name }}-deb
           path: |
-            app/linwood-setonix-linux-x86_64.deb
+            app/linwood-setonix-linux-${{ matrix.arch.name }}.deb
       - name: Archive .rpm
         uses: actions/upload-artifact@v4
         with:
-          name: linux-rpm
+          name: linux-${{ matrix.arch.name }}-rpm
           path: |
-            app/build/linwood-setonix-linux-x86_64.rpm
+            app/build/linwood-setonix-linux-${{ matrix.arch.name }}.rpm
       - name: Archive .AppImage
         uses: actions/upload-artifact@v4
+        if: ${{ matrix.arch.name == 'x86_64' }}
         with:
-          name: linux-appimage
+          name: linux-x86_64-appimage
           path: |
             app/linwood-setonix-linux-x86_64.AppImage
   build-flatpak:
     name: build-flatpak
-    runs-on: ubuntu-22.04
     defaults:
       run:
         working-directory: app
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - image: ubuntu-22.04
+            name: x86_64
+            dir: x64
+          - image: ubuntu-22.04-arm
+            name: arm64
+            dir: arm64
+    runs-on: ${{ matrix.arch.image }}
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v4
@@ -301,6 +328,10 @@ jobs:
       - uses: subosito/flutter-action@v2.18.0
         with:
           flutter-version-file: app/pubspec.yaml
+          channel: 'master'
+          cache: true
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
       - name: ✅ Enable platforms
         run: flutter config --enable-linux-desktop
       - name: 📦 Get dependencies
@@ -327,11 +358,11 @@ jobs:
           flutter build linux -v --release --dart-define=flavor=production
       - name: Copy nessessary files
         run: |
-          cp assets/images/logo.svg build/linux/x64/release/bundle/dev.linwood.setonix.svg
-          mkdir -p build/linux/x64/release/bundle/usr/share
-          cp -r linux/debian/usr/share build/linux/x64/release/bundle/usr
+          cp assets/images/logo.svg build/linux/${{ matrix.arch.dir }}/release/bundle/dev.linwood.setonix.svg
+          mkdir -p build/linux/${{ matrix.arch.dir }}/release/bundle/usr/share
+          cp -r linux/debian/usr/share build/linux/${{ matrix.arch.dir }}/release/bundle/usr
       - name: Compress Flutter build
-        run: tar -C build/linux/x64/release/bundle -czf linwood-setonix-linux-portable-x86_64.tar.gz .
+        run: tar -C build/linux/${{ matrix.arch.dir }}/release/bundle -czf linwood-setonix-linux-portable-${{ matrix.arch.name }}.tar.gz .
       #    - name: Install flatpak
       #      run: |
       #        sudo apt-get update
@@ -354,8 +385,8 @@ jobs:
       - name: Archive old portable
         uses: actions/upload-artifact@v4
         with:
-          name: linux-alternative-portable
-          path: app/build/linux/x64/release/bundle
+          name: linux-${{ matrix.arch.name }}-alternative-build
+          path: app/build/linux/${{ matrix.arch.dir }}/release/bundle
   build-macos:
     runs-on: macos-latest
     defaults:
@@ -485,9 +516,11 @@ jobs:
       matrix:
         os:
           - name: ubuntu-24.04
-            label: linux
+            label: linux-x86_64
+          - name: ubuntu-24.04-arm
+            label: linux-arm64
           - name: windows-2022
-            label: windows
+            label: windows-x86_64
           - name: macos-latest
             label: macos
     runs-on: ${{ matrix.os.name }}
@@ -578,21 +611,35 @@ jobs:
           path: windows-build/
       - uses: actions/download-artifact@v4
         with:
-          name: linux-build
-          path: linux-build/
+          name: linux-x86_64-build
+          path: linux-x86_64-build/
       - uses: actions/download-artifact@v4
         with:
-          name: linux-deb
+          name: linux-x86_64-deb
       - uses: actions/download-artifact@v4
         with:
-          name: linux-rpm
+          name: linux-x86_64-rpm
       - uses: actions/download-artifact@v4
         with:
-          name: linux-appimage
+          name: linux-x86_64-appimage
       - uses: actions/download-artifact@v4
         with:
-          name: linux-alternative-portable
-          path: linux-alternative-portable/
+          name: linux-x86_64-alternative-build
+          path: linux-x86_64-alternative-build/
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux-arm64-build
+          path: linux-arm64-build/
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux-arm64-deb
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux-arm64-rpm
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux-arm64-alternative-build
+          path: linux-arm64-alternative-build/
       - uses: actions/download-artifact@v4
         with:
           name: windows-setup
@@ -607,12 +654,16 @@ jobs:
           name: ipa-build
       - uses: actions/download-artifact@v4
         with:
-          name: server-build-linux
-          path: server-build-linux/
+          name: server-build-linux-x86_64
+          path: server-build-linux-x86_64/
       - uses: actions/download-artifact@v4
         with:
-          name: server-build-windows
-          path: server-build-windows/
+          name: server-build-linux-arm64
+          path: server-build-linux-arm64/
+      - uses: actions/download-artifact@v4
+        with:
+          name: server-build-windows-x86_64
+          path: server-build-windows-x86_64/
       - uses: actions/download-artifact@v4
         with:
           name: server-build-macos
@@ -620,10 +671,13 @@ jobs:
       - name: 📦 Zip artifacts
         run: |
           zip -r linwood-setonix-windows-x86_64.zip windows-build/*
-          tar -C linux-build -czf linwood-setonix-linux-x86_64.tar.gz .
-          tar -C linux-alternative-portable -czf linwood-setonix-linux-alternative-x86_64.tar.gz .
-          zip -r linwood-setonix-server-windows-x86_64.zip server-build-windows/*
-          tar -C server-build-linux -czf linwood-setonix-server-linux-x86_64.tar.gz .
+          tar -C linux-x86_64-build -czf linwood-setonix-linux-x86_64.tar.gz .
+          tar -C linux-arm64-build -czf linwood-setonix-linux-arm64.tar.gz .
+          zip -r linwood-setonix-server-windows-x86_64.zip server-build-windows-x86_64/*
+          tar -C linux-x86_64-alternative-build -czf linwood-setonix-linux-alternative-x86_64.tar.gz .
+          tar -C linux-arm64-alternative-build -czf linwood-setonix-linux-alternative-arm64.tar.gz .
+          tar -C server-build-linux-x86_64 -czf linwood-setonix-server-linux-x86_64.tar.gz .
+          tar -C server-build-linux-arm64 -czf linwood-setonix-server-linux-arm64.tar.gz .
           zip -r linwood-setonix-server-macos.zip server-build-macos/*
       - name: Configure git
         if: ${{ github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' }}
@@ -632,6 +686,23 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "Actions"
           git pull --tags
+      - name: Add checksums
+        run: |
+          output_file="checksums.txt"
+
+          # Empty the output file if it exists
+          > "$output_file"
+
+          # Find and loop through all files starting with "linwood-setonix" in the current directory
+          for file in linwood-setonix*; do
+            # Check if the file exists (in case no matches were found)
+            if [ -f "$file" ]; then
+              # Append sha256sum to the output file in the format "hash  filename"
+              sha256sum "$file" >> "$output_file"
+            fi
+          done
+
+          echo "SHA256 hashes for files starting with 'linwood-setonix' saved to $output_file"
       - name: 🚀 Deploy stable
         if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
         uses: softprops/action-gh-release@v2
@@ -647,13 +718,22 @@ jobs:
             linwood-setonix-linux-x86_64.deb
             linwood-setonix-linux-x86_64.rpm
             linwood-setonix-linux-x86_64.AppImage
+            linwood-setonix-linux-arm64.tar.gz
+            linwood-setonix-linux-alternative-arm64.tar.gz
+            linwood-setonix-linux-arm64.deb
+            linwood-setonix-linux-arm64.rpm
             linwood-setonix-macos.zip
             linwood-setonix-macos.dmg
             linwood-setonix-android.apk
+            linwood-setonix-android-arm.apk
+            linwood-setonix-android-arm64.apk
+            linwood-setonix-android-x86_64.apk
             linwood-setonix-ios.ipa
             linwood-setonix-server-linux-x86_64.tar.gz
+            linwood-setonix-server-linux-arm64.tar.gz
             linwood-setonix-server-windows-x86_64.zip
             linwood-setonix-server-macos.zip
+            checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 🚀 Deploy nightly
@@ -671,6 +751,10 @@ jobs:
             linwood-setonix-linux-x86_64.deb
             linwood-setonix-linux-x86_64.rpm
             linwood-setonix-linux-x86_64.AppImage
+            linwood-setonix-linux-arm64.tar.gz
+            linwood-setonix-linux-alternative-arm64.tar.gz
+            linwood-setonix-linux-arm64.deb
+            linwood-setonix-linux-arm64.rpm
             linwood-setonix-macos.zip
             linwood-setonix-macos.dmg
             linwood-setonix-android.apk
@@ -679,8 +763,10 @@ jobs:
             linwood-setonix-android-x86_64.apk
             linwood-setonix-ios.ipa
             linwood-setonix-server-linux-x86_64.tar.gz
+            linwood-setonix-server-linux-arm64.tar.gz
             linwood-setonix-server-windows-x86_64.zip
             linwood-setonix-server-macos.zip
+            checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
@@ -696,6 +782,10 @@ jobs:
             linwood-setonix-linux-x86_64.deb
             linwood-setonix-linux-x86_64.rpm
             linwood-setonix-linux-x86_64.AppImage
+            linwood-setonix-linux-arm64.tar.gz
+            linwood-setonix-linux-alternative-arm64.tar.gz
+            linwood-setonix-linux-arm64.deb
+            linwood-setonix-linux-arm64.rpm
             linwood-setonix-macos.zip
             linwood-setonix-macos.dmg
             linwood-setonix-android.apk
@@ -704,8 +794,10 @@ jobs:
             linwood-setonix-android-x86_64.apk
             linwood-setonix-ios.ipa
             linwood-setonix-server-linux-x86_64.tar.gz
+            linwood-setonix-server-linux-arm64.tar.gz
             linwood-setonix-server-windows-x86_64.zip
             linwood-setonix-server-macos.zip
+            checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   deploy-to-play-store:
@@ -757,7 +849,7 @@ jobs:
       - name: Setup Fastlane
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.3.5"
+          ruby-version: "3.3.6"
           bundler-cache: true
           working-directory: app/android
       - name: 🚀 Deploy to Play Store

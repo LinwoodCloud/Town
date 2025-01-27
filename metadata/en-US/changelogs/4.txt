@@ -5,5 +5,7 @@
 * Upgrade to flutter 3.27
 * Use minSdkVersion 23 instead of 21 (The minimum version of android is 6.0 (Marshmallow))
 * Upgrade to agb 8.8
+* Fix reproducable builds again
+* Add linux arm
 
 Read more here: https://linwood.dev/setonix/0.3.0
