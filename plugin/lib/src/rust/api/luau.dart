@@ -6,10 +6,23 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `construct_globals`, `construct_on_print`
+// These functions are ignored because they are not marked as `pub`: `construct_event_handler`, `construct_globals`, `construct_globals`, `construct_on_print`, `run_event_handler`
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Lifetimeable < LuauEventRunner < 'static > >>>
+abstract class LuauEventRunner implements RustOpaqueInterface {
+  Future<void> runJoin({required String name});
+}
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LuauEventSystem>>
+abstract class LuauEventSystem implements RustOpaqueInterface {
+  static Future<LuauEventSystem> default_() =>
+      RustLib.instance.api.crateApiLuauLuauEventSystemDefault();
+}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LuauPlugin>>
 abstract class LuauPlugin implements RustOpaqueInterface {
+  LuauEventRunner eventSystem();
+
   factory LuauPlugin(
           {required String code, required PluginCallback callback}) =>
       RustLib.instance.api
