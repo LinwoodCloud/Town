@@ -6,7 +6,7 @@ import 'package:setonix_api/setonix_api.dart';
 
 part 'model.mapper.dart';
 
-base class Event<T> {
+base class Event<T extends WorldEvent?> {
   final T clientEvent;
   final Channel source;
   ServerWorldEvent serverEvent;

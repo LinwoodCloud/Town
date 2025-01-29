@@ -97,7 +97,6 @@ dependencies:
     path: rust_builder
   setonix_plugin:
     path: ../plugin
-  flutter_rust_bridge: 2.7.0
 dependency_overrides:
   tiled:
     git:

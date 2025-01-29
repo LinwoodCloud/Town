@@ -6,9 +6,8 @@ environment:
   sdk: '>=3.3.0 <4.0.0'
 dependencies:
   flutter_rust_bridge: 2.7.1
-  js: ^0.6.5
+  js: ^0.7.1
   collection: ^1.16.0
-  freezed_annotation: ^2.2.0
   setonix_api:
     path: ../api
   networker:
@@ -19,5 +18,4 @@ dependencies:
   meta: ^1.15.0
 dev_dependencies:
   build_runner: ^2.4.4
-  freezed: ^2.1.0+1
-  ffigen: ^11.0.0
+  ffigen: ^16.1.0

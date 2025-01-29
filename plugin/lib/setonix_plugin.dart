@@ -7,3 +7,7 @@ export 'events.dart';
 Future<void> initPluginSystem() {
   return RustLib.init();
 }
+
+void disposePluginSystem() {
+  RustLib.dispose();
+}

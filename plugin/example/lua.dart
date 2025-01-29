@@ -1,5 +1,4 @@
 import 'package:setonix_plugin/setonix_plugin.dart';
-import 'package:setonix_plugin/src/rust/frb_generated.dart';
 
 const LUA_SCRIPT = '''
 print("Hello World")
@@ -8,7 +7,7 @@ onEvent("join", function(event)
 end)
 ''';
 Future<void> main() async {
-  await RustLib.init();
+  await initPluginSystem();
   final callback = await PluginCallback.default_();
   await callback.changeOnPrint(
     onPrint: (p0) {
@@ -17,9 +16,9 @@ Future<void> main() async {
   );
   final plugin = LuauPlugin(code: LUA_SCRIPT, callback: callback);
   await plugin.run();
-  final eventSystem = await plugin.eventSystem();
+  final eventSystem = plugin.eventSystem();
   await eventSystem.runJoin(name: "Alice");
   callback.dispose();
   print('end of main');
-  RustLib.dispose();
+  disposePluginSystem();
 }

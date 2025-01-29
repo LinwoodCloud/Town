@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: _fe_analyzer_shared
-      sha256: "03f6da266a27a4538a69295ec142cb5717d7d4e5727b84658b63e1e1509bac9c"
+      sha256: "16e298750b6d0af7ce8a3ba7c18c69c3785d11b15ec83f6dcd0ad2a0009b3cab"
       url: "https://pub.dev"
     source: hosted
-    version: "79.0.0"
+    version: "76.0.0"
   _macros:
     dependency: transitive
     description: dart
@@ -18,10 +18,10 @@ packages:
     dependency: transitive
     description:
       name: analyzer
-      sha256: c9040fc56483c22a5e04a9f6a251313118b1a3c42423770623128fa484115643
+      sha256: "1f14db053a8c23e260789e9b0980fa27f2680dd640932cae5e1137cce0e46e1e"
       url: "https://pub.dev"
     source: hosted
-    version: "7.2.0"
+    version: "6.11.0"
   archive:
     dependency: transitive
     description:
@@ -195,10 +195,10 @@ packages:
     dependency: transitive
     description:
       name: dart_style
-      sha256: "27eb0ae77836989a3bc541ce55595e8ceee0992807f14511552a898ddd0d88ac"
+      sha256: "7306ab8a2359a48d22310ad823521d723acfed60ee1f7e37388e8986853b6820"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1"
+    version: "2.3.8"
   ffi:
     dependency: transitive
     description:
@@ -211,10 +211,10 @@ packages:
     dependency: "direct dev"
     description:
       name: ffigen
-      sha256: dead012f29db2be71ea152458f5eab600de98fbc244e01088ae6bf2616bceca7
+      sha256: "2119b4fe3aad0db94dc9531b90283c4640a6231070e613c400b426a4da08c704"
       url: "https://pub.dev"
     source: hosted
-    version: "11.0.0"
+    version: "16.1.0"
   file:
     dependency: transitive
     description:
@@ -239,22 +239,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.7.1"
-  freezed:
-    dependency: "direct dev"
-    description:
-      name: freezed
-      sha256: "59a584c24b3acdc5250bb856d0d3e9c0b798ed14a4af1ddb7dc1c7b41df91c9c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.5.8"
-  freezed_annotation:
-    dependency: "direct main"
-    description:
-      name: freezed_annotation
-      sha256: c2e2d632dd9b8a2b7751117abcfc2b4888ecfe181bd9fca7170d9ef02e595fe2
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.4.4"
   frontend_server_client:
     dependency: transitive
     description:
@@ -307,10 +291,10 @@ packages:
     dependency: "direct main"
     description:
       name: js
-      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
+      sha256: c1b2e9b5ea78c45e1a0788d29606ba27dc5f71f019f32ca5140f61ef071838cf
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.7"
+    version: "0.7.1"
   json_annotation:
     dependency: transitive
     description:
@@ -456,14 +440,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
-  source_gen:
-    dependency: transitive
-    description:
-      name: source_gen
-      sha256: "35c8150ece9e8c8d263337a265153c3329667640850b9304861faea59fc98f6b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.0"
   source_span:
     dependency: transitive
     description:
