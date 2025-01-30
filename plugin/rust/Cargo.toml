@@ -1,0 +1,20 @@
+[package]
+name = "setonix_plugin"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+anyhow = { version = "1", features = ["backtrace"] }
+flutter_rust_bridge = "=2.7.1"
+mlua = { version = "0.10.2", features = ["luau", "send", "async", "anyhow", "serialize"]}
+futures = "0.3"
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+
+[features]
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }

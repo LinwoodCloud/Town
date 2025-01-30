@@ -2,9 +2,8 @@
 library;
 
 export 'package:setonix_api/setonix_api.dart';
+export 'package:setonix_plugin/setonix_plugin.dart';
 export 'src/asset.dart';
-export 'src/events/model.dart';
-export 'src/events/system.dart';
 export 'src/main.dart';
 export 'src/server.dart';
 export 'src/programs/kick.dart';

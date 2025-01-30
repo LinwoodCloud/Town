@@ -93,6 +93,10 @@ dependencies:
   markdown: ^7.2.2
   bloc_concurrency: ^0.3.0
   idb_shim: ^2.6.1+7
+  rust_lib_setonix_plugin:
+    path: rust_builder
+  setonix_plugin:
+    path: ../plugin
 dependency_overrides:
   tiled:
     git:

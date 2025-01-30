@@ -9,14 +9,12 @@ import 'package:networker/networker.dart';
 import 'package:networker_socket/server.dart';
 import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_server/src/asset.dart';
-import 'package:setonix_server/src/events/system.dart';
 import 'package:setonix_server/src/programs/packs.dart';
 import 'package:setonix_server/src/programs/players.dart';
 import 'package:setonix_server/src/programs/save.dart';
 import 'package:setonix_server/src/programs/say.dart';
 import 'package:setonix_server/src/programs/stop.dart';
-
-import 'events/model.dart';
+import 'package:setonix_plugin/setonix_plugin.dart';
 
 Future<ServerProcessed> _computeEvent(ServerWorldEvent event, WorldState state,
     List<SignatureMetadata> signature) {
@@ -185,6 +183,9 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
       ));
 
   Future<void> run() async {
+    await initPluginSystem();
+    final result = await simpleAdderTwinNormal(a: 1, b: 6);
+    print("1 + 6 = $result");
     consoler.run();
     log('Server running on ${_server?.address}', level: LogLevel.info);
     await _server?.onClosed.first;
@@ -207,7 +208,6 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
     }
     if (process == null) return;
     final event = Event(
-      this,
       process.main.data,
       process.main.channel,
       data,
@@ -257,7 +257,7 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
   void _onLeave((Channel, ConnectionInfo) event) {
     final (user, info) = event;
     log('${info.address} ($user) left the game', level: LogLevel.info);
-    eventSystem.runLeaveCallback(this, event.$1, event.$2);
+    eventSystem.runLeaveCallback(event.$1, event.$2);
   }
 
   Future<void> save({bool force = false}) async {

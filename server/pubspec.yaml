@@ -28,9 +28,11 @@ dependencies:
   path: ^1.9.0
   setonix_api:
     path: ../api
+  setonix_plugin:
+    path: ../plugin
   bloc_concurrency: ^0.3.0
   dart_mappable: ^4.2.2
-
+  native_assets_cli: ^0.11.0
 dev_dependencies:
   lints: ^5.0.0
   test: ^1.24.0

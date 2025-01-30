@@ -8,7 +8,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        projects: [app, api, server, tools]
+        projects: [app, api, plugin, server, tools]
     defaults:
       run:
         working-directory: ${{ matrix.projects }}
@@ -32,6 +32,11 @@ jobs:
           dart run tools/generate.dart
       - name: Install dependencies
         run: |
+          flutter pub get
+      - name: Install app specific dependencies
+        if: matrix.projects == 'app'
+        run: |
+          cd rust_builder
           flutter pub get
       # Uncomment this step to verify the use of 'dart format' on each commit.
       - name: Verify formatting

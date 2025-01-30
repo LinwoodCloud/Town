@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:setonix_server/setonix_server.dart';
+import 'package:networker/networker.dart';
+import 'package:setonix_api/setonix_api.dart';
+import 'package:setonix_plugin/src/events/model.dart';
 
 final class EventSystem {
   final StreamController<Event> _controller =
@@ -36,10 +38,8 @@ final class EventSystem {
     return ping.response;
   }
 
-  void runLeaveCallback(
-      SetonixServer server, Channel channel, ConnectionInfo info) {
-    final callback =
-        UserLeaveCallback(server: server, channel: channel, info: info);
+  void runLeaveCallback(Channel channel, ConnectionInfo info) {
+    final callback = UserLeaveCallback(channel: channel, info: info);
     _leaveController.add(callback);
   }
 
