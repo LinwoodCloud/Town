@@ -67,7 +67,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.7.1';
 
   @override
-  int get rustContentHash => 642971141;
+  int get rustContentHash => 1001445239;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -78,6 +78,52 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
+  bool crateApiLuauEventDetailsAutoAccessorGetCancelled(
+      {required EventDetails that});
+
+  Set<int>? crateApiLuauEventDetailsAutoAccessorGetNeedsUpdate(
+      {required EventDetails that});
+
+  MapStringValue crateApiLuauEventDetailsAutoAccessorGetServerEvent(
+      {required EventDetails that});
+
+  int crateApiLuauEventDetailsAutoAccessorGetSource(
+      {required EventDetails that});
+
+  int crateApiLuauEventDetailsAutoAccessorGetTarget(
+      {required EventDetails that});
+
+  void crateApiLuauEventDetailsAutoAccessorSetCancelled(
+      {required EventDetails that, required bool cancelled});
+
+  void crateApiLuauEventDetailsAutoAccessorSetNeedsUpdate(
+      {required EventDetails that, Set<int>? needsUpdate});
+
+  void crateApiLuauEventDetailsAutoAccessorSetServerEvent(
+      {required EventDetails that, required MapStringValue serverEvent});
+
+  void crateApiLuauEventDetailsAutoAccessorSetSource(
+      {required EventDetails that, required int source});
+
+  void crateApiLuauEventDetailsAutoAccessorSetTarget(
+      {required EventDetails that, required int target});
+
+  Future<void> crateApiLuauEventDetailsCancel({required EventDetails that});
+
+  Future<EventDetails> crateApiLuauEventDetailsNew(
+      {required MapStringValue serverEvent,
+      required int target,
+      required int source,
+      Set<int>? needsUpdate});
+
+  Future<EventDetails>
+      crateApiLuauLifetimeableAutoOwnedRustOpaqueFlutterRustBridgeforGeneratedRustAutoOpaqueInnerLuauEventRunnerstaticRunEvent(
+          {required LuauEventRunner that,
+          required String eventType,
+          required String event,
+          required String serverEvent,
+          required int target});
+
   Future<void>
       crateApiLuauLifetimeableAutoOwnedRustOpaqueFlutterRustBridgeforGeneratedRustAutoOpaqueInnerLuauEventRunnerstaticRunJoin(
           {required LuauEventRunner that, required String name});
@@ -99,6 +145,14 @@ abstract class RustLibApi extends BaseApi {
 
   Future<int> crateApiSimpleSimpleAdderTwinNormal(
       {required int a, required int b});
+
+  RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_EventDetails;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_EventDetails;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_EventDetailsPtr;
 
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_LuauEventRunner;
@@ -127,6 +181,15 @@ abstract class RustLibApi extends BaseApi {
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_LuauPluginPtr;
 
   RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_MapStringValue;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_MapStringValue;
+
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_MapStringValuePtr;
+
+  RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_PluginCallback;
 
   RustArcDecrementStrongCountFnType
@@ -145,6 +208,379 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
+  bool crateApiLuauEventDetailsAutoAccessorGetCancelled(
+      {required EventDetails that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_bool,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiLuauEventDetailsAutoAccessorGetCancelledConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiLuauEventDetailsAutoAccessorGetCancelledConstMeta =>
+          const TaskConstMeta(
+            debugName: "EventDetails_auto_accessor_get_cancelled",
+            argNames: ["that"],
+          );
+
+  @override
+  Set<int>? crateApiLuauEventDetailsAutoAccessorGetNeedsUpdate(
+      {required EventDetails that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 2)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_opt_Set_i_16,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiLuauEventDetailsAutoAccessorGetNeedsUpdateConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiLuauEventDetailsAutoAccessorGetNeedsUpdateConstMeta =>
+          const TaskConstMeta(
+            debugName: "EventDetails_auto_accessor_get_needs_update",
+            argNames: ["that"],
+          );
+
+  @override
+  MapStringValue crateApiLuauEventDetailsAutoAccessorGetServerEvent(
+      {required EventDetails that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData:
+            sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMapStringValue,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiLuauEventDetailsAutoAccessorGetServerEventConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiLuauEventDetailsAutoAccessorGetServerEventConstMeta =>
+          const TaskConstMeta(
+            debugName: "EventDetails_auto_accessor_get_server_event",
+            argNames: ["that"],
+          );
+
+  @override
+  int crateApiLuauEventDetailsAutoAccessorGetSource(
+      {required EventDetails that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_i_16,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiLuauEventDetailsAutoAccessorGetSourceConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiLuauEventDetailsAutoAccessorGetSourceConstMeta =>
+      const TaskConstMeta(
+        debugName: "EventDetails_auto_accessor_get_source",
+        argNames: ["that"],
+      );
+
+  @override
+  int crateApiLuauEventDetailsAutoAccessorGetTarget(
+      {required EventDetails that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_i_16,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiLuauEventDetailsAutoAccessorGetTargetConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiLuauEventDetailsAutoAccessorGetTargetConstMeta =>
+      const TaskConstMeta(
+        debugName: "EventDetails_auto_accessor_get_target",
+        argNames: ["that"],
+      );
+
+  @override
+  void crateApiLuauEventDetailsAutoAccessorSetCancelled(
+      {required EventDetails that, required bool cancelled}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+            that, serializer);
+        sse_encode_bool(cancelled, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiLuauEventDetailsAutoAccessorSetCancelledConstMeta,
+      argValues: [that, cancelled],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiLuauEventDetailsAutoAccessorSetCancelledConstMeta =>
+          const TaskConstMeta(
+            debugName: "EventDetails_auto_accessor_set_cancelled",
+            argNames: ["that", "cancelled"],
+          );
+
+  @override
+  void crateApiLuauEventDetailsAutoAccessorSetNeedsUpdate(
+      {required EventDetails that, Set<int>? needsUpdate}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+            that, serializer);
+        sse_encode_opt_Set_i_16(needsUpdate, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiLuauEventDetailsAutoAccessorSetNeedsUpdateConstMeta,
+      argValues: [that, needsUpdate],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiLuauEventDetailsAutoAccessorSetNeedsUpdateConstMeta =>
+          const TaskConstMeta(
+            debugName: "EventDetails_auto_accessor_set_needs_update",
+            argNames: ["that", "needsUpdate"],
+          );
+
+  @override
+  void crateApiLuauEventDetailsAutoAccessorSetServerEvent(
+      {required EventDetails that, required MapStringValue serverEvent}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+            that, serializer);
+        sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMapStringValue(
+            serverEvent, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiLuauEventDetailsAutoAccessorSetServerEventConstMeta,
+      argValues: [that, serverEvent],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiLuauEventDetailsAutoAccessorSetServerEventConstMeta =>
+          const TaskConstMeta(
+            debugName: "EventDetails_auto_accessor_set_server_event",
+            argNames: ["that", "serverEvent"],
+          );
+
+  @override
+  void crateApiLuauEventDetailsAutoAccessorSetSource(
+      {required EventDetails that, required int source}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+            that, serializer);
+        sse_encode_i_16(source, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 9)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiLuauEventDetailsAutoAccessorSetSourceConstMeta,
+      argValues: [that, source],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiLuauEventDetailsAutoAccessorSetSourceConstMeta =>
+      const TaskConstMeta(
+        debugName: "EventDetails_auto_accessor_set_source",
+        argNames: ["that", "source"],
+      );
+
+  @override
+  void crateApiLuauEventDetailsAutoAccessorSetTarget(
+      {required EventDetails that, required int target}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+            that, serializer);
+        sse_encode_i_16(target, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiLuauEventDetailsAutoAccessorSetTargetConstMeta,
+      argValues: [that, target],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiLuauEventDetailsAutoAccessorSetTargetConstMeta =>
+      const TaskConstMeta(
+        debugName: "EventDetails_auto_accessor_set_target",
+        argNames: ["that", "target"],
+      );
+
+  @override
+  Future<void> crateApiLuauEventDetailsCancel({required EventDetails that}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+            that, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 11, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiLuauEventDetailsCancelConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiLuauEventDetailsCancelConstMeta =>
+      const TaskConstMeta(
+        debugName: "EventDetails_cancel",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<EventDetails> crateApiLuauEventDetailsNew(
+      {required MapStringValue serverEvent,
+      required int target,
+      required int source,
+      Set<int>? needsUpdate}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMapStringValue(
+            serverEvent, serializer);
+        sse_encode_i_16(target, serializer);
+        sse_encode_i_16(source, serializer);
+        sse_encode_opt_Set_i_16(needsUpdate, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 12, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData:
+            sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiLuauEventDetailsNewConstMeta,
+      argValues: [serverEvent, target, source, needsUpdate],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiLuauEventDetailsNewConstMeta =>
+      const TaskConstMeta(
+        debugName: "EventDetails_new",
+        argNames: ["serverEvent", "target", "source", "needsUpdate"],
+      );
+
+  @override
+  Future<EventDetails>
+      crateApiLuauLifetimeableAutoOwnedRustOpaqueFlutterRustBridgeforGeneratedRustAutoOpaqueInnerLuauEventRunnerstaticRunEvent(
+          {required LuauEventRunner that,
+          required String eventType,
+          required String event,
+          required String serverEvent,
+          required int target}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Lifetimeable_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauEventRunnerstatic(
+            that, serializer);
+        sse_encode_String(eventType, serializer);
+        sse_encode_String(event, serializer);
+        sse_encode_String(serverEvent, serializer);
+        sse_encode_i_16(target, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 13, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData:
+            sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiLuauLifetimeableAutoOwnedRustOpaqueFlutterRustBridgeforGeneratedRustAutoOpaqueInnerLuauEventRunnerstaticRunEventConstMeta,
+      argValues: [that, eventType, event, serverEvent, target],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiLuauLifetimeableAutoOwnedRustOpaqueFlutterRustBridgeforGeneratedRustAutoOpaqueInnerLuauEventRunnerstaticRunEventConstMeta =>
+          const TaskConstMeta(
+            debugName:
+                "Lifetimeable_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauEventRunnerstatic_run_event",
+            argNames: ["that", "eventType", "event", "serverEvent", "target"],
+          );
+
+  @override
   Future<void>
       crateApiLuauLifetimeableAutoOwnedRustOpaqueFlutterRustBridgeforGeneratedRustAutoOpaqueInnerLuauEventRunnerstaticRunJoin(
           {required LuauEventRunner that, required String name}) {
@@ -155,7 +591,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that, serializer);
         sse_encode_String(name, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 1, port: port_);
+            funcId: 14, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -182,7 +618,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 2, port: port_);
+            funcId: 15, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -209,7 +645,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
             that, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 16)!;
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -237,7 +673,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(code, serializer);
         sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
             callback, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 17)!;
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -263,7 +699,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
             that, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 5, port: port_);
+            funcId: 18, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -292,7 +728,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_DartFn_Inputs_String_Output_unit_AnyhowException(
             onPrint, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 6, port: port_);
+            funcId: 19, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -316,7 +752,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 7, port: port_);
+            funcId: 20, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -344,7 +780,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(a, serializer);
         sse_encode_i_32(b, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 8, port: port_);
+            funcId: 21, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_i_32,
@@ -396,6 +832,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_EventDetails => wire
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_EventDetails => wire
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails;
+
+  RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_LuauEventRunner => wire
           .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLifetimeableLuauEventRunnerstatic;
 
@@ -418,6 +862,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   RustArcDecrementStrongCountFnType
       get rust_arc_decrement_strong_count_LuauPlugin => wire
           .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin;
+
+  RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_MapStringValue => wire
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMapStringValue;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_MapStringValue => wire
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMapStringValue;
 
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_PluginCallback => wire
@@ -443,6 +895,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EventDetails
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return EventDetailsImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   LuauEventSystem
       dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauEventSystem(
           dynamic raw) {
@@ -459,6 +919,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MapStringValue
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMapStringValue(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return MapStringValueImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   PluginCallback
       dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
           dynamic raw) {
@@ -467,11 +935,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EventDetails
+      dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return EventDetailsImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   PluginCallback
       dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
           dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return PluginCallbackImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  EventDetails
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return EventDetailsImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -505,6 +989,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EventDetails
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return EventDetailsImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   LuauEventRunner
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLifetimeableLuauEventRunnerstatic(
           dynamic raw) {
@@ -529,6 +1021,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MapStringValue
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMapStringValue(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return MapStringValueImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   PluginCallback
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
           dynamic raw) {
@@ -537,9 +1037,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Set<int> dco_decode_Set_i_16(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Set.from(dco_decode_list_prim_i_16_strict(raw));
+  }
+
+  @protected
   String dco_decode_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as String;
+  }
+
+  @protected
+  bool dco_decode_bool(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as bool;
+  }
+
+  @protected
+  int dco_decode_i_16(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
   }
 
   @protected
@@ -555,9 +1073,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Int16List dco_decode_list_prim_i_16_strict(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as Int16List;
+  }
+
+  @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as Uint8List;
+  }
+
+  @protected
+  Set<int>? dco_decode_opt_Set_i_16(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_Set_i_16(raw);
   }
 
   @protected
@@ -597,6 +1127,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EventDetails
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return EventDetailsImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
   LuauEventSystem
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauEventSystem(
           SseDeserializer deserializer) {
@@ -615,6 +1154,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MapStringValue
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMapStringValue(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return MapStringValueImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
   PluginCallback
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
           SseDeserializer deserializer) {
@@ -624,11 +1172,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EventDetails
+      sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return EventDetailsImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
   PluginCallback
       sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
           SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return PluginCallbackImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  EventDetails
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return EventDetailsImpl.frbInternalSseDecode(
         sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
   }
 
@@ -660,6 +1226,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EventDetails
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return EventDetailsImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
   LuauEventRunner
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLifetimeableLuauEventRunnerstatic(
           SseDeserializer deserializer) {
@@ -687,6 +1262,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MapStringValue
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMapStringValue(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return MapStringValueImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
   PluginCallback
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
           SseDeserializer deserializer) {
@@ -696,10 +1280,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Set<int> sse_decode_Set_i_16(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_prim_i_16_strict(deserializer);
+    return Set.from(inner);
+  }
+
+  @protected
   String sse_decode_String(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_list_prim_u_8_strict(deserializer);
     return utf8.decoder.convert(inner);
+  }
+
+  @protected
+  bool sse_decode_bool(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint8() != 0;
+  }
+
+  @protected
+  int sse_decode_i_16(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getInt16();
   }
 
   @protected
@@ -715,10 +1318,28 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Int16List sse_decode_list_prim_i_16_strict(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var len_ = sse_decode_i_32(deserializer);
+    return deserializer.buffer.getInt16List(len_);
+  }
+
+  @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
     return deserializer.buffer.getUint8List(len_);
+  }
+
+  @protected
+  Set<int>? sse_decode_opt_Set_i_16(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_Set_i_16(deserializer));
+    } else {
+      return null;
+    }
   }
 
   @protected
@@ -739,12 +1360,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  bool sse_decode_bool(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getUint8() != 0;
-  }
-
-  @protected
   void sse_encode_AnyhowException(
       AnyhowException self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -758,6 +1373,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLifetimeableLuauEventRunnerstatic(
         self, serializer);
+  }
+
+  @protected
+  void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+          EventDetails self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as EventDetailsImpl).frbInternalSseEncode(move: true),
+        serializer);
   }
 
   @protected
@@ -781,6 +1406,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMapStringValue(
+          MapStringValue self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as MapStringValueImpl).frbInternalSseEncode(move: true),
+        serializer);
+  }
+
+  @protected
+  void
       sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
           PluginCallback self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -791,11 +1426,31 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+      sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+          EventDetails self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as EventDetailsImpl).frbInternalSseEncode(move: false),
+        serializer);
+  }
+
+  @protected
+  void
       sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
           PluginCallback self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
         (self as PluginCallbackImpl).frbInternalSseEncode(move: false),
+        serializer);
+  }
+
+  @protected
+  void
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+          EventDetails self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as EventDetailsImpl).frbInternalSseEncode(move: false),
         serializer);
   }
 
@@ -837,6 +1492,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+          EventDetails self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as EventDetailsImpl).frbInternalSseEncode(move: null),
+        serializer);
+  }
+
+  @protected
+  void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLifetimeableLuauEventRunnerstatic(
           LuauEventRunner self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -866,6 +1531,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMapStringValue(
+          MapStringValue self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as MapStringValueImpl).frbInternalSseEncode(move: null),
+        serializer);
+  }
+
+  @protected
+  void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
           PluginCallback self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -875,9 +1550,28 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_Set_i_16(Set<int> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_prim_i_16_strict(
+        Int16List.fromList(self.toList()), serializer);
+  }
+
+  @protected
   void sse_encode_String(String self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_prim_u_8_strict(utf8.encoder.convert(self), serializer);
+  }
+
+  @protected
+  void sse_encode_bool(bool self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint8(self ? 1 : 0);
+  }
+
+  @protected
+  void sse_encode_i_16(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putInt16(self);
   }
 
   @protected
@@ -893,11 +1587,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_prim_i_16_strict(
+      Int16List self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    serializer.buffer.putInt16List(self);
+  }
+
+  @protected
   void sse_encode_list_prim_u_8_strict(
       Uint8List self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     serializer.buffer.putUint8List(self);
+  }
+
+  @protected
+  void sse_encode_opt_Set_i_16(Set<int>? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_Set_i_16(self, serializer);
+    }
   }
 
   @protected
@@ -916,12 +1628,75 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putBigUint64(self);
   }
+}
 
-  @protected
-  void sse_encode_bool(bool self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putUint8(self ? 1 : 0);
-  }
+@sealed
+class EventDetailsImpl extends RustOpaque implements EventDetails {
+  // Not to be used by end users
+  EventDetailsImpl.frbInternalDcoDecode(List<dynamic> wire)
+      : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  EventDetailsImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_EventDetails,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_EventDetails,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_EventDetailsPtr,
+  );
+
+  bool get cancelled =>
+      RustLib.instance.api.crateApiLuauEventDetailsAutoAccessorGetCancelled(
+        that: this,
+      );
+
+  Set<int>? get needsUpdate =>
+      RustLib.instance.api.crateApiLuauEventDetailsAutoAccessorGetNeedsUpdate(
+        that: this,
+      );
+
+  MapStringValue get serverEvent =>
+      RustLib.instance.api.crateApiLuauEventDetailsAutoAccessorGetServerEvent(
+        that: this,
+      );
+
+  int get source =>
+      RustLib.instance.api.crateApiLuauEventDetailsAutoAccessorGetSource(
+        that: this,
+      );
+
+  int get target =>
+      RustLib.instance.api.crateApiLuauEventDetailsAutoAccessorGetTarget(
+        that: this,
+      );
+
+  set cancelled(bool cancelled) =>
+      RustLib.instance.api.crateApiLuauEventDetailsAutoAccessorSetCancelled(
+          that: this, cancelled: cancelled);
+
+  set needsUpdate(Set<int>? needsUpdate) =>
+      RustLib.instance.api.crateApiLuauEventDetailsAutoAccessorSetNeedsUpdate(
+          that: this, needsUpdate: needsUpdate);
+
+  set serverEvent(MapStringValue serverEvent) =>
+      RustLib.instance.api.crateApiLuauEventDetailsAutoAccessorSetServerEvent(
+          that: this, serverEvent: serverEvent);
+
+  set source(int source) =>
+      RustLib.instance.api.crateApiLuauEventDetailsAutoAccessorSetSource(
+          that: this, source: source);
+
+  set target(int target) =>
+      RustLib.instance.api.crateApiLuauEventDetailsAutoAccessorSetTarget(
+          that: this, target: target);
+
+  Future<void> cancel() => RustLib.instance.api.crateApiLuauEventDetailsCancel(
+        that: this,
+      );
 }
 
 @sealed
@@ -942,6 +1717,19 @@ class LuauEventRunnerImpl extends RustOpaque implements LuauEventRunner {
     rustArcDecrementStrongCountPtr:
         RustLib.instance.api.rust_arc_decrement_strong_count_LuauEventRunnerPtr,
   );
+
+  Future<EventDetails> runEvent(
+          {required String eventType,
+          required String event,
+          required String serverEvent,
+          required int target}) =>
+      RustLib.instance.api
+          .crateApiLuauLifetimeableAutoOwnedRustOpaqueFlutterRustBridgeforGeneratedRustAutoOpaqueInnerLuauEventRunnerstaticRunEvent(
+              that: this,
+              eventType: eventType,
+              event: event,
+              serverEvent: serverEvent,
+              target: target);
 
   Future<void> runJoin({required String name}) => RustLib.instance.api
       .crateApiLuauLifetimeableAutoOwnedRustOpaqueFlutterRustBridgeforGeneratedRustAutoOpaqueInnerLuauEventRunnerstaticRunJoin(
@@ -995,6 +1783,26 @@ class LuauPluginImpl extends RustOpaque implements LuauPlugin {
   Future<void> run() => RustLib.instance.api.crateApiLuauLuauPluginRun(
         that: this,
       );
+}
+
+@sealed
+class MapStringValueImpl extends RustOpaque implements MapStringValue {
+  // Not to be used by end users
+  MapStringValueImpl.frbInternalDcoDecode(List<dynamic> wire)
+      : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  MapStringValueImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_MapStringValue,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_MapStringValue,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_MapStringValuePtr,
+  );
 }
 
 @sealed
