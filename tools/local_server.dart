@@ -4,14 +4,13 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
 import 'package:shelf_static/shelf_static.dart';
 import 'package:shelf_web_socket/shelf_web_socket.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 void main(List<String> args) {
   final port = args.isEmpty ? 80 : int.parse(args.first);
   final staticHandler =
       createStaticHandler('app/build/web', defaultDocument: 'index.html');
 
-  final socketHandler = webSocketHandler((WebSocketChannel webSocket) async {
+  final socketHandler = webSocketHandler((webSocket, _) async {
     final proxied = await WebSocket.connect('ws://localhost:10357');
     webSocket.stream.listen((message) {
       proxied.add(message);
