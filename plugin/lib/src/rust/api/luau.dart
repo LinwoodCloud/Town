@@ -5,56 +5,11 @@
 
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'plugin.dart';
 
-// These functions are ignored because they are not marked as `pub`: `construct_event_handler`, `construct_globals`, `construct_globals`, `construct_on_print`, `run_event_handler`
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<EventDetails>>
-abstract class EventDetails implements RustOpaqueInterface {
-  bool get cancelled;
-
-  Set<int>? get needsUpdate;
-
-  MapStringValue get serverEvent;
-
-  int get source;
-
-  int get target;
-
-  set cancelled(bool cancelled);
-
-  set needsUpdate(Set<int>? needsUpdate);
-
-  set serverEvent(MapStringValue serverEvent);
-
-  set source(int source);
-
-  set target(int target);
-
-  Future<void> cancel();
-
-  // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
-  static Future<EventDetails> newInstance(
-          {required MapStringValue serverEvent,
-          required int target,
-          required int source,
-          Set<int>? needsUpdate}) =>
-      RustLib.instance.api.crateApiLuauEventDetailsNew(
-          serverEvent: serverEvent,
-          target: target,
-          source: source,
-          needsUpdate: needsUpdate);
-}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Lifetimeable < LuauEventRunner < 'static > >>>
-abstract class LuauEventRunner implements RustOpaqueInterface {
-  Future<EventDetails> runEvent(
-      {required String eventType,
-      required String event,
-      required String serverEvent,
-      required int target});
-
-  Future<void> runJoin({required String name});
-}
+// These functions are ignored because they are not marked as `pub`: `construct_globals`, `construct_on_print`, `run_event_handler`
+// These types are ignored because they are not used by any `pub` functions: `LuauEventSystemUserData`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `add_methods`
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LuauEventSystem>>
 abstract class LuauEventSystem implements RustOpaqueInterface {
@@ -63,25 +18,17 @@ abstract class LuauEventSystem implements RustOpaqueInterface {
 }
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LuauPlugin>>
-abstract class LuauPlugin implements RustOpaqueInterface {
-  LuauEventRunner eventSystem();
-
+abstract class LuauPlugin implements RustOpaqueInterface, SetonixPlugin {
   factory LuauPlugin(
           {required String code, required PluginCallback callback}) =>
       RustLib.instance.api
           .crateApiLuauLuauPluginNew(code: code, callback: callback);
 
   Future<void> run();
-}
 
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Map < String , Value >>>
-abstract class MapStringValue implements RustOpaqueInterface {}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<PluginCallback>>
-abstract class PluginCallback implements RustOpaqueInterface {
-  Future<void> changeOnPrint(
-      {required FutureOr<void> Function(String) onPrint});
-
-  static Future<PluginCallback> default_() =>
-      RustLib.instance.api.crateApiLuauPluginCallbackDefault();
+  Future<EventResult> runEvent(
+      {required String eventType,
+      required String event,
+      required String serverEvent,
+      required int target});
 }
